@@ -1,6 +1,6 @@
-﻿namespace TowerDefense.UI
+﻿namespace GUI
 {
-    partial class Form1
+    partial class GameView
     {
         /// <summary>
         /// Required designer variable.
@@ -13,6 +13,7 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            GameLoopThread.Abort();
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -28,12 +29,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.SuspendLayout();
+            // 
+            // GameView
+            // 
+            this.ClientSize = new System.Drawing.Size(820, 500);
+            this.DoubleBuffered = true;
+            this.Name = "GameView";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameViewPaint);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameViewKeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GameView_KeyPress);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
     }
 }
 
