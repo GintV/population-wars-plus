@@ -5,7 +5,7 @@ using TowerDefense.Source.Guardians;
 
 namespace TowerDefense.Source
 {
-    internal class Inventory
+    public class Inventory
     {
         public int Coins { get; set; }
         public List<IGuardian> Guardians { get; set; }

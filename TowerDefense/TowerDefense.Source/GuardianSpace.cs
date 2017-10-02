@@ -1,6 +1,6 @@
 ﻿namespace TowerDefense.Source
 {
-    internal class GuardianSpace
+    public class GuardianSpace
     {
         public GuardianSlot[] GuardianSlots { get; private set; }
         public int Slots { get; }

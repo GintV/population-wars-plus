@@ -1,23 +1,23 @@
 ﻿namespace TowerDefense.Source.Guardians
 {
-    internal interface IGuardianFactory
+    public interface IGuardianFactory
     {
-        Maybe<IGuardian> CreateGuard(GuardianType guardianType);
+        Maybe<IGuardian> CreateGuardian(GuardianType guardianType);
     }
 
-    internal abstract class GuardianFactory
+    public abstract class GuardianFactory
     {
-        public static Maybe<IGuardian> CreateGuard(GuardianType guardianType)
+        public static Maybe<IGuardian> CreateGuardian(GuardianType guardianType)
         {
             var factory = GetConcreteFactory(guardianType);
             if (factory.HasValue)
-                return factory.Value.CreateGuard(guardianType);
+                return factory.Value.CreateGuardian(guardianType);
             return null;
         }
 
         private static Maybe<IGuardianFactory> GetConcreteFactory(GuardianType guardianType) =>
-            new Maybe<IGuardianFactory>(guardianType.Class == GuardianClass.Archer ? (IGuardianFactory)ArcherFactory.Factory :
-            guardianType.Class == GuardianClass.Wizard ? WizardFactory.Factory : null);
+            new Maybe<IGuardianFactory>(guardianType.Class == GuardianClass.Archer ? (IGuardianFactory)ArcherFactory.GetFactory() :
+            guardianType.Class == GuardianClass.Wizard ? WizardFactory.GetFactory() : null);
             
     }
 }

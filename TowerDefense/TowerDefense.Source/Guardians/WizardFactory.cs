@@ -9,9 +9,10 @@ namespace TowerDefense.Source.Guardians
 
         private WizardFactory() { }
 
-        public static WizardFactory Factory => m_factory.Value;
+        public static WizardFactory GetFactory() =>
+            m_factory.Value;
 
-        public Maybe<IGuardian> CreateGuard(GuardianType guardianType) => 
+        public Maybe<IGuardian> CreateGuardian(GuardianType guardianType) => 
             guardianType.Specialization == GuardianSpecialization.Fire ? FireWizard.CreateWizard() :
             guardianType.Specialization == GuardianSpecialization.Ice ? IceWizard.CreateWizard() : null;
     }

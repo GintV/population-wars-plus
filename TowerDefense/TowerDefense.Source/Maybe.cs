@@ -4,7 +4,7 @@ namespace TowerDefense.Source
 {
     /// <summary>Monad for storing value.</summary>
     /// <typeparam name="T"></typeparam>
-    internal class Maybe<T>
+    public class Maybe<T>
     {
         private readonly T m_value;
 
@@ -24,7 +24,7 @@ namespace TowerDefense.Source
 
         /// <summary>Constructor.</summary>
         /// <param name="value">Value to store in monad.</param>
-        internal Maybe(T value)
+        public Maybe(T value)
         {
             m_value = value;
             HasValue = value != null;

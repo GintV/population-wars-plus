@@ -1,9 +1,12 @@
-﻿namespace TowerDefense.Source.Guardians
+﻿using System;
+
+namespace TowerDefense.Source.Guardians
 {
-    internal interface IGuardian
+    public interface IGuardian
     {
-        void BaseAttack();
-        void ChargeAttack();
+        Guid Id { get; }
+        void Attack();
+        void ActivateChargeAttack();
         void Promote();
         void Upgrade();
     }

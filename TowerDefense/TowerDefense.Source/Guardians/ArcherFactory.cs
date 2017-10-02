@@ -9,9 +9,10 @@ namespace TowerDefense.Source.Guardians
 
         private ArcherFactory() { }
 
-        public static ArcherFactory Factory => m_factory.Value;
+        public static ArcherFactory GetFactory() =>
+            m_factory.Value;
 
-        public Maybe<IGuardian> CreateGuard(GuardianType guardianType) =>
+        public Maybe<IGuardian> CreateGuardian(GuardianType guardianType) =>
             guardianType.Specialization == GuardianSpecialization.Dark ? DarkArcher.CreateArcher() :
             guardianType.Specialization == GuardianSpecialization.Light ? LightArcher.CreateArcher() : null;
     }

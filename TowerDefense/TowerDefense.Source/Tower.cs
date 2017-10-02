@@ -1,6 +1,6 @@
 ﻿namespace TowerDefense.Source
 {
-    internal class Tower
+    public class Tower
     {
         public GuardianSpace GuardianSpace { get; }
         public int HealthPoints { get; private set; }
@@ -14,5 +14,7 @@
             Level = 1;
             GuardianSpace = new GuardianSpace();
         }
+
+        public void Upgrade() { }
     }
 }

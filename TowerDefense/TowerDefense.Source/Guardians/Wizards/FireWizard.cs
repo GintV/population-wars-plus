@@ -2,11 +2,12 @@
 {
     internal class FireWizard : Wizard
     {
-        public static Wizard CreateWizard() => new FireWizard();
+        public static Wizard CreateWizard() =>
+            new FireWizard();
 
-        public override void BaseAttack() { }
+        public override void Attack() { }
 
-        public override void ChargeAttack() { }
+        public override void ActivateChargeAttack() { }
 
         public override void Promote() { }
 

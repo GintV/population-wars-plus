@@ -2,7 +2,7 @@
 
 namespace TowerDefense.Source
 {
-    internal class GuardianSlot
+    public class GuardianSlot
     {
         public IGuardian Guardian { get; set; }
     }
