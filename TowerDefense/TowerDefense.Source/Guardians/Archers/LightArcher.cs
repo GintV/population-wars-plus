@@ -2,9 +2,6 @@
 {
     internal class LightArcher : Archer
     {
-        public static Archer CreateArcher() =>
-            new LightArcher();
-
         public override void Attack() { }
 
         public override void ActivateChargeAttack() { }

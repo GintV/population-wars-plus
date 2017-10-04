@@ -1,4 +1,4 @@
-﻿namespace TowerDefense.Source
+﻿namespace TowerDefense.Source.Guardians
 {
     public class GuardianType
     {

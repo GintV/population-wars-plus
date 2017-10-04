@@ -1,11 +1,6 @@
 ﻿namespace TowerDefense.Source.Guardians
 {
-    public interface IGuardianFactory
-    {
-        Maybe<IGuardian> CreateGuardian(GuardianType guardianType);
-    }
-
-    public abstract class GuardianFactory
+    public abstract class AbstractGuardianFactory 
     {
         public static Maybe<IGuardian> CreateGuardian(GuardianType guardianType)
         {

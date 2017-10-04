@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefense.Source;
 using TowerDefense.Source.Guardians;
-using static System.Guid;
+using static TowerDefense.GameEngine.Gameplay;
 
 namespace TowerDefense.GameEngine
 {
@@ -27,9 +27,9 @@ namespace TowerDefense.GameEngine
 
         public GameControls()
         {
-            GameStarted = Gameplay.GetGameplay().GameStarted;
-            Guardians = Gameplay.GetGameplay().Inventory.Guardians;
-            GuardianSpace = Gameplay.GetGameplay().Tower.GuardianSpace;
+            GameStarted = GetGameplay().GameStarted;
+            Guardians = GetGameplay().Inventory.Guardians;
+            GuardianSpace = GetGameplay().Tower.GuardianSpace;
         }
 
         public void ActivateChargeAttack(int guardianSlot)
@@ -41,13 +41,13 @@ namespace TowerDefense.GameEngine
 
         public void CreateGuardian(GuardianType guardianType, int guardianSlot)
         {
-            if (guardianSlot > GuardianSpace.Slots - 1)
+            if (guardianSlot > GuardianSpace.Blocks - 1)
                 return;
-            var guardian = GuardianFactory.CreateGuardian(GuardianTypeConverter.Convert(guardianType));
+            var guardian = AbstractGuardianFactory.CreateGuardian(GuardianTypeConverter.Convert(guardianType));
             if (!guardian.HasValue)
                 return;
-            Gameplay.GetGameplay().Inventory.Guardians.Add(guardian.Value);
-            GuardianSpace.GuardianSlots[guardianSlot].Guardian = guardian.Value;
+            GetGameplay().Inventory.Guardians.Add(guardian.Value);
+            GuardianSpace.TowerBlocks[guardianSlot].Guardian = guardian.Value;
         }
 
         public void PromoteGuardian(int guardianSlot)
@@ -56,14 +56,14 @@ namespace TowerDefense.GameEngine
             if (guardian.HasValue)
                 guardian.Value.Promote();
         }
-        public void StartGame() => Gameplay.GetGameplay().RunGame();
+        public void StartGame() => GetGameplay().RunGame();
 
         public void SwitchToNextGuardian(int guardianSlot)
         {
             var guardian = GetGuardian(guardianSlot);
             if (!guardian.HasValue)
                 return;
-            GuardianSpace.GuardianSlots[guardianSlot].Guardian = Guardians.SkipWhile(g => g.Id != guardian.Value.Id).Skip(1).FirstOrDefault() ??
+            GuardianSpace.TowerBlocks[guardianSlot].Guardian = Guardians.SkipWhile(g => g.Id != guardian.Value.Id).Skip(1).FirstOrDefault() ??
                 Guardians.First();
         }
 
@@ -72,7 +72,7 @@ namespace TowerDefense.GameEngine
             var guardian = GetGuardian(guardianSlot);
             if (!guardian.HasValue)
                 return;
-            GuardianSpace.GuardianSlots[guardianSlot].Guardian = Guardians.TakeWhile(g => g.Id != guardian.Value.Id).LastOrDefault() ??
+            GuardianSpace.TowerBlocks[guardianSlot].Guardian = Guardians.TakeWhile(g => g.Id != guardian.Value.Id).LastOrDefault() ??
                 Guardians.Last();
         }
 
@@ -85,16 +85,16 @@ namespace TowerDefense.GameEngine
 
         public void UpgradeTower()
         {
-            Gameplay.GetGameplay().Tower.Upgrade();
+            GetGameplay().Tower.Upgrade();
         }
 
         private Maybe<IGuardian> GetGuardian(int guardianSlot)
         {
             if (!GameStarted)
                 return null;
-            if (guardianSlot > GuardianSpace.Slots - 1)
+            if (guardianSlot > GuardianSpace.Blocks - 1)
                 return null;
-            return new Maybe<IGuardian>(GuardianSpace.GuardianSlots[guardianSlot].Guardian);
+            return new Maybe<IGuardian>(GuardianSpace.TowerBlocks[guardianSlot].Guardian);
         }
     }
 }

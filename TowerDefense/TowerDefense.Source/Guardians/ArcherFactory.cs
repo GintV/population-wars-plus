@@ -13,7 +13,7 @@ namespace TowerDefense.Source.Guardians
             m_factory.Value;
 
         public Maybe<IGuardian> CreateGuardian(GuardianType guardianType) =>
-            guardianType.Specialization == GuardianSpecialization.Dark ? DarkArcher.CreateArcher() :
-            guardianType.Specialization == GuardianSpecialization.Light ? LightArcher.CreateArcher() : null;
+            guardianType.Specialization == GuardianSpecialization.Dark ? (Archer)new DarkArcher() :
+            guardianType.Specialization == GuardianSpecialization.Light ? new LightArcher() : null;
     }
 }

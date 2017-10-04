@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TowerDefense.Source;
 
 namespace TowerDefense.GameEngine
 {
-    internal interface IGameplay
+    public interface IGameplay
     {
         Inventory Inventory { get; }
         Tower Tower { get; }
         void RunGame();
     }
 
-    internal class Gameplay : IGameplay
+    public class Gameplay : IGameplay
     {
         private static readonly Lazy<Gameplay> m_gamePlay = new Lazy<Gameplay>();
 

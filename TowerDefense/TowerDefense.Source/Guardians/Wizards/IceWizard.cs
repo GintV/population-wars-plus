@@ -2,9 +2,6 @@
 {
     internal class IceWizard : Wizard
     {
-        public static Wizard CreateWizard() =>
-            new IceWizard();
-
         public override void Attack() {}
 
         public override void ActivateChargeAttack() { }

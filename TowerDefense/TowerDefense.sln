@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TowerDefense.Source", "Towe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowerDefense.UI", "TowerDefense.UI\TowerDefense.UI.csproj", "{EF1B4A59-F268-4C8A-837B-CBC5F0114E8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowerDefense.GameEngine", "TowerDefense.GameEngine\TowerDefense.GameEngine.csproj", "{BA73C868-C751-4B93-938F-B8779ABF4CB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TowerDefense.GameEngine", "TowerDefense.GameEngine\TowerDefense.GameEngine.csproj", "{BA73C868-C751-4B93-938F-B8779ABF4CB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
