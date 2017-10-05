@@ -1,4 +1,4 @@
-﻿namespace GUI
+﻿namespace TowerDefense.UI
 {
     partial class GameView
     {
@@ -33,18 +33,19 @@
             // 
             // GameView
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(820, 500);
             this.DoubleBuffered = true;
             this.Name = "GameView";
+            this.Text = "GameView";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameViewPaint);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameViewKeyDown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GameView_KeyPress);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GameViewKeyPress);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameViewMouseClick);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }
-

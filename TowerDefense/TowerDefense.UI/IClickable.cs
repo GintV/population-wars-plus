@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUI
+namespace TowerDefense.UI
 {
-    public interface IClickable
+    public interface IClickable : IRenderable
     {
-        void OnClick();
+        void OnClick(Vector2 clickPosition);
     }
 }

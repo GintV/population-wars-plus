@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUI
+namespace TowerDefense.UI
 {
-    public class Dims
+    public enum ViewType
     {
-        public float X { get; set; }
-        public float Y { get; set; }
+        NewGameView,
+        StartedGameView
     }
 }

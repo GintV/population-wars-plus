@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUI
+namespace TowerDefense.UI
 {
     public class Projectile : IMovable
     {
@@ -20,8 +21,8 @@ namespace GUI
             m_context = context;
         }
 
-        public Dims Position { get; set; }
-        public Dims Size { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Size { get; set; }
         public Image Image { get; set; }
 
         public void Move(long dTime)
@@ -29,7 +30,7 @@ namespace GUI
             var distMoved = m_speed * dTime / 100000;
             if (m_target == null)
             {
-                Position.X += distMoved;
+                Position = Vector2.Add(Position, new Vector2(distMoved, 0));
                 if (Position.X > m_context.Boundries.X)
                 {
                     m_context.Destroy(this);
@@ -47,8 +48,7 @@ namespace GUI
             }
             var ratioX = dX / distLeft;
             var ratioY = dY / distLeft;
-            Position.X += (float)(distMoved * ratioX);
-            Position.Y += (float)(distMoved * ratioY);
+            Position = Vector2.Add(Position, new Vector2((float)(distMoved * ratioX), (float)(distMoved * ratioY)));
         }
     }
 }

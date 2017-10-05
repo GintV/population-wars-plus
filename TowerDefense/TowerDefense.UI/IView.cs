@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TowerDefense.UI
 {
-    public interface ISelectable : IClickable
+    public interface IView
     {
-        void OnDeselect();
+        void Render(IEnumerable<IRenderable> renderables);
     }
 }
