@@ -4,7 +4,7 @@ using TowerDefense.Source.Attacks.Projectiles;
 
 namespace TowerDefense.Source.Guardians.Wizards
 {
-    internal abstract class Wizard : IGuardian
+    public abstract class Wizard : IGuardian
     {
         public Guid Id { get; }
         public int AttackPower { get; set; }

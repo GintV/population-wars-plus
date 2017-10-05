@@ -1,6 +1,6 @@
 ﻿namespace TowerDefense.Source.Guardians.Wizards
 {
-    internal class FireWizard : Wizard
+    public class FireWizard : Wizard
     {
         public override void Attack() { }
 

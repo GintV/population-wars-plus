@@ -4,7 +4,7 @@ using TowerDefense.Source.Attacks.Projectiles;
 
 namespace TowerDefense.Source.Guardians.Archers
 {
-    internal abstract class Archer : IGuardian
+    public abstract class Archer : IGuardian
     {
         public Guid Id { get; }
         public int AttackPower { get; set; }

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TowerDefense.Source\TowerDefense.Source.csproj" />
   </ItemGroup>
 
