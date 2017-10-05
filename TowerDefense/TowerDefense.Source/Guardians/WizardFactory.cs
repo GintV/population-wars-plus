@@ -3,11 +3,13 @@ using TowerDefense.Source.Guardians.Wizards;
 
 namespace TowerDefense.Source.Guardians
 {
-    internal class WizardFactory : IGuardianFactory
+    public class WizardFactory : IGuardianFactory
     {
         private static readonly Lazy<WizardFactory> m_factory = new Lazy<WizardFactory>();
 
-        private WizardFactory() { }
+        public WizardFactory() {
+            Console.WriteLine("Creating WizardFactory instance.");
+        }
 
         public static WizardFactory GetFactory() =>
             m_factory.Value;
