@@ -20,9 +20,21 @@ namespace TowerDefense.Startup
             Console.WriteLine("\n\n======== Bandomas Singleton");
             DemoSingleton();
 
-            // Factory / Abstract Factory
+            // Factory
+            Console.WriteLine("\n\n======== Bandomas Factory");
+            DemoFactory();
+
+            // Abstract Factory
             Console.WriteLine("\n\n======== Bandomas Abstract Factory");
             DemoAbstractFactory();
+
+            // Strategy
+            Console.WriteLine("\n\n======== Bandomas Strategy");
+            DemoStrategy();
+
+            // Strategy
+            Console.WriteLine("\n\n======== Bandomas Observer");
+            DemoObserver();
 
             Console.ReadLine();
         }
@@ -44,7 +56,7 @@ namespace TowerDefense.Startup
             var factory = WizardFactory.GetFactory();
         }
 
-        static void DemoAbstractFactory()
+        static void DemoFactory()
         {
             var factory = WizardFactory.GetFactory();
 
@@ -56,7 +68,30 @@ namespace TowerDefense.Startup
 
             Assert.AreEqual(fireWizard.GetType(), typeof(FireWizard));
             Assert.AreEqual(iceWizard.GetType(), typeof(IceWizard));
-            Console.WriteLine("Abstraktus factory sukure du skirtingus objektus. Abstract Factory veikia.");
+            Console.WriteLine("Factory sukure du skirtingus objektus. Factory veikia.");
+
+        }
+
+        static void DemoAbstractFactory()
+        {
+            GuardianType fireWizardType = new GuardianType(GuardianClass.Wizard, GuardianSpecialization.Fire);
+            GuardianType darkArcherType = new GuardianType(GuardianClass.Archer, GuardianSpecialization.Dark);
+
+            var fireWizard = AbstractGuardianFactory.CreateGuardian(fireWizardType).Value;
+            var darkArcher = AbstractGuardianFactory.CreateGuardian(darkArcherType).Value;
+
+            Assert.AreEqual(fireWizard.GetType(), typeof(FireWizard));
+            Assert.AreEqual(darkArcher.GetType(), typeof(DarkArcher));
+            Console.WriteLine("Abstraktus factory sukure du skirtingus objektus is skirtingu objektu seimu. Abstract Factory veikia.");
+        }
+
+        static void DemoStrategy()
+        {
+
+        }
+
+        static void DemoObserver()
+        {
 
         }
     }

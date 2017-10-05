@@ -7,7 +7,7 @@ namespace TowerDefense.Source.Guardians
     {
         private static readonly Lazy<ArcherFactory> m_factory = new Lazy<ArcherFactory>();
 
-        private ArcherFactory() { }
+        public ArcherFactory() { }
 
         public static ArcherFactory GetFactory() =>
             m_factory.Value;
