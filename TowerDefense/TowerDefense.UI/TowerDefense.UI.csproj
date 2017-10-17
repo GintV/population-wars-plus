@@ -64,14 +64,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConcreteSelectable.cs" />
+    <Compile Include="BasicClickable.cs" />
+    <Compile Include="BasicRenderable.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="BasicSelectable.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="InfoBar\GameInfoBlock.cs" />
     <Compile Include="GameView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +84,8 @@
     </Compile>
     <Compile Include="IClickable.cs" />
     <Compile Include="IMovable.cs" />
+    <Compile Include="InfoBar\InfoBar.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="IRenderable.cs" />
     <Compile Include="ISelectable.cs" />
     <Compile Include="IView.cs" />
@@ -87,6 +93,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Shop.cs" />
     <Compile Include="Sidebar.cs" />
     <Compile Include="StartedGameView.cs" />
     <Compile Include="Tower.cs" />
@@ -97,14 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -123,7 +130,28 @@
     <None Include="Images\proj.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\tower.png" />
+    <None Include="Images\base.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TowerDefense.GameEngine\TowerDefense.GameEngine.csproj">
+      <Project>{ba73c868-c751-4b93-938f-b8779abf4cb3}</Project>
+      <Name>TowerDefense.GameEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrowLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrowLeftInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrowRightInactive.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

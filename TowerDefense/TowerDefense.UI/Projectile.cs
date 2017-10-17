@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TowerDefense.UI
 {
@@ -14,7 +10,7 @@ namespace TowerDefense.UI
         private readonly IRenderable m_target;
         private readonly Game m_context;
 
-        public Projectile(int speed, IRenderable target, Game context)
+        public Projectile(float speed, IRenderable target, Game context)
         {
             m_speed = speed;
             m_target = target;
@@ -27,7 +23,7 @@ namespace TowerDefense.UI
 
         public void Move(long dTime)
         {
-            var distMoved = m_speed * dTime / 100000;
+            var distMoved = m_speed * dTime;
             if (m_target == null)
             {
                 Position = Vector2.Add(Position, new Vector2(distMoved, 0));

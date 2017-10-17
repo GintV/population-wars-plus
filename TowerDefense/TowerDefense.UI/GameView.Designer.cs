@@ -35,13 +35,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 500);
+            this.ClientSize = new System.Drawing.Size(1596, 896);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1612, 935);
+            this.MinimumSize = new System.Drawing.Size(1612, 935);
             this.Name = "GameView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameView";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameViewPaint);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GameViewKeyPress);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GameViewMouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.GameViewMouseClick);
             this.ResumeLayout(false);
 
         }

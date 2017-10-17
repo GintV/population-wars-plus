@@ -2,45 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using TowerDefense.GameEngine;
 using TowerDefense.UI.Properties;
 
 namespace TowerDefense.UI
 {
-    public class Game
+    public class Game : IGameInfo
     {
-        private long m_lastFrameTime;
+        private DateTime m_lastFrameTime;
         private readonly ICollection<IRenderable> m_renderableObjects;
         private readonly Stack<IRenderable> m_objectsToDestroy;
         private IView m_gameView;
+        private readonly Tower m_tower;
+        private readonly ICollection<IGameInfoSubscriber> m_subscribers;
+        private int m_coins;
 
         public Vector2 Boundries { get; }
+        public int? TowerHealthPoints => m_tower.Health;
+        public int? TowerMaxHealthPoints => m_tower.MaxHealth;
+        public int? TowerManaPoints => m_tower.Mana;
+        public int? TowerMaxManaPoints => m_tower.MaxMana;
+        public int? Coins => m_coins;
 
         public Game()
         {
-            Boundries = new Vector2 { X = 820, Y = 500 };
-            m_renderableObjects = new List<IRenderable>
+            Boundries = new Vector2 { X = 1600, Y = 900 };
+            m_tower = new Tower
             {
-                new Tower
-                {
-                    Position = new Vector2 { X = 10, Y = 100 },
-                    Size = new Vector2 { X = 100, Y = 400 },
-                    Image = Resources.tower
-                }
+                Position = new Vector2 { X = 300, Y = 526 },
+                Size = new Vector2 { X = 125, Y = 250 },
+                Health = 174,
+                MaxHealth = 200,
+                Mana = 23,
+                MaxMana = 50
             };
-            m_gameView = ViewFactory.CreateView(ViewType.NewGameView);
+            m_renderableObjects = new List<IRenderable> { m_tower };
+            m_gameView = ViewFactory.CreateView(ViewType.NewGameView, this);
             m_objectsToDestroy = new Stack<IRenderable>();
+            m_subscribers = new List<IGameInfoSubscriber>();
+            m_coins = 0;
         }
 
         public void GameLoop()
         {
             while (true)
             {
-                var currentTime = DateTime.Now.Ticks;
-                var deltaTime = currentTime - m_lastFrameTime;
-
-                foreach (var movable in m_renderableObjects.OfType<IMovable>())
+                var currentTime = DateTime.Now;
+                var deltaTime = (currentTime - m_lastFrameTime).Ticks / 10000;
+                var renderables = m_renderableObjects.ToList();
+                foreach (var movable in renderables.OfType<IMovable>())
                 {
                     movable.Move(deltaTime);
                 }
@@ -48,21 +58,45 @@ namespace TowerDefense.UI
                 {
                     m_renderableObjects.Remove(m_objectsToDestroy.Pop());
                 }
-                m_gameView.Render(m_renderableObjects);
+                m_gameView.Render(renderables);
                 m_lastFrameTime = currentTime;
+                System.Threading.Thread.Sleep(7);
+            }
+        }
+
+        public void StartGame()
+        {
+            m_gameView = ViewFactory.CreateView(ViewType.StartedGameView, this);
+        }
+
+        public void UpgradeTower()
+        {
+            m_tower.Upgrade();
+            foreach (var sub in m_subscribers)
+            {
+                sub.OnTowerHealthPointsChanged();
+                sub.OnTowerManaPointsChanged();
             }
         }
 
         public void Destroy(IRenderable obj)
         {
+            if (obj is Enemy)
+            {
+                m_coins += 10;
+                foreach (var sub in m_subscribers)
+                {
+                    sub.OnCoinsChanged();
+                }
+            }
             m_objectsToDestroy.Push(obj);
         }
 
         public void ConstructProjectile()
         {
-            m_renderableObjects.Add(new Projectile(8, m_renderableObjects.OfType<Enemy>().FirstOrDefault(), this)
+            m_renderableObjects.Add(new Projectile(0.8f, m_renderableObjects.OfType<Enemy>().FirstOrDefault(), this)
             {
-                Position = new Vector2 { X = 50, Y = 130 },
+                Position = new Vector2 { X = 525, Y = 350 },
                 Size = new Vector2 { X = 15, Y = 15 },
                 Image = Resources.proj
             });
@@ -70,12 +104,33 @@ namespace TowerDefense.UI
 
         public void ConstructEnemy()
         {
-            m_renderableObjects.Add(new Enemy(2, this, new Vector2 { X = 80, Y = 400 })
+            m_renderableObjects.Add(new Enemy(0.2f, this, new Vector2 { X = 415, Y = 400 })
             {
-                Position = new Vector2 { X = 800, Y = 443 },
+                Position = new Vector2 { X = 1600, Y = 443 },
                 Size = new Vector2 { X = 50, Y = 50 },
                 Image = Resources.enem
             });
+        }
+
+        public void DoStuff()
+        {
+            m_tower.Health++;
+            m_tower.Mana++;
+            foreach (var sub in m_subscribers)
+            {
+                sub.OnTowerHealthPointsChanged();
+                sub.OnTowerManaPointsChanged();
+            }
+        }
+
+        public void Subscribe(IGameInfoSubscriber subscriber)
+        {
+            m_subscribers.Add(subscriber);
+        }
+
+        public void Unsubscribe(IGameInfoSubscriber subscriber)
+        {
+            m_subscribers.Remove(subscriber);
         }
     }
 }
