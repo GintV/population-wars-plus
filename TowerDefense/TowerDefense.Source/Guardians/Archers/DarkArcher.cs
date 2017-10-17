@@ -2,7 +2,7 @@ using System;
 
 namespace TowerDefense.Source.Guardians.Archers
 {
-    public class DarkArcher : Archer
+    public class DarkArcher : Guardian
     {
         public override void Attack() { }
 

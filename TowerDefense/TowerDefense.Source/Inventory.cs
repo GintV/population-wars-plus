@@ -8,12 +8,12 @@ namespace TowerDefense.Source
     public class Inventory
     {
         public int Coins { get; set; }
-        public List<IGuardian> Guardians { get; set; }
+        public List<Guardian> Guardians { get; set; }
 
         public Inventory()
         {
             Coins = 0;
-            Guardians = new List<IGuardian>();
+            Guardians = new List<Guardian>();
         }
     }
 }

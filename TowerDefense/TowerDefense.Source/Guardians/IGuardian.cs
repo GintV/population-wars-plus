@@ -6,12 +6,26 @@ namespace TowerDefense.Source.Guardians
 {
     public interface IGuardian
     {
-        Guid Id { get; }
-        int AttackPower { get; set; }
-        IAttack AttackType { get; }
         void Attack();
         void ActivateChargeAttack();
         void Promote();
         void Upgrade();
+    }
+
+    public abstract class Guardian : IGuardian
+    {
+        public Guid Id { get; }
+        public int AttackPower { get; set; }
+        public IAttack AttackType { get; }
+
+        protected Guardian()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public abstract void Attack();
+        public abstract void ActivateChargeAttack();
+        public abstract void Promote();
+        public abstract void Upgrade();
     }
 }

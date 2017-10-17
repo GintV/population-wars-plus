@@ -1,19 +1,17 @@
 ﻿using System;
 using TowerDefense.Source.Guardians.Archers;
+using static TowerDefense.Source.Flags;
+using static TowerDefense.Source.Flags.GuardianType;
 
 namespace TowerDefense.Source.Guardians
 {
-    internal class ArcherFactory : IGuardianFactory
+    internal class ArcherFactory : GuardianFactory
     {
-        private static readonly Lazy<ArcherFactory> m_factory = new Lazy<ArcherFactory>();
+        private static readonly Lazy<ArcherFactory> Factory = new Lazy<ArcherFactory>();
 
-        public ArcherFactory() { }
+        public static ArcherFactory GetFactory() => Factory.Value;
 
-        public static ArcherFactory GetFactory() =>
-            m_factory.Value;
-
-        public Maybe<IGuardian> CreateGuardian(GuardianType guardianType) =>
-            guardianType.Specialization == GuardianSpecialization.Dark ? (Archer)new DarkArcher() :
-            guardianType.Specialization == GuardianSpecialization.Light ? new LightArcher() : null;
+        public override Maybe<Guardian> CreateGuardian(GuardianType guardianType) => guardianType == Dark ? (Guardian)new DarkArcher() :
+            guardianType == Light ? new LightArcher() : null;
     }
 }

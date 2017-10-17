@@ -1,21 +1,17 @@
 ﻿using System;
 using TowerDefense.Source.Guardians.Wizards;
+using static TowerDefense.Source.Flags;
+using static TowerDefense.Source.Flags.GuardianType;
 
 namespace TowerDefense.Source.Guardians
 {
-    public class WizardFactory : IGuardianFactory
+    public class WizardFactory : GuardianFactory
     {
-        private static readonly Lazy<WizardFactory> m_factory = new Lazy<WizardFactory>();
+        private static readonly Lazy<WizardFactory> Factory = new Lazy<WizardFactory>();
 
-        public WizardFactory() {
-            Console.WriteLine("Creating WizardFactory instance.");
-        }
+        public static WizardFactory GetFactory() => Factory.Value;
 
-        public static WizardFactory GetFactory() =>
-            m_factory.Value;
-
-        public Maybe<IGuardian> CreateGuardian(GuardianType guardianType) => 
-            guardianType.Specialization == GuardianSpecialization.Fire ? (Wizard)new FireWizard() : 
-            guardianType.Specialization == GuardianSpecialization.Ice ? new IceWizard() : null;
+        public override Maybe<Guardian> CreateGuardian(GuardianType guardianType) => guardianType == Fire ? (Guardian)new FireWizard() : 
+            guardianType == Ice ? new IceWizard() : null;
     }
 }

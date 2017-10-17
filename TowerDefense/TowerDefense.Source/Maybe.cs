@@ -4,7 +4,7 @@ namespace TowerDefense.Source
 {
     /// <summary>Monad for storing value.</summary>
     /// <typeparam name="T"></typeparam>
-    public class Maybe<T>
+    public struct Maybe<T>
     {
         private readonly T m_value;
 

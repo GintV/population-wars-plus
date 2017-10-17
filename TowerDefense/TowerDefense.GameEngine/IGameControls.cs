@@ -10,7 +10,7 @@ namespace TowerDefense.GameEngine
     public interface IGameControls
     {
         void ActivateChargeAttack(int guardianSlot);
-        void CreateGuardian(GuardianType guardianType, int guardianSlot);
+        void CreateGuardian(string guardianClass, string guardianType, int guardianSlot);
         void PromoteGuardian(int guardianSlot);
         void StartGame();
         void SwitchToNextGuardian(int guardianSlot);
@@ -22,7 +22,7 @@ namespace TowerDefense.GameEngine
     internal class GameControls : IGameControls
     {
         protected Boolean GameStarted { get; }
-        protected List<IGuardian> Guardians { get; }
+        protected List<Guardian> Guardians { get; }
         protected GuardianSpace GuardianSpace { get; }
 
         public GameControls()
@@ -39,11 +39,15 @@ namespace TowerDefense.GameEngine
                 guardian.Value.ActivateChargeAttack();
         }
 
-        public void CreateGuardian(GuardianType guardianType, int guardianSlot)
+        public void CreateGuardian(string guardianClass, string guardianType, int guardianSlot)
         {
             if (guardianSlot > GuardianSpace.Blocks - 1)
                 return;
-            var guardian = AbstractGuardianFactory.CreateGuardian(GuardianTypeConverter.Convert(guardianType));
+            (var enumClass, var enumType) = GuardianTypeConverter.Convert(guardianClass, guardianType);
+            var factory = GuardianFactoryProducer.GetFactory(enumClass);
+            if (!factory.HasValue)
+                return;
+            var guardian = factory.Value.CreateGuardian(enumType);
             if (!guardian.HasValue)
                 return;
             GetGameplay().Inventory.Guardians.Add(guardian.Value);
@@ -88,13 +92,13 @@ namespace TowerDefense.GameEngine
             GetGameplay().Tower.Upgrade();
         }
 
-        private Maybe<IGuardian> GetGuardian(int guardianSlot)
+        private Maybe<Guardian> GetGuardian(int guardianSlot)
         {
             if (!GameStarted)
                 return null;
             if (guardianSlot > GuardianSpace.Blocks - 1)
                 return null;
-            return new Maybe<IGuardian>(GuardianSpace.TowerBlocks[guardianSlot].Guardian);
+            return GuardianSpace.TowerBlocks[guardianSlot].Guardian;
         }
     }
 }

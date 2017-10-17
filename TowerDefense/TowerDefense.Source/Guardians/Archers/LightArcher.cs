@@ -1,6 +1,6 @@
 ﻿namespace TowerDefense.Source.Guardians.Archers
 {
-    public class LightArcher : Archer
+    public class LightArcher : Guardian
     {
         public override void Attack() { }
 

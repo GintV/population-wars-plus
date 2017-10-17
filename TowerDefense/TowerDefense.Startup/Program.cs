@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using TowerDefense.Source;
 using TowerDefense.Source.Guardians;
 using TowerDefense.Source.Guardians.Wizards;
 using TowerDefense.Source.Guardians.Archers;
+using TowerDefense.Source.Loggers;
+using static TowerDefense.Source.Flags.GuardianClass;
+using static TowerDefense.Source.Flags.GuardianType;
 
 namespace TowerDefense.Startup
 {
@@ -14,85 +19,71 @@ namespace TowerDefense.Startup
     {
         static void Main(string[] args)
         {
-            // Lab1 testai
-
-            // Singleton
-            Console.WriteLine("\n\n======== Bandomas Singleton");
-            DemoSingleton();
-
-            // Factory
-            Console.WriteLine("\n\n======== Bandomas Factory");
-            DemoFactory();
-
-            // Abstract Factory
-            Console.WriteLine("\n\n======== Bandomas Abstract Factory");
-            DemoAbstractFactory();
-
-            // Strategy
-            Console.WriteLine("\n\n======== Bandomas Strategy");
-            DemoStrategy();
-
-            // Strategy
-            Console.WriteLine("\n\n======== Bandomas Observer");
-            DemoObserver();
+            DemoMode(DemoSingleton, "Singleton");
+            DemoMode(DemoFactories, "Factories");
+            DemoMode(DemoDecorator, "Decorator");
 
             Console.ReadLine();
         }
-        
+
+        static void DemoMode(Action action, string designPaternName)
+        {
+            Console.WriteLine($"---------------{designPaternName}---------------");
+            action.Invoke();
+            Console.WriteLine();
+        }
+
         static void DemoSingleton()
         {
-            Thread t1 = new Thread(HelperDemoCreateFactoryInstance);
-            Thread t2 = new Thread(HelperDemoCreateFactoryInstance);
-
-            var f1 = WizardFactory.GetFactory();
-            var f2 = WizardFactory.GetFactory();
-
-            Assert.AreEqual(f1, f2);
-            Console.WriteLine("Rodykles rodo i ta pati objekta. Singleton'as veikia.");
+            var loggerA = ConsoleLogger.GetLogger();
+            var loggerB = ConsoleLogger.GetLogger();
+            Console.WriteLine(ReferenceEquals(loggerA, loggerB) ? "loggerA == loggerB" : "loggerA != loggerB");
         }
 
-        static void HelperDemoCreateFactoryInstance()
+        static void DemoFactories()
         {
-            var factory = WizardFactory.GetFactory();
+            var guardianA = GuardianFactoryProducer.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
+            var guardianB = GuardianFactoryProducer.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
+
+            var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
+            var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());
+
+            interactiveGuardianA.Attack();
+            interactiveGuardianA.ActivateChargeAttack();
+
+            ConsoleLogger.GetLogger().Log(string.Empty);
+
+            interactiveGuardianB.Attack();
+            interactiveGuardianB.ActivateChargeAttack();
         }
 
-        static void DemoFactory()
+        private static void DemoDecorator()
         {
-            var factory = WizardFactory.GetFactory();
+            var guardianA = GuardianFactoryProducer.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
+            var guardianB = GuardianFactoryProducer.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
 
-            GuardianType fireWizardType = new GuardianType(GuardianClass.Wizard, GuardianSpecialization.Fire);
-            GuardianType iceWizardType = new GuardianType(GuardianClass.Wizard, GuardianSpecialization.Ice);
+            var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
+            var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());
 
-            var fireWizard = factory.CreateGuardian(fireWizardType).Value;
-            var iceWizard = factory.CreateGuardian(iceWizardType).Value;
+            Console.WriteLine("#Simple Guardians:");
 
-            Assert.AreEqual(fireWizard.GetType(), typeof(FireWizard));
-            Assert.AreEqual(iceWizard.GetType(), typeof(IceWizard));
-            Console.WriteLine("Factory sukure du skirtingus objektus. Factory veikia.");
+            guardianA.Promote();
+            guardianA.Upgrade();
 
-        }
+            guardianB.Promote();
+            guardianB.Upgrade();
 
-        static void DemoAbstractFactory()
-        {
-            GuardianType fireWizardType = new GuardianType(GuardianClass.Wizard, GuardianSpecialization.Fire);
-            GuardianType darkArcherType = new GuardianType(GuardianClass.Archer, GuardianSpecialization.Dark);
+            Console.WriteLine();
 
-            var fireWizard = AbstractGuardianFactory.CreateGuardian(fireWizardType).Value;
-            var darkArcher = AbstractGuardianFactory.CreateGuardian(darkArcherType).Value;
+            Console.WriteLine("#Interactive Guardians:");
 
-            Assert.AreEqual(fireWizard.GetType(), typeof(FireWizard));
-            Assert.AreEqual(darkArcher.GetType(), typeof(DarkArcher));
-            Console.WriteLine("Abstraktus factory sukure du skirtingus objektus is skirtingu objektu seimu. Abstract Factory veikia.");
-        }
+            interactiveGuardianA.Promote();
+            interactiveGuardianA.Upgrade();
 
-        static void DemoStrategy()
-        {
+            ConsoleLogger.GetLogger().Log(string.Empty);
 
-        }
-
-        static void DemoObserver()
-        {
-
+            interactiveGuardianB.Promote();
+            interactiveGuardianB.Upgrade();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace TowerDefense.Source.Guardians.Wizards
 {
-    public class IceWizard : Wizard
+    public class IceWizard : Guardian
     {
         public override void Attack() {}
 
