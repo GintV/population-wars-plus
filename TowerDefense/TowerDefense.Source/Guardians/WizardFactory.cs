@@ -5,9 +5,11 @@ using static TowerDefense.Source.Flags.GuardianType;
 
 namespace TowerDefense.Source.Guardians
 {
-    public class WizardFactory : GuardianFactory
+    internal class WizardFactory : GuardianFactory
     {
-        private static readonly Lazy<WizardFactory> Factory = new Lazy<WizardFactory>();
+        private static readonly Lazy<WizardFactory> Factory = new Lazy<WizardFactory>(() => new WizardFactory());
+
+        private WizardFactory() { }
 
         public static WizardFactory GetFactory() => Factory.Value;
 

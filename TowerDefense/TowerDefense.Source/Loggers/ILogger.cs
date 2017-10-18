@@ -11,6 +11,8 @@ namespace TowerDefense.Source.Loggers
     {
         private static readonly Lazy<ConsoleLogger> Logger = new Lazy<ConsoleLogger>(() => new ConsoleLogger());
 
+        private ConsoleLogger() { }
+
         public static ConsoleLogger GetLogger() => Logger.Value;
 
         public void Log(string message) => Console.WriteLine(message);
