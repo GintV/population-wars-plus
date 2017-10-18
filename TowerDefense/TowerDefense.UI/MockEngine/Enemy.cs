@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Numerics;
 
-namespace TowerDefense.UI
+namespace TowerDefense.UI.MockEngine
 {
     public class Enemy : IMovable
     {

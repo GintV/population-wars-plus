@@ -5,9 +5,9 @@ using System.Numerics;
 using TowerDefense.GameEngine;
 using TowerDefense.UI.Properties;
 
-namespace TowerDefense.UI
+namespace TowerDefense.UI.MockEngine
 {
-    public class Game : IGameInfo
+    public class Game : IGame, IGameInfo
     {
         private DateTime m_lastFrameTime;
         private readonly ICollection<IRenderable> m_renderableObjects;
@@ -27,10 +27,8 @@ namespace TowerDefense.UI
         public Game()
         {
             Boundries = new Vector2 { X = 1600, Y = 900 };
-            m_tower = new Tower
+            m_tower = new Tower(new Vector2(300, 780), new Vector2(125, 125), 1)
             {
-                Position = new Vector2 { X = 300, Y = 526 },
-                Size = new Vector2 { X = 125, Y = 250 },
                 Health = 174,
                 MaxHealth = 200,
                 Mana = 23,

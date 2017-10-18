@@ -1,23 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Numerics;
 
 namespace TowerDefense.UI
 {
-    public class Shop : IClickable
+    public class Shop : ClickableContainer
     {
-        private readonly ICollection<IClickable> m_purchaseOptions;
-        public Vector2 Position { get; }
-        public Vector2 Size { get; }
-        public Image Image { get; private set; }
-
         public Shop()
         {
             Position = Config.ShopPosition;
             Size = Config.ShopSize;
-            m_purchaseOptions = new List<IClickable>
+            Clickables = new List<IClickable>
             {
                 new Button(_ => Debug.WriteLine("Ice Wizard clicked"), Config.ShopBlockSize)
                 {
@@ -50,33 +44,25 @@ namespace TowerDefense.UI
                     Position = BlockPositionByIndex(5)
                 }
             };
-            DrawImage();
+            DrawContainer();
         }
 
-        public void OnClick(Vector2 clickPosition) => m_purchaseOptions.FirstOrDefault(po => IsClicked(po, clickPosition))?.OnClick(clickPosition);
-
-        private static bool IsClicked(IRenderable clickable, Vector2 click)
-        {
-            return clickable.Position.X <= click.X && clickable.Position.Y <= click.Y &&
-                   clickable.Position.X + clickable.Size.X >= click.X && clickable.Position.Y + clickable.Size.Y >= click.Y;
-        }
-
-        private static Vector2 BlockPositionByIndex(int i)
-        {
-            return new Vector2(Config.ShopBlockMargins.X * (i + 1) + Config.ShopBlockSize.X * i, Config.ShopBlockMargins.Y);
-        }
-
-        private void DrawImage()
+        protected sealed override void DrawContainer()
         {
             Image = new Bitmap((int)Size.X, (int)Size.Y);
             var g = Graphics.FromImage(Image);
             g.FillRectangle(new SolidBrush(Config.UiBackColor), 0, 0, (int)Size.X, (int)Size.Y);
             g.DrawRectangle(Config.OutlinePen, new Rectangle(0, 0, (int)Size.X, (int)Size.Y));
-            foreach (var block in m_purchaseOptions)
+            foreach (var block in Clickables)
             {
                 g.DrawImage(block.Image, block.Position.X, block.Position.Y);
             }
             g.Dispose();
+        }
+
+        private static Vector2 BlockPositionByIndex(int i)
+        {
+            return new Vector2(Config.ShopBlockMargins.X * (i + 1) + Config.ShopBlockSize.X * i, Config.ShopBlockMargins.Y);
         }
     }
 }

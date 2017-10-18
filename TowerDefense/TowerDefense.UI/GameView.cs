@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Numerics;
 using System.Threading;
 using System.Windows.Forms;
+using TowerDefense.UI.MockEngine;
 
 namespace TowerDefense.UI
 {
@@ -28,7 +29,7 @@ namespace TowerDefense.UI
 
         public Thread GameLoopThread { get; set; }
 
-        public Game Game { get; set; }
+        public IGame Game { get; set; }
 
         private void GameViewPaint(object sender, PaintEventArgs e)
         {

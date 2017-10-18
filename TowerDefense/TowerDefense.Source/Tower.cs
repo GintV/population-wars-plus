@@ -24,8 +24,8 @@
         {
             HealthPoints += 250;
             HealthPointsRemaining += 250;
-            ManaPoints += 50;
-            ManaPointsRemaining += 250;
+            ManaPoints += 250;
+            ManaPointsRemaining += 50;
             Level += 1;
             var upgradePrice = UpgradePrice * 1.5;
             UpgradePrice = (int)upgradePrice;

@@ -4,22 +4,24 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Numerics;
+using TowerDefense.GameEngine;
+using TowerDefense.UI.MockEngine;
 
 namespace TowerDefense.UI
 {
     public class NewGameView : IView
     {
         private readonly GameView m_renderingView;
-        private readonly Game m_game;
+        private readonly IGameInfo m_gameInfo;
         private readonly ICollection<IRenderable> m_addedRenderables;
         private bool m_isInstansiated;
 
-        public NewGameView(GameView renderingView, Game game)
+        public NewGameView(GameView renderingView, IGameInfo gameInfo)
         {
             m_isInstansiated = false;
             m_addedRenderables = new List<IRenderable>();
             m_renderingView = renderingView;
-            m_game = game;
+            m_gameInfo = gameInfo;
         }
 
         public void Render(IEnumerable<IRenderable> renderables)
@@ -34,7 +36,7 @@ namespace TowerDefense.UI
             if (m_isInstansiated) return;
             m_isInstansiated = true;
             m_renderingView.RegisteredClickables.Clear();
-            m_addedRenderables.Add(new InfoBar.InfoBar(m_game));
+            m_addedRenderables.Add(new InfoBar.InfoBar(m_gameInfo));
             InitSidebar();
             InitInventory();
             InitShop();
@@ -43,10 +45,7 @@ namespace TowerDefense.UI
 
         private void InitSidebar()
         {
-            var sidebar = new Sidebar(Config.SideBarSize)
-            {
-                Position = new Vector2(0, 0)
-            };
+            var sidebar = new Sidebar(Config.SideBarSize);
             sidebar.AddButton("Charge Shot", () => Debug.WriteLine("charged shot"));
             sidebar.AddButton("Promote", () => Debug.WriteLine("promoted"));
             sidebar.AddButton("Change Spec", () => Debug.WriteLine("changed spec"));

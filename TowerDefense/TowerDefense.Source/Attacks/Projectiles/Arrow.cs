@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    internal class Arrow : IProjectile
+    public class Arrow : IProjectile
     {
         public Guid TargetId { get; set; }
         public int ProjectileSpeed { get; }

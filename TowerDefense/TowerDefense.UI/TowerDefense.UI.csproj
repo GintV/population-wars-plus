@@ -72,9 +72,11 @@
     <Compile Include="BasicRenderable.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="BasicSelectable.cs" />
+    <Compile Include="ClickableContainer.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="MockEngine\Enemy.cs" />
+    <Compile Include="RendererToViewAdapter.cs" />
+    <Compile Include="MockEngine\Game.cs" />
     <Compile Include="InfoBar\GameInfoBlock.cs" />
     <Compile Include="GameView.cs">
       <SubType>Form</SubType>
@@ -83,7 +85,9 @@
       <DependentUpon>GameView.cs</DependentUpon>
     </Compile>
     <Compile Include="IClickable.cs" />
-    <Compile Include="IMovable.cs" />
+    <Compile Include="MockEngine\Game2.cs" />
+    <Compile Include="MockEngine\IGame.cs" />
+    <Compile Include="MockEngine\IMovable.cs" />
     <Compile Include="InfoBar\InfoBar.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="IRenderable.cs" />
@@ -91,7 +95,7 @@
     <Compile Include="IView.cs" />
     <Compile Include="NewGameView.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Projectile.cs" />
+    <Compile Include="MockEngine\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -140,6 +144,10 @@
       <Project>{ba73c868-c751-4b93-938f-b8779abf4cb3}</Project>
       <Name>TowerDefense.GameEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TowerDefense.Source\TowerDefense.Source.csproj">
+      <Project>{788e081e-ec51-4990-8833-17d8dda567f0}</Project>
+      <Name>TowerDefense.Source</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\arrowLeft.png" />
@@ -152,6 +160,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\arrowRightInactive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\skull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\bubble.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

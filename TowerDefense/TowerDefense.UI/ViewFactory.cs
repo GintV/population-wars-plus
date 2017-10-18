@@ -1,13 +1,15 @@
-﻿namespace TowerDefense.UI
+﻿using TowerDefense.GameEngine;
+
+namespace TowerDefense.UI
 {
     public class ViewFactory
     {
-        public static IView CreateView(ViewType type, Game game) // take game state as param?
+        public static IView CreateView(ViewType type, IGameInfo gameInfo) // take game state as param?
         {
             switch (type)
             {
                 case ViewType.NewGameView:
-                    return new NewGameView(GameView.GetInstance(), game);
+                    return new NewGameView(GameView.GetInstance(), gameInfo);
                 case ViewType.StartedGameView:
                     return new StartedGameView(GameView.GetInstance());
                 default:

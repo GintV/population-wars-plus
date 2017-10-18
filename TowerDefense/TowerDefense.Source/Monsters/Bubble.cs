@@ -5,11 +5,11 @@ using System.Text;
 
 namespace TowerDefense.Source.Monsters
 {
-    internal class Bubble : Monster
+    public class Bubble : Monster
     {
         public override int HealthPoints { get; }
         public override int HealthPointsRemaining { get; }
-        public override Vector2 Location { get; }
+        public override Vector2 Location { get; set; }
         public override int Speed { get; }
     }
 }
