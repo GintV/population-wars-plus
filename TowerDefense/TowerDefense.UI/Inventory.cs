@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using TowerDefense.UI.Properties;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public class Inventory : ClickableContainer
+    public sealed class Inventory : ClickableContainer
     {
         private readonly BasicClickable m_leftArrow;
         private readonly BasicClickable m_rightArrow;
@@ -20,17 +22,17 @@ namespace TowerDefense.UI
             get
             {
                 if (m_hasChanged)
-                    DrawContainer();
+                    Draw();
                 return m_image;
             }
-            protected set => m_image = value;
+            set => m_image = value;
         }
 
-        public Inventory(IEnumerable<IClickable> clickables = null)
+        public Inventory(Styler styler, IEnumerable<IClickable> clickables = null) : base(styler)
         {
             Position = Config.InventoryPosition;
             Size = Config.InventorySize;
-            m_emptyButton = new Button(null, Config.InventoryBlockSize);
+            m_emptyButton = new Button(new InactiveStyler(), null, Config.InventoryBlockSize);
             m_leftArrow = new BasicClickable(_ => SlideLeft())
             {
                 Position = Config.InventoryArrowMargins,
@@ -43,7 +45,7 @@ namespace TowerDefense.UI
             };
             Clickables = clickables?.ToList() ?? new List<IClickable>(Config.InventoryItemsInViewLimit);
             m_currentStartingIndex = 0;
-            DrawContainer();
+            Draw();
         }
 
         public void SlideLeft()
@@ -74,7 +76,7 @@ namespace TowerDefense.UI
             return result;
         }
 
-        public new void OnClick(Vector2 clickPosition)
+        public override void OnClick(Vector2 clickPosition)
         {
             if (IsClicked(m_leftArrow.Position, m_leftArrow.Size, clickPosition))
                 m_leftArrow.OnClick(clickPosition);
@@ -90,13 +92,12 @@ namespace TowerDefense.UI
             }
         }
 
-        protected sealed override void DrawContainer()
+        protected override void Draw()
         {
             ResolveArrowAppearance();
             Image = new Bitmap((int)Size.X, (int)Size.Y);
             var g = Graphics.FromImage(m_image);
-            g.FillRectangle(Config.UiBackBrush, 0, 0, (int)Size.X, (int)Size.Y);
-            g.DrawRectangle(Config.OutlinePen, new Rectangle(0, 0, (int)Size.X, (int)Size.Y));
+            Styler.DrawRectangle(g, Vector2.Zero, Size);
             var i = 0;
             foreach (var block in Clickables.Skip(m_currentStartingIndex).Take(Config.InventoryItemsInViewLimit))
             {

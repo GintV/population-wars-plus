@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Numerics;
 using TowerDefense.GameEngine;
-using TowerDefense.UI.MockEngine;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
@@ -36,7 +36,7 @@ namespace TowerDefense.UI
             if (m_isInstansiated) return;
             m_isInstansiated = true;
             m_renderingView.RegisteredClickables.Clear();
-            m_addedRenderables.Add(new InfoBar.InfoBar(m_gameInfo));
+            m_addedRenderables.Add(new InfoBar.InfoBar(new GuiBackStyler(), m_gameInfo));
             InitSidebar();
             InitInventory();
             InitShop();
@@ -45,7 +45,7 @@ namespace TowerDefense.UI
 
         private void InitSidebar()
         {
-            var sidebar = new Sidebar(Config.SideBarSize);
+            var sidebar = new Sidebar(new GuiBackStyler(), Config.SideBarSize);
             sidebar.AddButton("Charge Shot", () => Debug.WriteLine("charged shot"));
             sidebar.AddButton("Promote", () => Debug.WriteLine("promoted"));
             sidebar.AddButton("Change Spec", () => Debug.WriteLine("changed spec"));
@@ -58,16 +58,16 @@ namespace TowerDefense.UI
 
         private void InitInventory()
         {
-            var inv = new Inventory();
+            var inv = new Inventory(new GuiBackStyler());
             var ch = 'A';
-            m_renderingView.RandomAction = () => inv.AddInventoryBlock(new Button(_ => Debug.WriteLine("Inv button"), Config.InventoryBlockSize) { Description = ch++.ToString() });
+            m_renderingView.RandomAction = () => inv.AddInventoryBlock(new Button(new ClickableStyler(), _ => Debug.WriteLine("Inv button"), Config.InventoryBlockSize) { Description = ch++.ToString() });
             m_addedRenderables.Add(inv);
             m_renderingView.RegisteredClickables.Add(inv);
         }
 
         private void InitShop()
         {
-            var shop = new Shop();
+            var shop = new Shop(new GuiBackStyler());
             m_addedRenderables.Add(shop);
             m_renderingView.RegisteredClickables.Add(shop);
         }

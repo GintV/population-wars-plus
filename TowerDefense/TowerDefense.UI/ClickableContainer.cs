@@ -2,17 +2,15 @@
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public abstract class ClickableContainer: IClickable
+    public abstract class ClickableContainer: DrawnRenderable, IClickable
     {
         protected ICollection<IClickable> Clickables;
-        public Vector2 Position { get; protected set; }
-        public Vector2 Size { get; protected set; }
-        public virtual Image Image { get; protected set; }
 
-        public void OnClick(Vector2 clickPosition) => Clickables.FirstOrDefault(po => IsClicked(po, clickPosition))?.OnClick(clickPosition);
+        public virtual void OnClick(Vector2 clickPosition) => Clickables.FirstOrDefault(po => IsClicked(po, clickPosition))?.OnClick(clickPosition);
 
         protected bool IsClicked(IRenderable clickable, Vector2 click)
         {
@@ -20,6 +18,8 @@ namespace TowerDefense.UI
                    clickable.Position.X + clickable.Size.X >= click.X && clickable.Position.Y + clickable.Size.Y >= click.Y;
         }
 
-        protected abstract void DrawContainer();
+        protected ClickableContainer(Styler styler) : base(styler)
+        {
+        }
     }
 }

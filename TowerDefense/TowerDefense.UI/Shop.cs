@@ -2,57 +2,57 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public class Shop : ClickableContainer
+    public sealed class Shop : ClickableContainer
     {
-        public Shop()
+        public Shop(Styler styler) : base(styler)
         {
             Position = Config.ShopPosition;
             Size = Config.ShopSize;
             Clickables = new List<IClickable>
             {
-                new Button(_ => Debug.WriteLine("Ice Wizard clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Ice Wizard clicked"), Config.ShopBlockSize)
                 {
                     Description = "IW",
                     Position = BlockPositionByIndex(0)
                 },
-                new Button(_ => Debug.WriteLine("Fire Wizard clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Fire Wizard clicked"), Config.ShopBlockSize)
                 {
                     Description = "FW",
                     Position = BlockPositionByIndex(1)
                 },
-                new Button(_ => Debug.WriteLine("Light Archer clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Light Archer clicked"), Config.ShopBlockSize)
                 {
                     Description = "LA",
                     Position = BlockPositionByIndex(2)
                 },
-                new Button(_ => Debug.WriteLine("Dark Archer clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Dark Archer clicked"), Config.ShopBlockSize)
                 {
                     Description = "DA",
                     Position = BlockPositionByIndex(3)
                 },
-                new Button(_ => Debug.WriteLine("Upgrade Tower clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Upgrade Tower clicked"), Config.ShopBlockSize)
                 {
                     Description = "UT",
                     Position = BlockPositionByIndex(4)
                 },
-                new Button(_ => Debug.WriteLine("Undo clicked"), Config.ShopBlockSize)
+                new Button(new ClickableStyler(), _ => Debug.WriteLine("Undo clicked"), Config.ShopBlockSize)
                 {
                     Description = "Undo",
                     Position = BlockPositionByIndex(5)
                 }
             };
-            DrawContainer();
+            Draw();
         }
 
-        protected sealed override void DrawContainer()
+        protected override void Draw()
         {
             Image = new Bitmap((int)Size.X, (int)Size.Y);
             var g = Graphics.FromImage(Image);
-            g.FillRectangle(new SolidBrush(Config.UiBackColor), 0, 0, (int)Size.X, (int)Size.Y);
-            g.DrawRectangle(Config.OutlinePen, new Rectangle(0, 0, (int)Size.X, (int)Size.Y));
+            Styler.DrawRectangle(g, Vector2.Zero, Size);
             foreach (var block in Clickables)
             {
                 g.DrawImage(block.Image, block.Position.X, block.Position.Y);

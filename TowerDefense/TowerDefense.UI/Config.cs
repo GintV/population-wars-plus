@@ -38,6 +38,7 @@ namespace TowerDefense.UI
         public static Color OutlineColor = Color.Black;
         public static Color TextColor = Color.FromArgb(150, 150, 150);
         public static Color ButtonColor = Color.FromArgb(61, 61, 61);
+        public static Color InactiveColor = Color.FromArgb(41, 41, 41);
 
         public static Font DefaultFont = new Font(FontFamily.GenericSansSerif, 24, FontStyle.Regular);
         public static Font GameInfoFont = new Font(FontFamily.GenericSansSerif, 21, FontStyle.Regular);
@@ -47,6 +48,7 @@ namespace TowerDefense.UI
         public static Pen SelectionPen = new Pen(Color.SteelBlue, 4);
         public static Brush TextBrush = new SolidBrush(TextColor);
         public static Brush ButtonBrush = new SolidBrush(ButtonColor);
+        public static Brush InactiveBrush = new SolidBrush(InactiveColor);
         public static Brush UiBackBrush = new SolidBrush(UiBackColor);
 
         public static StringFormat CenterAlignFormat = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center};

@@ -2,10 +2,11 @@
 using System.Drawing;
 using System.Numerics;
 using TowerDefense.GameEngine;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI.InfoBar
 {
-    public class InfoBar : IRenderable, IGameInfoSubscriber
+    public sealed class InfoBar : DrawnRenderable, IGameInfoSubscriber
     {
         private readonly IGameInfo m_gameInfo;
         private Image m_image;
@@ -16,31 +17,29 @@ namespace TowerDefense.UI.InfoBar
         private bool m_hasChanged;
         private readonly Rectangle m_boundingRectangle;
 
-        public Vector2 Position { get; }
-        public Vector2 Size { get; }
-        public Image Image
+        public override Image Image
         {
             get
             {
                 if (m_hasChanged)
-                    DrawInfoBar();
+                    Draw();
                 return m_image;
             }
-            private set => m_image = value;
+            set => m_image = value;
         }
 
-        public InfoBar(IGameInfo gameInfo)
+        public InfoBar(Styler styler, IGameInfo gameInfo) : base(styler)
         {
             Position = Config.InfoBarPosition;
             Size = Config.InfoBarSize;
-            m_coinsBlock = new GameInfoBlock(Config.GameInfoBlockMargins, "Coins");
-            m_healthBlock = new GameInfoBlock(new Vector2(Config.GameInfoBlockMargins.X * 2 + Config.GameInfoBlockSize.X, Config.GameInfoBlockMargins.Y), "Health");
-            m_manaBlock = new GameInfoBlock(new Vector2(Config.GameInfoBlockMargins.X * 3 + Config.GameInfoBlockSize.X * 2, Config.GameInfoBlockMargins.Y), "Mana");
-            m_timeBlock = new GameInfoBlock(new Vector2(Config.GameInfoBlockMargins.X * 4 + Config.GameInfoBlockSize.X * 3, Config.GameInfoBlockMargins.Y), "Time");
+            m_coinsBlock = new GameInfoBlock(new ClickableStyler(), Config.GameInfoBlockMargins, "Coins");
+            m_healthBlock = new GameInfoBlock(new ClickableStyler(), new Vector2(Config.GameInfoBlockMargins.X * 2 + Config.GameInfoBlockSize.X, Config.GameInfoBlockMargins.Y), "Health");
+            m_manaBlock = new GameInfoBlock(new ClickableStyler(), new Vector2(Config.GameInfoBlockMargins.X * 3 + Config.GameInfoBlockSize.X * 2, Config.GameInfoBlockMargins.Y), "Mana");
+            m_timeBlock = new GameInfoBlock(new ClickableStyler(), new Vector2(Config.GameInfoBlockMargins.X * 4 + Config.GameInfoBlockSize.X * 3, Config.GameInfoBlockMargins.Y), "Time");
             m_gameInfo = gameInfo;
             m_gameInfo.Subscribe(this);
             m_boundingRectangle = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
-            DrawInfoBar();
+            Draw();
         }
 
         public void OnTowerHealthPointsChanged()
@@ -68,7 +67,7 @@ namespace TowerDefense.UI.InfoBar
             throw new NotImplementedException();
         }
 
-        private void DrawInfoBar()
+        protected override void Draw()
         {
             var newImage = new Bitmap((int)Size.X, (int)Size.Y);
             var g = Graphics.FromImage(newImage);

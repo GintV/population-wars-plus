@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI.InfoBar
 {
-    public class GameInfoBlock : IRenderable
+    public sealed class GameInfoBlock : DrawnRenderable
     {
         private string m_value;
         private string m_maxValue;
@@ -12,19 +13,17 @@ namespace TowerDefense.UI.InfoBar
         private readonly Rectangle m_textRectangle;
         private Image m_image;
 
-        public Vector2 Position { get; }
-        public Vector2 Size { get; }
         public string Name { get; }
 
-        public Image Image
+        public override Image Image
         {
             get
             {
                 if (m_hasChanged)
-                    DrawInfoBlock();
+                    Draw();
                 return m_image;
             }
-            private set => m_image = value;
+            set => m_image = value;
         }
 
         public string Value
@@ -48,7 +47,7 @@ namespace TowerDefense.UI.InfoBar
         }
 
 
-        public GameInfoBlock(Vector2 position, string name)
+        public GameInfoBlock(Styler styler, Vector2 position, string name) : base(styler)
         {
             Size = Config.GameInfoBlockSize;
             m_boundingRectangle = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
@@ -58,11 +57,11 @@ namespace TowerDefense.UI.InfoBar
             m_value = "0";
             m_maxValue = "";
             Image = new Bitmap((int)Size.X, (int)Size.Y);
-            DrawInfoBlock();
+            Draw();
         }
 
 
-        private void DrawInfoBlock()
+        protected override void Draw()
         {
             var g = Graphics.FromImage(m_image);
             g.Clear(Config.ButtonColor);

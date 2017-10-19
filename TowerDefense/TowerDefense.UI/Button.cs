@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Drawing;
 using System.Numerics;
+using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public class Button : IClickable
+    public sealed class Button : DrawnRenderable, IClickable
     {
         private string m_description;
         private readonly Rectangle m_boundingRectangle;
-        public Vector2 Position { get; set; }
-        public Vector2 Size { get; }
-        public Image Image { get; }
 
-        public Button(Action<Vector2> onClick, Vector2 size)
+        public Button(Styler styler, Action<Vector2> onClick, Vector2 size) : base(styler)
         {
             OnClickAction = onClick;
             m_description = "";
             Size = size;
             m_boundingRectangle = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
             Image = new Bitmap((int)Size.X, (int)Size.Y);
-            DrawButton();
+            Draw();
         }
 
         public Action<Vector2> OnClickAction { get; set; }
@@ -30,20 +28,17 @@ namespace TowerDefense.UI
             set
             {
                 m_description = value;
-                DrawButton();
+                Draw();
             }
         }
 
         public void OnClick(Vector2 clickPosition) => OnClickAction?.Invoke(clickPosition);
 
-        private void DrawButton()
+        protected override void Draw()
         {
             var g = Graphics.FromImage(Image);
-            Config.ConfigureGraphics(g);
-            g.Clear(Config.ButtonColor);
-            g.DrawRectangle(Config.OutlinePen, m_boundingRectangle);
-            g.DrawString(m_description, Config.DefaultFont, Config.TextBrush, m_boundingRectangle, Config.CenterAlignFormat);
-            g.Flush();
+            Styler.DrawRectangle(g, Vector2.Zero, Size);
+            Styler.DrawString(g, m_description, Vector2.Zero, Size, Config.CenterAlignFormat);
             g.Dispose();
         }
     }
