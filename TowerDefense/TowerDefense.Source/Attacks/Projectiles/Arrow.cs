@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
@@ -10,23 +11,20 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public Guid TargetId { get; set; }
         public int ProjectileSpeed { get; }
         public Vector2 Location { get; set; }
+        public IMoveType MoveType { get; set; }
 
         public Arrow()
         {
-            ProjectileSpeed = 50;
+            ProjectileSpeed = 10;
+            MoveType = new LineMove();
         }
 
         public bool Move(Vector2 targetLocation)
         {
-            var trajectory = targetLocation - Location;
-            var distance = Math.Abs(trajectory.Length());
-            if (distance < ProjectileSpeed)
-            {
-                Location = targetLocation;
-                return true;
-            }
-            Location += Vector2.Normalize(trajectory) * ProjectileSpeed;
-            return false;
+            var loc = Location;
+            bool returns = MoveType.Move(ref loc, targetLocation: targetLocation, speed: ProjectileSpeed);
+            Location = loc;
+            return returns;
         }
 
         public object Spawn() => (Arrow)this.MemberwiseClone();

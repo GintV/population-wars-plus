@@ -12,6 +12,7 @@ using TowerDefense.Source.Guardians.Wizards;
 using TowerDefense.Source.Guardians.Archers;
 using TowerDefense.Source.Attacks;
 using TowerDefense.Source.Attacks.Projectiles;
+using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 using TowerDefense.Source.Loggers;
 using static TowerDefense.Source.Flags.GuardianClass;
 using static TowerDefense.Source.Flags.GuardianType;
@@ -26,6 +27,7 @@ namespace TowerDefense.Startup
             DemoMode(DemoFactories, "Factories");
             DemoMode(DemoDecorator, "Decorator");
             DemoMode(DemoPrototype, "Prototype");
+            DemoMode(DemoStrategy, "Strategy");
 
             Console.ReadLine();
         }
@@ -117,6 +119,27 @@ namespace TowerDefense.Startup
             arrowA.Move(new Vector2(100, 50));
             arrowA.Move(new Vector2(100, 50));
 
+        }
+
+        private static void DemoStrategy()
+        {
+            var arrowARaw = new Arrow { Location = new Vector2(0) };
+            var arrowBRaw = new Arrow { Location = new Vector2(0), MoveType = new ArchMove() };
+
+            var arrowA = new ArrowLogger("Arrow A", arrowARaw, ConsoleLogger.GetLogger());
+            var arrowB = new ArrowLogger("Arrow B", arrowBRaw, ConsoleLogger.GetLogger());
+            
+            Console.WriteLine("#Moving arrow A in Line:");
+
+            for (int i = 0; i <= 10; i++)
+                arrowA.Move(new Vector2(100, 0));
+
+            Console.WriteLine();
+
+            Console.WriteLine("#Moving arrow B in Arch:");
+
+            for(int i = 0; i <= 10; i++)
+                arrowB.Move(new Vector2(100, 0));
         }
     }
 }
