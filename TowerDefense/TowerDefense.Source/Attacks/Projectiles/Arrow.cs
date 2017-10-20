@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    public class Arrow : IProjectile
+    public class Arrow : IProjectile, ISpawnable
     {
         public Guid TargetId { get; set; }
         public int ProjectileSpeed { get; }
@@ -28,5 +28,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
             Location += Vector2.Normalize(trajectory) * ProjectileSpeed;
             return false;
         }
+
+        public object Spawn() => (Arrow)this.MemberwiseClone();
     }
 }

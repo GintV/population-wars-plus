@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using NUnit.Framework;
 using TowerDefense.Source;
 using TowerDefense.Source.Guardians;
 using TowerDefense.Source.Guardians.Wizards;
 using TowerDefense.Source.Guardians.Archers;
+using TowerDefense.Source.Attacks;
+using TowerDefense.Source.Attacks.Projectiles;
 using TowerDefense.Source.Loggers;
 using static TowerDefense.Source.Flags.GuardianClass;
 using static TowerDefense.Source.Flags.GuardianType;
@@ -22,6 +25,7 @@ namespace TowerDefense.Startup
             DemoMode(DemoSingleton, "Singleton");
             DemoMode(DemoFactories, "Factories");
             DemoMode(DemoDecorator, "Decorator");
+            DemoMode(DemoPrototype, "Prototype");
 
             Console.ReadLine();
         }
@@ -84,6 +88,35 @@ namespace TowerDefense.Startup
 
             interactiveGuardianB.Promote();
             interactiveGuardianB.Upgrade();
+        }
+
+        private static void DemoPrototype()
+        {
+            // Archer has this phantom arrow spawner
+            var arrowPrototype = new Arrow { Location = new Vector2(0) };
+
+            var arrowA = new ArrowLogger("Arrow A", (IProjectile)arrowPrototype.Spawn(), ConsoleLogger.GetLogger());
+            var arrowB = new ArrowLogger("Arrow B", (IProjectile)arrowPrototype.Spawn(), ConsoleLogger.GetLogger());
+
+            Console.WriteLine("#Moving arrow A:");
+
+            arrowA.Move(new Vector2(100, 50));
+            arrowA.Move(new Vector2(100, 50));
+
+            Console.WriteLine();
+
+            Console.WriteLine("#Moving arrow B:");
+
+            arrowB.Move(new Vector2(100, 25));
+            arrowB.Move(new Vector2(100, 25));
+
+            Console.WriteLine();
+
+            Console.WriteLine("#Moving arrow A:");
+
+            arrowA.Move(new Vector2(100, 50));
+            arrowA.Move(new Vector2(100, 50));
+
         }
     }
 }
