@@ -8,7 +8,7 @@
         public int Level { get; private set; }
         public int ManaPoints { get; private set; }
         public int ManaPointsRemaining { get; private set; }
-        public int UpgradePrice { get; private set; }
+        public int UpgradeCost { get; private set; }
 
 
         public Tower()
@@ -17,7 +17,7 @@
             HealthPoints = HealthPointsRemaining = 250;
             ManaPoints = ManaPointsRemaining = 50;
             Level = 1;
-            UpgradePrice = 100;
+            UpgradeCost = 100;
         }
 
         public void Upgrade()
@@ -27,8 +27,8 @@
             ManaPoints += 250;
             ManaPointsRemaining += 50;
             Level += 1;
-            var upgradePrice = UpgradePrice * 1.5;
-            UpgradePrice = (int)upgradePrice;
+            var upgradePrice = UpgradeCost * 1.5;
+            UpgradeCost = (int)upgradePrice;
 
             if (Level % 20 == 0)
                 GuardianSpace.AddBlock();

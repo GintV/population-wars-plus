@@ -32,9 +32,9 @@ namespace TowerDefense.Startup
             Console.ReadLine();
         }
 
-        static void DemoMode(Action action, string designPaternName)
+        static void DemoMode(Action action, string designPatternName)
         {
-            Console.WriteLine($"---------------{designPaternName}---------------");
+            Console.WriteLine($"---------------{designPatternName}---------------");
             action.Invoke();
             Console.WriteLine();
         }
@@ -48,8 +48,8 @@ namespace TowerDefense.Startup
 
         static void DemoFactories()
         {
-            var guardianA = GuardianFactoryProducer.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
-            var guardianB = GuardianFactoryProducer.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
+            var guardianA = GuardianFactoryProvider.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
+            var guardianB = GuardianFactoryProvider.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
 
             var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
             var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());
@@ -65,8 +65,8 @@ namespace TowerDefense.Startup
 
         private static void DemoDecorator()
         {
-            var guardianA = GuardianFactoryProducer.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
-            var guardianB = GuardianFactoryProducer.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
+            var guardianA = GuardianFactoryProvider.GetFactory(Archer).Value.CreateGuardian(Dark).Value;
+            var guardianB = GuardianFactoryProvider.GetFactory(Wizard).Value.CreateGuardian(Fire).Value;
 
             var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
             var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());

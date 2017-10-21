@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace TowerDefense.Source
 {
@@ -10,8 +9,8 @@ namespace TowerDefense.Source
 
         public GuardianSpace()
         {
-            TowerBlocks = new[] { new TowerBlock(1), new TowerBlock(2), new TowerBlock(3) };
-            Blocks = 3;
+            TowerBlocks = new[] { new TowerBlock(1) };
+            Blocks = 1;
         }
 
         public void AddBlock()

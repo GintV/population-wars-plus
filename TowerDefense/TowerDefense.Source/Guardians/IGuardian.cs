@@ -17,6 +17,10 @@ namespace TowerDefense.Source.Guardians
         public Guid Id { get; }
         public int AttackPower { get; set; }
         public IAttack AttackType { get; }
+        public int Level { get; }
+        public int PromoteCost { get; }
+        public int PromoteLevel { get; }
+        public int UpgradeCost { get; }
 
         protected Guardian()
         {
