@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    public class Arrow : IProjectile, ISpawnable
+    public class Arrow : Projectile // TODO: to internal
     {
-        public Guid TargetId { get; set; }
-        public int ProjectileSpeed { get; }
-        public Vector2 Location { get; set; }
-        public IMoveType MoveType { get; set; }
+        public sealed override IMove MoveType { get; protected set; }
 
-        public Arrow()
+        public Arrow(int collisionDamage, double speed) : base(collisionDamage, speed)
         {
-            ProjectileSpeed = 10;
-            MoveType = new LineMove();
+            MoveType = new ArchMove();
         }
 
-        public bool Move(Vector2 targetLocation)
+        public override object Clone()
         {
-            var loc = Location;
-            bool returns = MoveType.Move(ref loc, targetLocation: targetLocation, speed: ProjectileSpeed);
-            Location = loc;
-            return returns;
+            var arrow = (Arrow)MemberwiseClone();
+            arrow.MoveType = (IMove)MoveType.Clone();
+            return arrow;
         }
 
-        public object Spawn() => (Arrow)this.MemberwiseClone();
+        public override void Upgrade()
+        {
+            CollisionDamage = (int)(CollisionDamage * Constants.ProjectileDamageMultiplier.Arrow);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace TowerDefense.UI.MockEngine
     public class Game2 : IGame, IGameInfo
     {
         private readonly List<Monster> m_monsters = new List<Monster>();
-        private readonly List<IProjectile> m_projectiles = new List<IProjectile>();
+        private readonly List<Source.Attacks.Projectiles.Projectile> m_projectiles = new List<Source.Attacks.Projectiles.Projectile>();
         private readonly Source.Tower m_tower = new Source.Tower();
         private readonly Random m_random = new Random();
         private readonly List<IGameInfoSubscriber> m_subscribers = new List<IGameInfoSubscriber>();
@@ -44,7 +44,7 @@ namespace TowerDefense.UI.MockEngine
 
         public void ConstructProjectile()
         {
-            m_projectiles.Add(new Arrow { Location = new Vector2(m_random.Next(1300), m_random.Next(700)) });
+            m_projectiles.Add(new Arrow (0,0) { Location = new Vector2(m_random.Next(1300), m_random.Next(700)) });
         }
 
         public void DoStuff()

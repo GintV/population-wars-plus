@@ -17,16 +17,36 @@ namespace TowerDefense.Source.Loggers
             m_logger = logger;
         }
 
-        public Guid TargetId { get => m_projectile.TargetId; set => m_projectile.TargetId = value; }
+        //public Guid TargetId { get => m_projectile.TargetId; set => m_projectile.TargetId = value; }
 
-        public int ProjectileSpeed => m_projectile.ProjectileSpeed;
+        //public int ProjectileSpeed => m_projectile.ProjectileSpeed;
 
-        public Vector2 Location { get => m_projectile.Location; set => m_projectile.Location = value; }
+        //public Vector2 Location { get => m_projectile.Location; set => m_projectile.Location = value; }
 
-        public bool Move(Vector2 targetLocation)
+        /*public bool Move(Vector2 targetLocation)
         {
             m_logger.Log($"{m_displayName} is moving from {m_projectile.Location.ToString()} to {targetLocation.ToString()}");
             return m_projectile.Move(targetLocation);
+        }*/
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLocation(Vector2 location)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Upgrade()
+        {
+            throw new NotImplementedException();
         }
     }
 }

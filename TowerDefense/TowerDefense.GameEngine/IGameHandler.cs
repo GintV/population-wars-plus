@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using TowerDefense.Source;
+using static TowerDefense.GameEngine.Constants;
+using static TowerDefense.Source.Constants;
 
 namespace TowerDefense.GameEngine
 {
@@ -28,16 +30,13 @@ namespace TowerDefense.GameEngine
             Configuration = configuration;
             GameEnvironment = new GameEnvironment();
             GameControls = new GameControls(configuration, GameEnvironment);
+            GameEngineSettings.GameCyclesPerSecond = CyclesPerSecond;
         }
 
         public void RunGame()
         {
             Task.Factory.StartNew(() =>
             {
-                foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
-                {
-                    towerBlock.Guardian.Attack();
-                }
 
                 Thread.Sleep(16);
             });

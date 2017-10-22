@@ -24,7 +24,7 @@ namespace TowerDefense.UI
             RenderingView = renderingView;
         }
 
-        public void Render(Source.Tower tower, IEnumerable<IMonster> monsters, IEnumerable<IProjectile> projectiles)
+        public void Render(Source.Tower tower, IEnumerable<IMonster> monsters, IEnumerable<Projectile> projectiles)
         {
             if (m_tower.Level != tower.GuardianSpace.Blocks)
                 m_tower.Level = tower.GuardianSpace.Blocks;
@@ -51,7 +51,7 @@ namespace TowerDefense.UI
                 Size = new Vector2(50, 50)
             });
 
-        private static IEnumerable<IRenderable> ProcessProjectiles(IEnumerable<IProjectile> projectiles) =>
+        private static IEnumerable<IRenderable> ProcessProjectiles(IEnumerable<Projectile> projectiles) =>
             projectiles.Select(p => new BasicRenderable
             {
                 Image = ResolveImageByType(p.GetType()),

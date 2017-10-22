@@ -5,9 +5,8 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
 {
-    public class LineMove : IMoveType
+    internal class LineMove : MoveType
     {
-        public LineMove() { }
 
         public bool Move(ref Vector2 currentLocation, Vector2 targetLocation, int speed)
         {
@@ -20,6 +19,16 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
             }
             currentLocation += Vector2.Normalize(trajectory) * speed;
             return false;
+        }
+
+        public override object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Vector2 Move()
+        {
+            throw new NotImplementedException();
         }
     }
 }

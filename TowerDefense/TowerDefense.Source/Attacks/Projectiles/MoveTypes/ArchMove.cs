@@ -5,11 +5,12 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
 {
-    public class ArchMove : IMoveType
+    internal class ArchMove : MoveType
     {
         private Vector2 startLocation;
         private Vector2 lineLocation;
         private bool firstMove;
+
 
         public ArchMove()
         {
@@ -52,6 +53,17 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
             double relativePosition = 1 - distance / fullDistance;
 
             return (float)(Math.Sin(relativePosition * Math.PI)*15);
+        }
+
+
+        public override Vector2 Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override object Clone()
+        {
+            throw new NotImplementedException();
         }
     }
 }

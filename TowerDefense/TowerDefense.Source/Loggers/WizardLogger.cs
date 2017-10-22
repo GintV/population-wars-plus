@@ -1,4 +1,7 @@
-﻿using TowerDefense.Source.Guardians;
+﻿using System.Collections.Generic;
+using System.Numerics;
+using TowerDefense.Source.Attacks.Projectiles;
+using TowerDefense.Source.Guardians;
 
 namespace TowerDefense.Source.Loggers
 {
@@ -15,11 +18,12 @@ namespace TowerDefense.Source.Loggers
             m_logger = logger;
         }
 
-        public void Attack()
+        public List<IProjectile> Attack(Vector2 target, int targetSpeed)
         {
             m_logger.Log($"Prepare to be crushed with my magic! I, {m_displayName}, shall destroy you!");
-            m_guardian.Attack();
+            var valueToReturn = m_guardian.Attack(target, targetSpeed);
             m_logger.Log("What did I told you!");
+            return valueToReturn;
         }
 
         public void ActivateChargeAttack()
@@ -34,6 +38,11 @@ namespace TowerDefense.Source.Loggers
             m_logger.Log("Hell yeah! Would you like to be first to taste my new power?");
             m_guardian.Promote();
             m_logger.Log("I am ready!");
+        }
+
+        public void SetGuardianLocation(Vector2 location)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Upgrade()

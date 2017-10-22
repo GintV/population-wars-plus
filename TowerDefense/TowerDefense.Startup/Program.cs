@@ -54,12 +54,12 @@ namespace TowerDefense.Startup
             var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
             var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());
 
-            interactiveGuardianA.Attack();
+            interactiveGuardianA.Attack(Vector2.Zero, 0);
             interactiveGuardianA.ActivateChargeAttack();
 
             ConsoleLogger.GetLogger().Log(string.Empty);
 
-            interactiveGuardianB.Attack();
+            interactiveGuardianB.Attack(Vector2.Zero, 0);
             interactiveGuardianB.ActivateChargeAttack();
         }
 
@@ -95,10 +95,10 @@ namespace TowerDefense.Startup
         private static void DemoPrototype()
         {
             // Archer has this phantom arrow spawner
-            var arrowPrototype = new Arrow { Location = new Vector2(0) };
+            /*var arrowPrototype = new Arrow { Location = new Vector2(0) };
 
-            var arrowA = new ArrowLogger("Arrow A", (IProjectile)arrowPrototype.Spawn(), ConsoleLogger.GetLogger());
-            var arrowB = new ArrowLogger("Arrow B", (IProjectile)arrowPrototype.Spawn(), ConsoleLogger.GetLogger());
+            var arrowA = new ArrowLogger("Arrow A", (IProjectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
+            var arrowB = new ArrowLogger("Arrow B", (IProjectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
 
             Console.WriteLine("#Moving arrow A:");
 
@@ -117,14 +117,14 @@ namespace TowerDefense.Startup
             Console.WriteLine("#Moving arrow A:");
 
             arrowA.Move(new Vector2(100, 50));
-            arrowA.Move(new Vector2(100, 50));
+            arrowA.Move(new Vector2(100, 50));*/
 
         }
 
         private static void DemoStrategy()
         {
-            var arrowARaw = new Arrow { Location = new Vector2(0) };
-            var arrowBRaw = new Arrow { Location = new Vector2(0), MoveType = new ArchMove() };
+            /*var arrowARaw = new Arrow { Location = new Vector2(0) };
+            var arrowBRaw = new Arrow { Location = new Vector2(0), Move = new ArchMove() };
 
             var arrowA = new ArrowLogger("Arrow A", arrowARaw, ConsoleLogger.GetLogger());
             var arrowB = new ArrowLogger("Arrow B", arrowBRaw, ConsoleLogger.GetLogger());
@@ -139,7 +139,7 @@ namespace TowerDefense.Startup
             Console.WriteLine("#Moving arrow B in Arch:");
 
             for(int i = 0; i <= 10; i++)
-                arrowB.Move(new Vector2(100, 0));
+                arrowB.Move(new Vector2(100, 0));*/
         }
     }
 }
