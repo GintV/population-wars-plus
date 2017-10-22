@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TowerDefense.GameEngine\TowerDefense.GameEngine.csproj" />
     <ProjectReference Include="..\TowerDefense.Source\TowerDefense.Source.csproj" />
   </ItemGroup>
 
