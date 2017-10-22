@@ -23,6 +23,8 @@ namespace TowerDefense.GameEngine
         public IGameEnvironment GameEnvironment { get; private set; }
         public IGameControls GameControls { get; private set; }
 
+        private GameHandler() { }
+
         public static IGameHandler GetHandler() => GameInstance.Value;
 
         public void CreateGame(IConfiguration configuration)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using NUnit.Framework;
+using TowerDefense.GameEngine;
 using TowerDefense.Source;
 using TowerDefense.Source.Guardians;
 using TowerDefense.Source.Guardians.Wizards;
@@ -41,9 +42,9 @@ namespace TowerDefense.Startup
 
         static void DemoSingleton()
         {
-            var loggerA = ConsoleLogger.GetLogger();
-            var loggerB = ConsoleLogger.GetLogger();
-            Console.WriteLine(ReferenceEquals(loggerA, loggerB) ? "loggerA == loggerB" : "loggerA != loggerB");
+            var gameHandlerA = GameHandler.GetHandler();
+            var gameHandlerB = GameHandler.GetHandler();
+            Console.WriteLine(ReferenceEquals(gameHandlerA, gameHandlerB) ? "gameHandlerA == gameHandlerB" : "gameHandlerA != gameHandlerB");
         }
 
         static void DemoFactories()
