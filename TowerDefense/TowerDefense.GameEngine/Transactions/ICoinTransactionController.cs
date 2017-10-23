@@ -4,7 +4,15 @@ using System.Collections.Generic;
 
 namespace TowerDefense.GameEngine.Transactions
 {
-    public class CoinTransactionController
+    public interface ICoinTransactionController
+    {
+        void AddTransaction(CoinTransaction transaction);
+        void ExecutePendingTransactions();
+        bool HasUndoableTransactions();
+        void UndoLastTransaction();
+    }
+
+    public class CoinTransactionController : ICoinTransactionController
     {
         private const int MaxUndoDepth = 3;
 

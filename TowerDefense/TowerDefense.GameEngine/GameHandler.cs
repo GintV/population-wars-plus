@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TowerDefense.GameEngine.Transactions;
 using TowerDefense.Source;
 using TowerDefense.Source.Attacks.Projectiles;
 using static TowerDefense.GameEngine.Constants;
@@ -14,11 +15,11 @@ namespace TowerDefense.GameEngine
         private static readonly Lazy<GameHandler> GameInstance = new Lazy<GameHandler>(() => new GameHandler());
         private readonly CancellationTokenSource m_gameTaskCancellationTokenSource = new CancellationTokenSource();
 
+        protected ICoinTransactionController CoinTransactionController { get; set; }
         public IConfiguration Configuration { get; private set; }
         public IGameEnvironment GameEnvironment { get; private set; }
         public IGameControls GameControls { get; private set; }
         public IRenderer Renderer { get; set; }
-
 
         private GameHandler() { }
 
@@ -28,7 +29,8 @@ namespace TowerDefense.GameEngine
         {
             Configuration = configuration;
             GameEnvironment = new GameEnvironment();
-            GameControls = new GameControls(configuration, GameEnvironment);
+            CoinTransactionController = new CoinTransactionController(GameEnvironment);
+            GameControls = new GameControls(CoinTransactionController, configuration, GameEnvironment);
             GameEngineSettings.GameCyclesPerSecond = CyclesPerSecond;
             SetConfiguration(configuration);
         }
@@ -41,7 +43,7 @@ namespace TowerDefense.GameEngine
                 var i = 0;
                 while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    GameControls.ExecutePendingTransactions();
+                    CoinTransactionController.ExecutePendingTransactions();
                     foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                     {
                         //towerBlock.Guardian?.Attack();

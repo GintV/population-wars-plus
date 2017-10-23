@@ -11,7 +11,6 @@ namespace TowerDefense.GameEngine
     {
         void ActivateChargeAttack(int guardianSlot);
         void CreateGuardian(string guardianClass, string guardianType);
-        void ExecutePendingTransactions();
         void MoveGuardianToInventory(int guardianSlot);
         void PromoteGuardian(int guardianSlot);
         void SellGuardian(int guardianSlot);
@@ -25,19 +24,20 @@ namespace TowerDefense.GameEngine
 
     internal class GameControls : IGameControls
     {
+        protected ICoinTransactionController CoinTransactionController { get; }
         protected IConfiguration Configuration { get; }
         protected IGameEnvironment GameEnvironment { get; }
         protected List<Guardian> Guardians { get; }
         protected GuardianSpace GuardianSpace { get; }
-        protected CoinTransactionController TransactionController { get; set; }
 
-        public GameControls(IConfiguration configuration, IGameEnvironment gameEnvironment)
+        public GameControls(ICoinTransactionController coinTransactionController, IConfiguration configuration, IGameEnvironment gameEnvironment)
         {
+            CoinTransactionController = coinTransactionController;
             Configuration = configuration;
             GameEnvironment = gameEnvironment;
             Guardians = gameEnvironment.Inventory.Guardians;
             GuardianSpace = gameEnvironment.Tower.GuardianSpace;
-            TransactionController = new CoinTransactionController(GameEnvironment);
+            CoinTransactionController = coinTransactionController;
         }
 
         public void ActivateChargeAttack(int guardianSlot)
@@ -50,10 +50,8 @@ namespace TowerDefense.GameEngine
         public void CreateGuardian(string guardianClass, string guardianType)
         {
             (var enumClass, var enumType) = GuardianTypeConverter.Convert(guardianClass, guardianType);
-            TransactionController.AddTransaction(new GuardianBuy(enumClass, enumType, BaseGuardianCreationCost));
+            CoinTransactionController.AddTransaction(new GuardianBuy(enumClass, enumType, BaseGuardianCreationCost));
         }
-
-        public void ExecutePendingTransactions() => TransactionController.ExecutePendingTransactions();
 
         public void MoveGuardianToInventory(int guardianSlot)
         {
@@ -66,14 +64,14 @@ namespace TowerDefense.GameEngine
         {
             var guardian = GetGuardian(guardianSlot);
             if (guardian.HasValue && guardian.Value.PromoteLevel > guardian.Value.Level)
-                TransactionController.AddTransaction(new GuardianPromote(guardian.Value));
+                CoinTransactionController.AddTransaction(new GuardianPromote(guardian.Value));
         }
 
         public void SellGuardian(int guardianSlot)
         {
             var guardian = GetGuardian(guardianSlot);
             if (guardian.HasValue)
-                TransactionController.AddTransaction(new GuardianSell(guardian.Value));
+                CoinTransactionController.AddTransaction(new GuardianSell(guardian.Value));
         }
 
         public void SwapGuardians(int guardianSlot, int inventoryIndex)
@@ -105,16 +103,16 @@ namespace TowerDefense.GameEngine
                 TakeWhile(g => g.Id != guardian.Value.Id).LastOrDefault() ?? Guardians.Last();
         }
 
-        public void UndoLastPurchase() => TransactionController.UndoLastTransaction();
+        public void UndoLastPurchase() => CoinTransactionController.UndoLastTransaction();
 
         public void UpgradeGuardian(int guardianSlot)
         {
             var guardian = GetGuardian(guardianSlot);
             if (guardian.HasValue)
-                TransactionController.AddTransaction(new GuardianUpgrade(guardian.Value));
+                CoinTransactionController.AddTransaction(new GuardianUpgrade(guardian.Value));
         }
 
-        public void UpgradeTower() => TransactionController.AddTransaction(new TowerUpgradeTransaction());
+        public void UpgradeTower() => CoinTransactionController.AddTransaction(new TowerUpgradeTransaction());
 
         private Maybe<Guardian> GetGuardian(int guardianSlot) => guardianSlot > GuardianSpace.Blocks - 1 ? null :
             GuardianSpace.TowerBlocks[guardianSlot].Guardian;
