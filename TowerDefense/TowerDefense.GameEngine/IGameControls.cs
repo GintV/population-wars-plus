@@ -9,9 +9,9 @@ namespace TowerDefense.GameEngine
 {
     public interface IGameControls
     {
-        CoinTransactionController TransactionController { get; set; }
         void ActivateChargeAttack(int guardianSlot);
         void CreateGuardian(string guardianClass, string guardianType);
+        void ExecutePendingTransactions();
         void MoveGuardianToInventory(int guardianSlot);
         void PromoteGuardian(int guardianSlot);
         void SellGuardian(int guardianSlot);
@@ -25,11 +25,11 @@ namespace TowerDefense.GameEngine
 
     internal class GameControls : IGameControls
     {
-        public CoinTransactionController TransactionController { get; set; }
         protected IConfiguration Configuration { get; }
         protected IGameEnvironment GameEnvironment { get; }
         protected List<Guardian> Guardians { get; }
         protected GuardianSpace GuardianSpace { get; }
+        protected CoinTransactionController TransactionController { get; set; }
 
         public GameControls(IConfiguration configuration, IGameEnvironment gameEnvironment)
         {
@@ -52,6 +52,8 @@ namespace TowerDefense.GameEngine
             (var enumClass, var enumType) = GuardianTypeConverter.Convert(guardianClass, guardianType);
             TransactionController.AddTransaction(new GuardianBuy(enumClass, enumType, BaseGuardianCreationCost));
         }
+
+        public void ExecutePendingTransactions() => TransactionController.ExecutePendingTransactions();
 
         public void MoveGuardianToInventory(int guardianSlot)
         {

@@ -41,7 +41,7 @@ namespace TowerDefense.GameEngine
                 var i = 0;
                 while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    GameControls.TransactionController.ExecutePendingTransactions();
+                    GameControls.ExecutePendingTransactions();
                     foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                     {
                         //towerBlock.Guardian?.Attack();
