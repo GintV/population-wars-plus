@@ -71,10 +71,10 @@ namespace TowerDefense.UI.MockEngine
             }
         }
 
-        public int? TowerHealthPoints => m_tower.HealthPointsRemaining;
-        public int? TowerMaxHealthPoints => m_tower.HealthPoints;
-        public int? TowerManaPoints => m_tower.ManaPointsRemaining;
-        public int? TowerMaxManaPoints => m_tower.ManaPoints;
+        public int? TowerHealthPoints => m_tower.HealthPointsRemaining.Get();
+        public int? TowerMaxHealthPoints => m_tower.HealthPoints.Get();
+        public int? TowerManaPoints => m_tower.ManaPointsRemaining.Get();
+        public int? TowerMaxManaPoints => m_tower.ManaPoints.Get();
         public int? Coins => m_random.Next(9999);
         public void Subscribe(IGameInfoSubscriber subscriber)
         {

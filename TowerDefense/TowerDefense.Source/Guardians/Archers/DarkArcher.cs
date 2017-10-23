@@ -40,6 +40,7 @@ namespace TowerDefense.Source.Guardians.Archers
         {
             // TODO: implement
         }
+        public override void Demote(IAttack oldAttackType, int oldPromoteLevel) { }
 
         public sealed override void Upgrade()
         {
@@ -47,5 +48,6 @@ namespace TowerDefense.Source.Guardians.Archers
             UpgradeCost = (int)(UpgradeCost * GuardianUpgradeCostMultiplier.DarkArcher);
             AttackType.Upgrade();
         }
+        public override void Downgrade(IAttack oldAttackType, int oldUpgradeCost) { }
     }
 }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Numerics;
 using System.Threading;
 using System.Windows.Forms;
+using TowerDefense.GameEngine;
 using TowerDefense.UI.MockEngine;
 
 namespace TowerDefense.UI
@@ -27,9 +28,7 @@ namespace TowerDefense.UI
             return s_instance ?? (s_instance = new GameView());
         }
 
-        public Thread GameLoopThread { get; set; }
-
-        public IGame Game { get; set; }
+        public IGameHandler Game { get; set; }
 
         private void GameViewPaint(object sender, PaintEventArgs e)
         {
@@ -46,6 +45,7 @@ namespace TowerDefense.UI
 
         private void GameViewKeyPress(object sender, KeyPressEventArgs e)
         {
+            /*
             switch (e.KeyChar)
             {
                 case 'c':
@@ -64,6 +64,7 @@ namespace TowerDefense.UI
                     RandomAction?.Invoke();
                     break;
             }
+            */
         }
 
         private void GameViewMouseClick(object sender, MouseEventArgs e)
@@ -74,14 +75,16 @@ namespace TowerDefense.UI
                 if (clickable is ISelectable selectable)
                 {
                     if (selectable == m_currentlySelected) return;
-                    m_currentlySelected?.OnDeselect();
+                    var previousSelection = m_currentlySelected;
                     m_currentlySelected = selectable;
+                    previousSelection?.OnDeselect();
                 }
                 clickable.OnClick(new Vector2(e.X - clickable.Position.X, e.Y - clickable.Position.Y));
                 return;
             }
-            m_currentlySelected?.OnDeselect();
+            var lastSelection = m_currentlySelected;
             m_currentlySelected = null;
+            lastSelection?.OnDeselect();
         }
 
         private static bool IsClicked(IRenderable clickable, MouseEventArgs e)
@@ -93,8 +96,28 @@ namespace TowerDefense.UI
         public void Render(IEnumerable<IRenderable> renderables)
         {
             m_renderables = renderables;
-            //Invoke((MethodInvoker)Refresh);
-            Invalidate();
+            Invoke((MethodInvoker)Refresh);
+            //Invalidate();
+        }
+
+        public void RegisterClickable(IClickable clickable)
+        {
+            RegisteredClickables.Add(clickable);
+        }
+
+        public void DeregisterClickable(IClickable clickable)
+        {
+            RegisteredClickables.Remove(clickable);
+        }
+
+        public void ClearClickables()
+        {
+            RegisteredClickables.Clear();
+        }
+
+        public ISelectable GetSelectedSelectable()
+        {
+            return m_currentlySelected;
         }
     }
 }

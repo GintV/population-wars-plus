@@ -19,5 +19,13 @@ namespace TowerDefense.Source
             towerBlocks.Add(new TowerBlock(++Blocks));
             TowerBlocks = towerBlocks.ToArray();
         }
+
+        public void RemoveBlock()
+        {
+            var towerBlocks = TowerBlocks.ToList();
+            towerBlocks.Remove(towerBlocks[towerBlocks.Count - 1]);
+            Blocks--;
+            TowerBlocks = towerBlocks.ToArray();
+        }
     }
 }

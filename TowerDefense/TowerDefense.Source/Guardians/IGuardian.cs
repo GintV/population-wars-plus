@@ -12,7 +12,9 @@ namespace TowerDefense.Source.Guardians
         void ActivateChargeAttack();
         void Promote();
         void SetGuardianLocation(Vector2 location);
+        void Demote(IAttack oldAttackType, int oldPromoteLevel);
         void Upgrade();
+        void Downgrade(IAttack oldAttackType, int oldUpgradeCost);
     }
 
     public abstract class Guardian : IGuardian
@@ -36,7 +38,9 @@ namespace TowerDefense.Source.Guardians
 
         public abstract void ActivateChargeAttack();
         public abstract void Promote();
+        public abstract void Demote(IAttack oldAttackType, int oldPromoteLevel);
         public abstract void Upgrade();
+        public abstract void Downgrade(IAttack oldAttackType, int oldUpgradeCost);
 
         public List<IProjectile> Attack(Vector2 target, int targetSpeed) => AttackType.Shoot(target, targetSpeed);
         public void SetGuardianLocation(Vector2 location) => AttackType.SetLocation(location);

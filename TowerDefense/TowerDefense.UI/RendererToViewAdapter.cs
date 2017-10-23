@@ -16,10 +16,15 @@ namespace TowerDefense.UI
     public class RendererToViewAdapter : IRenderer
     {
         private readonly Tower m_tower;
+        private readonly Image m_tempGuardianImage;
         public IView RenderingView { get; set; }
 
         public RendererToViewAdapter(IView renderingView = null)
         {
+            m_tempGuardianImage = new Bitmap(50, 50);
+            var g = Graphics.FromImage(m_tempGuardianImage);
+            g.Clear(Color.DarkRed);
+            g.Dispose();
             m_tower = new Tower(new Vector2(300, 780), new Vector2(125, 125));
             RenderingView = renderingView;
         }
@@ -33,7 +38,7 @@ namespace TowerDefense.UI
                 .Concat(ProcessMonsters(monsters)).Concat(ProcessProjectiles(projectiles)));
         }
 
-        private static IEnumerable<IRenderable> ProcessGuardians(IEnumerable<TowerBlock> blocks)
+        private IEnumerable<IRenderable> ProcessGuardians(IEnumerable<TowerBlock> blocks)
         {
             return blocks.Select(b => Tuple.Create(b.Guardian, b.BlockNumber)).Where(t => t.Item1 != null).Select(t => new BasicRenderable
             {
@@ -43,7 +48,7 @@ namespace TowerDefense.UI
             });
         }
 
-        private static IEnumerable<IRenderable> ProcessMonsters(IEnumerable<IMonster> monsters) =>
+        private IEnumerable<IRenderable> ProcessMonsters(IEnumerable<IMonster> monsters) =>
             monsters.Select(m => new BasicRenderable
             {
                 Image = ResolveImageByType(m.GetType()),
@@ -51,7 +56,7 @@ namespace TowerDefense.UI
                 Size = new Vector2(50, 50)
             });
 
-        private static IEnumerable<IRenderable> ProcessProjectiles(IEnumerable<Projectile> projectiles) =>
+        private IEnumerable<IRenderable> ProcessProjectiles(IEnumerable<Projectile> projectiles) =>
             projectiles.Select(p => new BasicRenderable
             {
                 Image = ResolveImageByType(p.GetType()),
@@ -59,7 +64,7 @@ namespace TowerDefense.UI
                 Size = new Vector2(25, 25)
             });
 
-        private static Image ResolveImageByType(Type type)
+        private Image ResolveImageByType(Type type)
         {
             if (type == typeof(Bubble))
             {
@@ -75,19 +80,19 @@ namespace TowerDefense.UI
             }
             if (type == typeof(FireWizard))
             {
-                return Resources.enem;
+                return m_tempGuardianImage;
             }
             if (type == typeof(IceWizard))
             {
-                return Resources.enem;
+                return m_tempGuardianImage;
             }
             if (type == typeof(DarkArcher))
             {
-                return Resources.enem;
+                return m_tempGuardianImage;
             }
             if (type == typeof(LightArcher))
             {
-                return Resources.enem;
+                return m_tempGuardianImage;
             }
             throw new Exception("Unsupported type for Image resolution.");
         }

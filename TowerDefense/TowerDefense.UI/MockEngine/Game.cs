@@ -34,10 +34,10 @@ namespace TowerDefense.UI.MockEngine
                 Mana = 23,
                 MaxMana = 50
             };
+            m_subscribers = new List<IGameInfoSubscriber>();
             m_renderableObjects = new List<IRenderable> { m_tower };
             m_gameView = ViewFactory.CreateView(ViewType.NewGameView, this);
             m_objectsToDestroy = new Stack<IRenderable>();
-            m_subscribers = new List<IGameInfoSubscriber>();
             m_coins = 0;
         }
 
@@ -118,6 +118,15 @@ namespace TowerDefense.UI.MockEngine
             {
                 sub.OnTowerHealthPointsChanged();
                 sub.OnTowerManaPointsChanged();
+            }
+        }
+
+        public void AddMoneys()
+        {
+            m_coins += 170;
+            foreach (var sub in m_subscribers)
+            {
+                sub.OnCoinsChanged();
             }
         }
 

@@ -20,6 +20,26 @@ namespace TowerDefense.UI
             m_renderingView.Render(renderables);
         }
 
+        public void RegisterClickable(IClickable clickable)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeregisterClickable(IClickable clickable)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ClearClickables()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ISelectable GetSelectedSelectable()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Instantiate()
         {
             if (m_isInstansiated) return;

@@ -74,7 +74,12 @@
     <Compile Include="BasicSelectable.cs" />
     <Compile Include="ClickableContainer.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DependantButton.cs" />
     <Compile Include="DrawnRenderable.cs" />
+    <Compile Include="GameInfoObserver.cs" />
+    <Compile Include="Guardian.cs" />
+    <Compile Include="GuardianSlot.cs" />
+    <Compile Include="IButton.cs" />
     <Compile Include="Stylers\ClickableStyler.cs" />
     <Compile Include="Stylers\GuiBackStyler.cs" />
     <Compile Include="Stylers\InactiveStyler.cs" />

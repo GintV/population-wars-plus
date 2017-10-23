@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using TowerDefense.Source.Attacks;
 using TowerDefense.Source.Attacks.Projectiles;
 using TowerDefense.Source.Guardians;
 
@@ -40,6 +41,12 @@ namespace TowerDefense.Source.Loggers
             m_logger.Log("I am ready!");
         }
 
+        public void Demote(IAttack oldAttackType, int oldPromoteLevel)
+        {
+            m_logger.Log(":(");
+            m_guardian.Demote(oldAttackType, oldPromoteLevel);
+        }
+
         public void SetGuardianLocation(Vector2 location)
         {
             throw new System.NotImplementedException();
@@ -50,6 +57,12 @@ namespace TowerDefense.Source.Loggers
             m_logger.Log("Wohoo!");
             m_guardian.ActivateChargeAttack();
             m_logger.Log("Level up!");
+        }
+
+        public void Downgrade(IAttack oldAttackType, int oldUpgradeCost)
+        {
+            m_logger.Log("Why...?");
+            m_guardian.Downgrade(oldAttackType, oldUpgradeCost);
         }
     }
 }

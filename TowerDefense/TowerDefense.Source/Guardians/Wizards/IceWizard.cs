@@ -37,11 +37,15 @@ namespace TowerDefense.Source.Guardians.Wizards
             // TODO: implement
         }
 
+        public override void Demote(IAttack oldAttackType, int oldPromoteLevel) { }
+
         public sealed override void Upgrade()
         {
             ++Level;
             UpgradeCost = (int)(UpgradeCost * Constants.GuardianUpgradeCostMultiplier.IceWizard);
             AttackType.Upgrade();
         }
+
+        public override void Downgrade(IAttack oldAttackType, int oldUpgradeCost) { }
     }
 }

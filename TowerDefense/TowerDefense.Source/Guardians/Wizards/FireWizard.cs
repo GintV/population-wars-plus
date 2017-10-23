@@ -25,6 +25,7 @@ namespace TowerDefense.Source.Guardians.Wizards
             PromoteCost = GuardianPromoteCostBase.FireWizard;
             PromoteLevel = GuardianPromotionLevels.FireWizard.First();
             UpgradeCost = GuardianUpgradeCostBase.FireWizard;
+            AttackType = new NullAttack();
 
             Upgrade();
         }
@@ -38,6 +39,7 @@ namespace TowerDefense.Source.Guardians.Wizards
         {
             // TODO: implement
         }
+        public override void Demote(IAttack oldAttackType, int oldPromoteLevel) { }
 
         public sealed override void Upgrade()
         {
@@ -45,5 +47,6 @@ namespace TowerDefense.Source.Guardians.Wizards
             UpgradeCost = (int)(UpgradeCost * GuardianUpgradeCostMultiplier.FireWizard);
             AttackType.Upgrade();
         }
+        public override void Downgrade(IAttack oldAttackType, int oldUpgradeCost) { }
     }
 }

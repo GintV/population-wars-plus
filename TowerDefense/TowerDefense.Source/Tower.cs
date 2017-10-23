@@ -1,37 +1,57 @@
-﻿namespace TowerDefense.Source
+﻿using TowerDefense.Source.Utils;
+
+namespace TowerDefense.Source
 {
     public class Tower
     {
         public GuardianSpace GuardianSpace { get; }
-        public int HealthPoints { get; private set; }
-        public int HealthPointsRemaining { get; private set; }
+        public Observable<int> HealthPoints { get; }
+        public Observable<int> HealthPointsRemaining { get; }
         public int Level { get; private set; }
-        public int ManaPoints { get; private set; }
-        public int ManaPointsRemaining { get; private set; }
+        public Observable<int> ManaPoints { get; }
+        public Observable<int> ManaPointsRemaining { get; }
         public int UpgradeCost { get; private set; }
 
 
         public Tower()
         {
             GuardianSpace = new GuardianSpace();
-            HealthPoints = HealthPointsRemaining = 250;
-            ManaPoints = ManaPointsRemaining = 50;
+            HealthPoints = new Observable<int>();
+            HealthPointsRemaining = new Observable<int>();
+            ManaPoints = new Observable<int>();
+            ManaPointsRemaining = new Observable<int>();
+            HealthPoints.Set(250);
+            HealthPointsRemaining.Set(250);
+            ManaPoints.Set(50);
+            ManaPointsRemaining.Set(50);
             Level = 1;
             UpgradeCost = 100;
         }
 
         public void Upgrade()
         {
-            HealthPoints += 250;
-            HealthPointsRemaining += 250;
-            ManaPoints += 250;
-            ManaPointsRemaining += 50;
+            HealthPoints.Set(HealthPoints.Get() + 250);
+            HealthPointsRemaining.Set(HealthPointsRemaining.Get() + 250);
+            ManaPoints.Set(ManaPoints.Get() + 50);
+            ManaPointsRemaining.Set(ManaPointsRemaining.Get() + 50);
             Level += 1;
             var upgradePrice = UpgradeCost * 1.5;
             UpgradeCost = (int)upgradePrice;
 
             if (Level % 20 == 0)
                 GuardianSpace.AddBlock();
+        }
+
+        public void Downgrade(int upgradeCost)
+        {
+            HealthPoints.Set(HealthPoints.Get() - 250);
+            HealthPointsRemaining.Set(HealthPointsRemaining.Get() - 250);
+            ManaPoints.Set(ManaPoints.Get() - 50);
+            ManaPointsRemaining.Set(ManaPointsRemaining.Get() - 50);
+            if (Level % 20 == 0)
+                GuardianSpace.RemoveBlock();
+            Level -= 1;
+            UpgradeCost = upgradeCost;
         }
     }
 }

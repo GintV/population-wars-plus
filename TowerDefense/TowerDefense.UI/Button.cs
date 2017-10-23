@@ -5,17 +5,15 @@ using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public sealed class Button : DrawnRenderable, IClickable
+    public sealed class Button : DrawnRenderable, IButton
     {
         private string m_description;
-        private readonly Rectangle m_boundingRectangle;
 
         public Button(Styler styler, Action<Vector2> onClick, Vector2 size) : base(styler)
         {
             OnClickAction = onClick;
             m_description = "";
             Size = size;
-            m_boundingRectangle = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
             Image = new Bitmap((int)Size.X, (int)Size.Y);
             Draw();
         }
@@ -41,5 +39,7 @@ namespace TowerDefense.UI
             Styler.DrawString(g, m_description, Vector2.Zero, Size, Config.CenterAlignFormat);
             g.Dispose();
         }
+
+        public bool HasChanged => false;
     }
 }
