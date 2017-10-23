@@ -28,7 +28,7 @@ namespace TowerDefense.UI
             return s_instance ?? (s_instance = new GameView());
         }
 
-        public IGameHandler Game { get; set; }
+        public GameHandler Game { get; set; }
 
         private void GameViewPaint(object sender, PaintEventArgs e)
         {

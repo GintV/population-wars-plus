@@ -9,29 +9,20 @@ using static TowerDefense.Source.Constants;
 
 namespace TowerDefense.GameEngine
 {
-    public interface IGameHandler
-    {
-        IGameControls GameControls { get; }
-        IGameEnvironment GameEnvironment { get; }
-        void CreateGame(IConfiguration configuration);
-        void RunGame();
-        void StopGame();
-    }
-
-    public class GameHandler : IGameHandler
+    public class GameHandler
     {
         private static readonly Lazy<GameHandler> GameInstance = new Lazy<GameHandler>(() => new GameHandler());
         private readonly CancellationTokenSource m_gameTaskCancellationTokenSource = new CancellationTokenSource();
-        public IRenderer Renderer { get; set; }
-
 
         public IConfiguration Configuration { get; private set; }
         public IGameEnvironment GameEnvironment { get; private set; }
         public IGameControls GameControls { get; private set; }
+        public IRenderer Renderer { get; set; }
+
 
         private GameHandler() { }
 
-        public static IGameHandler GetHandler() => GameInstance.Value;
+        public static GameHandler GetHandler() => GameInstance.Value;
 
         public void CreateGame(IConfiguration configuration)
         {
@@ -39,6 +30,7 @@ namespace TowerDefense.GameEngine
             GameEnvironment = new GameEnvironment();
             GameControls = new GameControls(configuration, GameEnvironment);
             GameEngineSettings.GameCyclesPerSecond = CyclesPerSecond;
+            SetConfiguration(configuration);
         }
 
         public void RunGame()
@@ -70,6 +62,16 @@ namespace TowerDefense.GameEngine
         public void StopGame()
         {
             m_gameTaskCancellationTokenSource.Cancel();
+        }
+
+        private void SetConfiguration(IConfiguration configuration) // TODO: please later refactor this away :)))
+        {
+            ConfigurationSettings.BaseGuardianCreationCost = configuration.BaseGuardianCreationCost;
+            ConfigurationSettings.DistanceToTower = configuration.DistanceToTower;
+            ConfigurationSettings.GuardianShootingHeightInBlock = configuration.GuardianShootingHeightInBlock;
+            ConfigurationSettings.TowerBaseHeight = configuration.TowerBaseHeight;
+            ConfigurationSettings.TowerBlockHeight = configuration.TowerBlockHeight;
+            ConfigurationSettings.TowerWidth = configuration.TowerWidth;
         }
     }
 }

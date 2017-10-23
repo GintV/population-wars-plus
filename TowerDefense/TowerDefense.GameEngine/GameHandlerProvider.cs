@@ -6,6 +6,6 @@ namespace TowerDefense.GameEngine
 {
     public static class GameHandlerProvider
     {
-        public static IGameHandler GetHandler() => GameHandler.GetHandler();
+        public static GameHandler GetHandler() => GameHandler.GetHandler();
     }
 }
