@@ -5,30 +5,16 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
 {
-    internal class LineMove : MoveType
-    {
-
-        public bool Move(ref Vector2 currentLocation, Vector2 targetLocation, int speed)
+    public class LineMove : MoveType
+    {                
+        public override Vector2 Move(Vector2 location)
         {
-            var trajectory = targetLocation - currentLocation;
+            var trajectory = Target - location;
             var distance = Math.Abs(trajectory.Length());
-            if (distance <= speed)
-            {
-                currentLocation = targetLocation;
-                return true;
-            }
-            currentLocation += Vector2.Normalize(trajectory) * speed;
-            return false;
-        }
 
-        public override object Clone()
-        {
-            throw new NotImplementedException();
+            location += Vector2.Normalize(trajectory) * (float)SourceSpeed;
+            return location;
         }
-
-        public override Vector2 Move()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

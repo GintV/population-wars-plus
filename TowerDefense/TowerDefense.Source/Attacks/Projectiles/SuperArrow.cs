@@ -9,7 +9,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
 {
     internal class SupperArrow : Projectile
     {
-        public sealed override IMove MoveType { get; protected set; }
+        public sealed override IMove MoveType { get; set; }
 
         public SupperArrow(int collisionDamage, double speed) : base(collisionDamage, speed)
         {

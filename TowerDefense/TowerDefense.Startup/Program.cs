@@ -96,51 +96,57 @@ namespace TowerDefense.Startup
         private static void DemoPrototype()
         {
             // Archer has this phantom arrow spawner
-            /*var arrowPrototype = new Arrow { Location = new Vector2(0) };
+            var arrowPrototype = new Arrow();
+            arrowPrototype.MoveType.Initialize(new Vector2(0, 0), arrowPrototype.Speed, new Vector2(101, 0), 5);
 
-            var arrowA = new ArrowLogger("Arrow A", (IProjectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
-            var arrowB = new ArrowLogger("Arrow B", (IProjectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
+            var arrowA = new ArrowLogger("Arrow A", (Projectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
+            var arrowB = new ArrowLogger("Arrow B", (Projectile)arrowPrototype.Clone(), ConsoleLogger.GetLogger());
+            
 
             Console.WriteLine("#Moving arrow A:");
 
-            arrowA.Move(new Vector2(100, 50));
-            arrowA.Move(new Vector2(100, 50));
+            arrowA.Move();
+            arrowA.Move();
 
             Console.WriteLine();
 
             Console.WriteLine("#Moving arrow B:");
 
-            arrowB.Move(new Vector2(100, 25));
-            arrowB.Move(new Vector2(100, 25));
+            arrowB.Move();
+            arrowB.Move();
 
             Console.WriteLine();
 
             Console.WriteLine("#Moving arrow A:");
 
-            arrowA.Move(new Vector2(100, 50));
-            arrowA.Move(new Vector2(100, 50));*/
+            arrowA.Move();
+            arrowA.Move();
+            arrowA.Move();
 
         }
 
         private static void DemoStrategy()
         {
-            /*var arrowARaw = new Arrow { Location = new Vector2(0) };
-            var arrowBRaw = new Arrow { Location = new Vector2(0), Move = new ArchMove() };
+            var arrowARaw = new Arrow { Location = new Vector2(0) };
+            arrowARaw.MoveType.Initialize(new Vector2(0, 0), arrowARaw.Speed, new Vector2(101, 0), 5);
+
+            var arrowBRaw = new Arrow { Location = new Vector2(0), MoveType = new LineMove() };
+            arrowBRaw.MoveType.Initialize(new Vector2(0, 0), arrowBRaw.Speed, new Vector2(101, 0), 5);
 
             var arrowA = new ArrowLogger("Arrow A", arrowARaw, ConsoleLogger.GetLogger());
             var arrowB = new ArrowLogger("Arrow B", arrowBRaw, ConsoleLogger.GetLogger());
             
-            Console.WriteLine("#Moving arrow A in Line:");
+            Console.WriteLine("#Moving arrow A in Arch:");
 
             for (int i = 0; i <= 10; i++)
-                arrowA.Move(new Vector2(100, 0));
+                arrowA.Move();
 
             Console.WriteLine();
 
-            Console.WriteLine("#Moving arrow B in Arch:");
+            Console.WriteLine("#Moving arrow B in Line:");
 
             for(int i = 0; i <= 10; i++)
-                arrowB.Move(new Vector2(100, 0));*/
+                arrowB.Move();
         }
     }
 }

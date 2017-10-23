@@ -5,9 +5,9 @@ namespace TowerDefense.Source.Attacks.Projectiles
 {
     public class Arrow : Projectile // TODO: to internal
     {
-        public sealed override IMove MoveType { get; protected set; }
+        public sealed override IMove MoveType { get; set; }
 
-        public Arrow(int collisionDamage, double speed) : base(collisionDamage, speed)
+        public Arrow(int collisionDamage = Constants.ProjectileDamageBase.Arrow, double speed = Constants.ProjectileSpeedBase.Arrow) : base(collisionDamage, speed)
         {
             MoveType = new ArchMove();
         }

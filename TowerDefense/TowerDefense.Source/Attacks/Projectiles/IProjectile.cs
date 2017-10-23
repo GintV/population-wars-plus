@@ -16,7 +16,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public int CollisionDamage { get; protected set; }
         public Vector2 Location { get; set; } // TODO: to protected set
         public double Speed { get; protected set; }
-        public abstract IMove MoveType { get; protected set; }
+        public abstract IMove MoveType { get; set; }
 
         protected Projectile(int collisionDamage, double speed)
         {
@@ -27,7 +27,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public abstract object Clone();
         public abstract void Upgrade();
 
-        public void Move() => Location = MoveType.Move();
+        public void Move() => Location = MoveType.Move(Location);
         public void SetLocation(Vector2 location) => Location = location;
 
     }

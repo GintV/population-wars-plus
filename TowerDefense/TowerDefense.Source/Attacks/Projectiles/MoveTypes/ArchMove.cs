@@ -5,65 +5,43 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
 {
-    internal class ArchMove : MoveType
+    public class ArchMove : MoveType
     {
-        private Vector2 startLocation;
         private Vector2 lineLocation;
-        private bool firstMove;
 
-
-        public ArchMove()
-        {
-            firstMove = true;
-        }
-
-        public bool Move(ref  Vector2 currentLocation, Vector2 targetLocation, int speed)
-        {
-            if (firstMove) 
-            {
-                startLocation = new Vector2(currentLocation.X, currentLocation.Y);
-                lineLocation = new Vector2(currentLocation.X, currentLocation.Y);
-                firstMove = false;
-            }
-
-            var fullTrajectory = targetLocation - startLocation;
-            var fullDistance = Math.Abs(fullTrajectory.Length());
-
-            var trajectory = targetLocation - lineLocation;
-            var distance = Math.Abs(trajectory.Length());
-            
-            if (distance <= speed)
-            {
-                currentLocation = targetLocation;
-                return true;
-            }
-            lineLocation += Vector2.Normalize(trajectory) * speed;
-            currentLocation = lineLocation;
-
-            trajectory = targetLocation - lineLocation;
-            distance = Math.Abs(trajectory.Length());
-
-            currentLocation.Y += ArchHelper(fullDistance, distance);
-
-            return false;
-        }
+        public ArchMove() { }
 
         private float ArchHelper(float fullDistance, float distance)
         {
             double relativePosition = 1 - distance / fullDistance;
 
-            return (float)(Math.Sin(relativePosition * Math.PI)*15);
+            return (float)(Math.Sin(relativePosition * Math.PI) * 15);
         }
 
 
-        public override Vector2 Move()
+        public override Vector2 Move(Vector2 location)
         {
-            throw new NotImplementedException();
-        }
+            var fullTrajectory = Target - Source;
+            var fullDistance = Math.Abs(fullTrajectory.Length());
 
-        public override object Clone()
+            var trajectory = Target - lineLocation;
+            var distance = Math.Abs(trajectory.Length());
+
+            lineLocation += Vector2.Normalize(trajectory) * (float)SourceSpeed;
+            location = lineLocation;
+
+            trajectory = Target - lineLocation;
+            distance = Math.Abs(trajectory.Length());
+
+            location.Y += ArchHelper(fullDistance, distance);
+
+            return location;
+        }
+        
+        public override void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed)
         {
-            throw new NotImplementedException();
+            base.Initialize(source, sourceSpeed, target, targetSpeed);
+            lineLocation = source;
         }
     }
 }

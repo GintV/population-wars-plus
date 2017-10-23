@@ -20,7 +20,7 @@ namespace TowerDefense.Source.Guardians.Archers
 
         public DarkArcher()
         {
-            AttackType = new SingleArrow(AttackSpeedBase.SingleArrow, new Arrow(ProjectileDamageBase.Arrow, ProjectileSpeedBase.Arrow));
+            AttackType = new SingleArrow(AttackSpeedBase.SingleArrow, new Arrow());
             ChargeAttackCost = ChargeAttackCostBase.DarkArcher;
             ChargeAttackEnabled = false;
             ChargeAttackTimer = ChargeAttackTimerBase.DarkArcher;

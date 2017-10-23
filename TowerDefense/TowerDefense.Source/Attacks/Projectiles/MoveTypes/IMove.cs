@@ -7,21 +7,21 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
     {
         /// <summary>Moves object with defined fashion.</summary>
         /// <returns>Object location after move.</returns>
-        Vector2 Move();
+        Vector2 Move(Vector2 location);
         void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed);
     }
 
-    internal abstract class MoveType : IMove
+    public abstract class MoveType : IMove
     {
-        protected Vector2 Source { get; set; }
-        protected double SourceSpeed { get; set; }
-        protected Vector2 Target { get; set; }
-        protected double TargetSpeed { get; set; }
+        public Vector2 Source { get; set; }
+        public double SourceSpeed { get; set; }
+        public Vector2 Target { get; set; }
+        public double TargetSpeed { get; set; }
 
-        public abstract object Clone();
-        public abstract Vector2 Move();
+        public object Clone() => MemberwiseClone();
+        public abstract Vector2 Move(Vector2 location);
 
-        public void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed)
+        public virtual void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed)
         {
             Source = source;
             SourceSpeed = sourceSpeed;
