@@ -8,7 +8,7 @@ namespace TowerDefense.GameEngine
 {
     public interface IGameEnvironment
     {
-        IGameInfo GameInfo { get; }
+        GameInfo GameInfo { get; }
         Inventory Inventory { get; }
         List<IMonster> Monsters { get; }
         List<IProjectile> Projectiles { get; }
@@ -17,7 +17,7 @@ namespace TowerDefense.GameEngine
 
     internal class GameEnvironment : IGameEnvironment
     {
-        public IGameInfo GameInfo { get; }
+        public GameInfo GameInfo { get; }
         public Inventory Inventory { get; }
         public List<IMonster> Monsters { get; }
         public List<IProjectile> Projectiles { get; }
@@ -29,7 +29,7 @@ namespace TowerDefense.GameEngine
             Monsters = new List<IMonster>();
             Projectiles = new List<IProjectile>();
             Tower = new Tower();
-            GameInfo = new GameInfo(Inventory.Coins, Tower.HealthPointsRemaining, Tower.HealthPoints, Tower.ManaPointsRemaining, Tower.ManaPoints);
+            GameInfo = new GameInfoProvider(Inventory.Coins, Tower.HealthPointsRemaining, Tower.HealthPoints, Tower.ManaPointsRemaining, Tower.ManaPoints);
         }
     }
 }

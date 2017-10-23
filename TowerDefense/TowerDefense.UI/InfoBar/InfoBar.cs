@@ -8,7 +8,7 @@ namespace TowerDefense.UI.InfoBar
 {
     public sealed class InfoBar : DrawnRenderable, IGameInfoSubscriber
     {
-        private readonly IGameInfo m_gameInfo;
+        private readonly GameInfo m_gameInfo;
         private Image m_image;
         private readonly GameInfoBlock m_healthBlock;
         private readonly GameInfoBlock m_manaBlock;
@@ -28,7 +28,7 @@ namespace TowerDefense.UI.InfoBar
             set => m_image = value;
         }
 
-        public InfoBar(Styler styler, IGameInfo gameInfo) : base(styler)
+        public InfoBar(Styler styler, GameInfo gameInfo) : base(styler)
         {
             Position = Config.InfoBarPosition;
             Size = Config.InfoBarSize;
@@ -60,11 +60,6 @@ namespace TowerDefense.UI.InfoBar
         {
             m_coinsBlock.Value = m_gameInfo.Coins.ToString();
             m_hasChanged = true;
-        }
-
-        public void OnUpdate(IGameInfo gameInfo)
-        {
-            throw new NotImplementedException();
         }
 
         protected override void Draw()

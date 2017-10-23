@@ -5,6 +5,5 @@
         void OnTowerHealthPointsChanged();
         void OnTowerManaPointsChanged();
         void OnCoinsChanged();
-        void OnUpdate(IGameInfo gameInfo);
     }
 }

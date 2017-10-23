@@ -4,7 +4,7 @@ namespace TowerDefense.UI
 {
     public class ViewFactory
     {
-        public static IView CreateView(ViewType type, IGameInfo gameInfo) // take game state as param?
+        public static IView CreateView(ViewType type, GameInfo gameInfo) // take game state as param?
         {
             switch (type)
             {

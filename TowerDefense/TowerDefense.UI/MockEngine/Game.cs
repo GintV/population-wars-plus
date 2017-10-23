@@ -7,7 +7,7 @@ using TowerDefense.UI.Properties;
 
 namespace TowerDefense.UI.MockEngine
 {
-    public class Game : IGame, IGameInfo
+    public class Game : GameInfo, IGame
     {
         private DateTime m_lastFrameTime;
         private readonly ICollection<IRenderable> m_renderableObjects;
@@ -18,11 +18,11 @@ namespace TowerDefense.UI.MockEngine
         private int m_coins;
 
         public Vector2 Boundries { get; }
-        public int? TowerHealthPoints => m_tower.Health;
-        public int? TowerMaxHealthPoints => m_tower.MaxHealth;
-        public int? TowerManaPoints => m_tower.Mana;
-        public int? TowerMaxManaPoints => m_tower.MaxMana;
-        public int? Coins => m_coins;
+        public override int? TowerHealthPoints => m_tower.Health;
+        public override int? TowerMaxHealthPoints => m_tower.MaxHealth;
+        public override int? TowerManaPoints => m_tower.Mana;
+        public override int? TowerMaxManaPoints => m_tower.MaxMana;
+        public override int? Coins => m_coins;
 
         public Game()
         {
@@ -128,16 +128,6 @@ namespace TowerDefense.UI.MockEngine
             {
                 sub.OnCoinsChanged();
             }
-        }
-
-        public void Subscribe(IGameInfoSubscriber subscriber)
-        {
-            m_subscribers.Add(subscriber);
-        }
-
-        public void Unsubscribe(IGameInfoSubscriber subscriber)
-        {
-            m_subscribers.Remove(subscriber);
         }
     }
 }

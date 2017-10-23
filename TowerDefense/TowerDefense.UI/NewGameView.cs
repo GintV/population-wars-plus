@@ -13,13 +13,13 @@ namespace TowerDefense.UI
     public class NewGameView : IView
     {
         private readonly IView m_renderingView;
-        private readonly IGameInfo m_gameInfo;
+        private readonly GameInfo m_gameInfo;
         private readonly ICollection<IRenderable> m_addedRenderables;
         private bool m_isInstansiated;
         private readonly GameInfoObserver m_gameInfoObserver;
         private Sidebar m_sidebar;
 
-        public NewGameView(IView renderingView, IGameInfo gameInfo)
+        public NewGameView(IView renderingView, GameInfo gameInfo)
         {
             m_isInstansiated = false;
             m_addedRenderables = new List<IRenderable>();

@@ -10,9 +10,9 @@ namespace TowerDefense.UI
 {
     public class GameInfoObserver : IGameInfoSubscriber
     {
-        private readonly IGameInfo m_gameInfo;
+        private readonly GameInfo m_gameInfo;
 
-        public GameInfoObserver(IGameInfo gameInfo)
+        public GameInfoObserver(GameInfo gameInfo)
         {
             m_gameInfo = gameInfo;
             Health = new Observable<int>();
@@ -50,11 +50,6 @@ namespace TowerDefense.UI
         public void OnCoinsChanged()
         {
             Coins.Set(m_gameInfo.Coins ?? 0);
-        }
-
-        public void OnUpdate(IGameInfo gameInfo)
-        {
-            throw new NotImplementedException();
         }
     }
 }
