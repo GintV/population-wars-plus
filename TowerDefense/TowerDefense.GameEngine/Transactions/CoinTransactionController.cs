@@ -8,20 +8,20 @@ namespace TowerDefense.GameEngine.Transactions
     {
         private const int MaxUndoDepth = 3;
 
-        private readonly IGameEnvironment m_gameplay;
+        private readonly IGameEnvironment m_environment;
         private readonly ConcurrentQueue<Action> m_pendingTransactions;
         private readonly LinkedList<CoinTransaction> m_doneTransactions;
 
-        public CoinTransactionController(IGameEnvironment gameplay)
+        public CoinTransactionController(IGameEnvironment environment)
         {
-            m_gameplay = gameplay;
+            m_environment = environment;
             m_pendingTransactions = new ConcurrentQueue<Action>();
             m_doneTransactions = new LinkedList<CoinTransaction>();
         }
 
         public void AddTransaction(CoinTransaction transaction) => m_pendingTransactions.Enqueue(() =>
         {
-            if (transaction.Execute(m_gameplay))
+            if (transaction.Execute(m_environment))
                 m_doneTransactions.AddFirst(transaction);
             if (m_doneTransactions.Count > MaxUndoDepth)
             {
@@ -33,12 +33,12 @@ namespace TowerDefense.GameEngine.Transactions
         {
             var transaction = m_doneTransactions.First?.Value;
             if (transaction == null) return;
-            if (transaction.Undo(m_gameplay))
+            if (transaction.Undo(m_environment))
                 m_doneTransactions.RemoveFirst();
             else m_doneTransactions.Clear();
         });
 
-        public void ExecuteTransactions()
+        public void ExecutePendingTransactions()
         {
             while (!m_pendingTransactions.IsEmpty)
             {

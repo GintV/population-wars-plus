@@ -75,7 +75,7 @@ namespace TowerDefense.UI
             {
                 m_renderingView.RegisterClickable(new GuardianSlot(RedrawSidebar, RedrawSidebar)
                 {
-                    Position = new Vector2(300, 100 * (i + 1)),
+                    Position = new Vector2(313, 350 + 110 * (i + 1)),
                     Size = new Vector2(100, 100),
                     Index = i,
                     Guardian = i % 2 == 0 ? new Guardian() : null

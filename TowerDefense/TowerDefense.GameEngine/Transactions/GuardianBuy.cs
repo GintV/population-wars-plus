@@ -21,10 +21,10 @@ namespace TowerDefense.GameEngine.Transactions
             CoinDifference = cost;
         }
 
-        public override bool Execute(IGameEnvironment gameplay)
+        public override bool Execute(IGameEnvironment environment)
         {
-            if (gameplay.Inventory.Coins.Get() < CoinDifference) return false;
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() - CoinDifference);
+            if (environment.Inventory.Coins.Get() < CoinDifference) return false;
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() - CoinDifference);
             var factory = GuardianFactoryProvider.GetFactory(GuardianClass);
             if (!factory.HasValue)
                 return false;
@@ -32,28 +32,28 @@ namespace TowerDefense.GameEngine.Transactions
             if (!guardian.HasValue)
                 return false;
             m_boughtGuardian = guardian.Value;
-            gameplay.Inventory.Guardians.Add(guardian.Value);
+            environment.Inventory.Guardians.Add(guardian.Value);
             return true;
         }
 
-        public override bool Undo(IGameEnvironment gameplay)
+        public override bool Undo(IGameEnvironment environment)
         {
             var found = true;
-            if (!gameplay.Inventory.Guardians.Remove((Guardian)m_boughtGuardian))
+            if (!environment.Inventory.Guardians.Remove((Guardian)m_boughtGuardian))
             {
                 found = false;
-                for (var i = 0; i < gameplay.Tower.GuardianSpace.Blocks; i++)
+                for (var i = 0; i < environment.Tower.GuardianSpace.Blocks; i++)
                 {
-                    if (gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_boughtGuardian))
+                    if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_boughtGuardian))
                     {
                         found = true;
-                        gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;
+                        environment.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;
                         break;
                     }
                 }
             }
             if (found)
-                gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() + CoinDifference);
+                environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
             return found;
         }
     }

@@ -16,13 +16,13 @@ namespace TowerDefense.GameEngine.Transactions
             m_soldGuardian = guardianToSell;
         }
 
-        public override bool Execute(IGameEnvironment gameplay)
+        public override bool Execute(IGameEnvironment environment)
         {
-            for (int i = 0; i < gameplay.Tower.GuardianSpace.Blocks; i++)
+            for (int i = 0; i < environment.Tower.GuardianSpace.Blocks; i++)
             {
-                if (gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_soldGuardian))
+                if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_soldGuardian))
                 {
-                    gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;
+                    environment.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;
                     m_blockIndex = i;
                     // TODO moneys returning goes here
                     return true;
@@ -31,25 +31,25 @@ namespace TowerDefense.GameEngine.Transactions
             return false;
         }
 
-        public override bool Undo(IGameEnvironment gameplay)
+        public override bool Undo(IGameEnvironment environment)
         {
-            if (gameplay.Inventory.Coins.Get() < CoinDifference) return false;
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() + CoinDifference);
-            if (gameplay.Tower.GuardianSpace.TowerBlocks[m_blockIndex].Guardian == null)
+            if (environment.Inventory.Coins.Get() < CoinDifference) return false;
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
+            if (environment.Tower.GuardianSpace.TowerBlocks[m_blockIndex].Guardian == null)
             {
-                gameplay.Tower.GuardianSpace.TowerBlocks[m_blockIndex].Guardian = m_soldGuardian;
+                environment.Tower.GuardianSpace.TowerBlocks[m_blockIndex].Guardian = m_soldGuardian;
                 return true;
             }
 
-            for (int i = 0; i < gameplay.Tower.GuardianSpace.Blocks; i++)
+            for (int i = 0; i < environment.Tower.GuardianSpace.Blocks; i++)
             {
-                if (gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian == null)
+                if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian == null)
                 {
-                    gameplay.Tower.GuardianSpace.TowerBlocks[i].Guardian = m_soldGuardian;
+                    environment.Tower.GuardianSpace.TowerBlocks[i].Guardian = m_soldGuardian;
                     return true;
                 }
             }
-            gameplay.Inventory.Guardians.Add(m_soldGuardian);
+            environment.Inventory.Guardians.Add(m_soldGuardian);
             return true;
         }
     }

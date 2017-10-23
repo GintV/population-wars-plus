@@ -41,12 +41,12 @@ namespace TowerDefense.GameEngine
                 var i = 0;
                 while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    GameEnvironment.TransactionController.ExecuteTransactions();
+                    GameControls.TransactionController.ExecutePendingTransactions();
                     foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                     {
                         //towerBlock.Guardian?.Attack();
                     }
-                    Renderer.Render(GameEnvironment.Tower, GameEnvironment.Monsters, GameEnvironment.Projectiles.OfType<Projectile>());
+                    Renderer?.Render(GameEnvironment.Tower, GameEnvironment.Monsters, GameEnvironment.Projectiles.OfType<Projectile>());
                     if (++i == 10)
                     {
                         GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 1);

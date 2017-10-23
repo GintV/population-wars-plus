@@ -8,24 +8,24 @@ namespace TowerDefense.GameEngine.Transactions
         private IAttack m_previousAttack;
         public Guardian UpgradedGuardian { get; }
 
-        public GuardianUpgrade(Guardian guardian)
+        public GuardianUpgrade(Guardian guardianToUpgrade)
         {
-            UpgradedGuardian = guardian;
+            UpgradedGuardian = guardianToUpgrade;
         }
 
-        public override bool Execute(IGameEnvironment gameplay)
+        public override bool Execute(IGameEnvironment environment)
         {
             CoinDifference += UpgradedGuardian.UpgradeCost;
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() - CoinDifference);
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() - CoinDifference);
             // TODO deep copy
             m_previousAttack = UpgradedGuardian.AttackType;
             UpgradedGuardian.Upgrade();
             return true;
         }
 
-        public override bool Undo(IGameEnvironment gameplay)
+        public override bool Undo(IGameEnvironment environment)
         {
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() + CoinDifference);
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
             UpgradedGuardian.Downgrade(m_previousAttack, CoinDifference);
             return true;
         }

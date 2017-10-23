@@ -12,23 +12,23 @@ namespace TowerDefense.GameEngine.Transactions
         private int m_previousPromoteLevel;
         public Guardian PromotedGuardian { get; }
 
-        public GuardianPromote(Guardian guardian)
+        public GuardianPromote(Guardian guardianToPromote)
         {
-            PromotedGuardian = guardian;
+            PromotedGuardian = guardianToPromote;
         }
-        public override bool Execute(IGameEnvironment gameplay)
+        public override bool Execute(IGameEnvironment environment)
         {
             CoinDifference = PromotedGuardian.PromoteCost;
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() - CoinDifference);
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() - CoinDifference);
             m_previousAttackType = PromotedGuardian.AttackType;
             m_previousPromoteLevel = PromotedGuardian.PromoteLevel;
             PromotedGuardian.Promote();
             return true;
         }
 
-        public override bool Undo(IGameEnvironment gameplay)
+        public override bool Undo(IGameEnvironment environment)
         {
-            gameplay.Inventory.Coins.Set(gameplay.Inventory.Coins.Get() + CoinDifference);
+            environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
             PromotedGuardian.Demote(m_previousAttackType, m_previousPromoteLevel);
             return true;
         }

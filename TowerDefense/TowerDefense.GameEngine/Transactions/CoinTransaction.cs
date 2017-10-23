@@ -8,8 +8,8 @@ namespace TowerDefense.GameEngine.Transactions
     {
         public int CoinDifference { get; set; }
 
-        public abstract bool Execute(IGameEnvironment gameplay);
-        public abstract bool Undo(IGameEnvironment gameplay);
+        public abstract bool Execute(IGameEnvironment environment);
+        public abstract bool Undo(IGameEnvironment environment);
         public virtual bool IsUndoable() => true;
     }
 }
