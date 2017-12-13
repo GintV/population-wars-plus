@@ -22,6 +22,7 @@ namespace TowerDefense.GameEngine.Transactions
             {
                 if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_soldGuardian))
                 {
+                    environment.Inventory.Guardians.Remove(environment.Tower.GuardianSpace.TowerBlocks[i].Guardian);
                     environment.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;
                     m_blockIndex = i;
                     // TODO moneys returning goes here

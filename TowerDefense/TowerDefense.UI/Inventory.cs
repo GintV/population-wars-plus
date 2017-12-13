@@ -76,6 +76,12 @@ namespace TowerDefense.UI
             return result;
         }
 
+        public void ReplaceInventoryBlocks(List<IClickable> blocks)
+        {
+            Clickables = blocks.ToList();
+            m_hasChanged = true;
+        }
+
         public override void OnClick(Vector2 clickPosition)
         {
             if (IsClicked(m_leftArrow.Position, m_leftArrow.Size, clickPosition))

@@ -33,10 +33,7 @@ namespace TowerDefense.UI.MockEngine
             }
             else
             {
-                createdMonster = new Bubble
-                {
-                    Location = new Vector2(m_random.Next(1300), m_random.Next(700))
-                };
+                createdMonster = new Bubble(1, new Vector2(m_random.Next(1300), m_random.Next(700)), 1);
             }
             m_monsters.Add(createdMonster);
         }

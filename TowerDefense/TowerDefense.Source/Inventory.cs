@@ -8,7 +8,7 @@ namespace TowerDefense.Source
 {
     public class Inventory
     {
-        public Observable<int> Coins { get; private set; }
+        public Observable<int> Coins { get; }
         public List<Guardian> Guardians { get; set; }
 
         public Inventory()

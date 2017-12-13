@@ -80,6 +80,7 @@
     <Compile Include="Guardian.cs" />
     <Compile Include="GuardianSlot.cs" />
     <Compile Include="IButton.cs" />
+    <Compile Include="ImageRepository.cs" />
     <Compile Include="Stylers\ClickableStyler.cs" />
     <Compile Include="Stylers\GuiBackStyler.cs" />
     <Compile Include="Stylers\InactiveStyler.cs" />

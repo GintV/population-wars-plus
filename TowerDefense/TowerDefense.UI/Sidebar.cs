@@ -11,12 +11,13 @@ namespace TowerDefense.UI
 {
     public sealed class Sidebar : ClickableContainer
     {
+        private bool m_hasChanged;
         private Image m_image;
         public override Image Image
         {
             get
             {
-                if (Clickables.OfType<IButton>().Any(button => button.HasChanged))
+                if (m_hasChanged || Clickables.OfType<IButton>().Any(button => button.HasChanged))
                 {
                     Draw();
                 }
@@ -54,7 +55,7 @@ namespace TowerDefense.UI
                 Position = new Vector2(Config.SideBarButtonMargins.X, 145 + Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count),
                 Description = description
             });
-            Draw();
+            m_hasChanged = true;
         }
 
         public void AddButton(IButton button)
@@ -62,11 +63,12 @@ namespace TowerDefense.UI
             button.Position = new Vector2(Config.SideBarButtonMargins.X, 145 + Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count);
             button.Size = Config.SideBarButtonSize;
             Clickables.Add(button);
-            Draw();
+            m_hasChanged = true;
         }
 
         protected override void Draw()
         {
+            m_hasChanged = false;
             var g = Graphics.FromImage(m_image);
             Styler.DrawRectangle(g, Vector2.Zero, Size);
             foreach (var clickable in Clickables)

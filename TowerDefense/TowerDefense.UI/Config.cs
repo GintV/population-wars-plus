@@ -53,6 +53,8 @@ namespace TowerDefense.UI
 
         public static StringFormat CenterAlignFormat = new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center};
 
+        public static Image EmptyImage = new Bitmap(1,1);
+
 
         public static void ConfigureGraphics(Graphics g)
         {

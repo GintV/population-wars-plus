@@ -58,6 +58,7 @@ namespace TowerDefense.GameEngine
             var guardian = GetGuardian(guardianSlot);
             if (!guardian.HasValue) return;
             GuardianSpace.TowerBlocks[guardianSlot].Guardian = null;
+            GameEnvironment.InventoryInfo.OnInventoryChanged();
         }
 
         public void PromoteGuardian(int guardianSlot)
@@ -79,6 +80,7 @@ namespace TowerDefense.GameEngine
             if (inventoryIndex >= Guardians.Count) return;
             var inventoryGuardian = Guardians.Except(GuardianSpace.TowerBlocks.Select(b => b.Guardian)).ElementAt(inventoryIndex);
             GuardianSpace.TowerBlocks[guardianSlot].Guardian = inventoryGuardian;
+            GameEnvironment.InventoryInfo.OnInventoryChanged();
         }
 
         public void SwitchToNextGuardian(int guardianSlot)

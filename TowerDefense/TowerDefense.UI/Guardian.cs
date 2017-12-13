@@ -13,5 +13,12 @@ namespace TowerDefense.UI
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
         public Image Image { get; set; }
+        public Type ReprestentedType { get; }
+        public int Index { get; set; }
+
+        public Guardian(Type representedGuardianType)
+        {
+            ReprestentedType = representedGuardianType;
+        }
     }
 }

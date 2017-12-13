@@ -9,7 +9,10 @@ namespace TowerDefense.Source.Monsters
     {
         public override int HealthPoints { get; }
         public override int HealthPointsRemaining { get; }
-        public override Vector2 Location { get; set; }
         public override int Speed { get; }
+        public override void Move(long dt)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

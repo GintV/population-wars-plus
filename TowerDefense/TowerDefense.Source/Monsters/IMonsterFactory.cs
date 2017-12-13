@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using TowerDefense.Source.Guardians;
 
@@ -13,7 +14,7 @@ namespace TowerDefense.Source.Monsters
     internal class MonsterFactory : IMonsterFactory
     {
         public Maybe<IMonster> CreateMonster(MonsterType monsterType) =>
-            monsterType == MonsterType.Bubble ? (Monster)new Bubble() :
+            monsterType == MonsterType.Bubble ? (Monster)new Bubble(1, new Vector2(0, 0), 1) :
             monsterType == MonsterType.Skull ? new Skull() : null;
     }
 }

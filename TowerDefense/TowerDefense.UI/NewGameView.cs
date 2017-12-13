@@ -10,7 +10,7 @@ using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public class NewGameView : IView
+    public class NewGameView : IView, IIventoryInfoSubscriber
     {
         private readonly IView m_renderingView;
         private readonly GameInfo m_gameInfo;
@@ -18,6 +18,9 @@ namespace TowerDefense.UI
         private bool m_isInstansiated;
         private readonly GameInfoObserver m_gameInfoObserver;
         private Sidebar m_sidebar;
+        private Inventory m_inventory;
+        private readonly List<GuardianSlot> m_guardianSlots;
+        private int? m_selectedGuardianIndex;
 
         public NewGameView(IView renderingView, GameInfo gameInfo)
         {
@@ -27,13 +30,34 @@ namespace TowerDefense.UI
             m_gameInfo = gameInfo;
             m_gameInfoObserver = new GameInfoObserver(m_gameInfo);
             m_gameInfo.Subscribe(m_gameInfoObserver);
+            m_guardianSlots = new List<GuardianSlot>();
+            GameHandler.GetHandler().GameEnvironment.InventoryInfo.Subscribe(this);
         }
 
         public void Render(IEnumerable<IRenderable> renderables)
         {
             if (!m_isInstansiated)
                 Instantiate();
-            m_renderingView.Render(renderables.Concat(m_addedRenderables));
+            var renderablesToPass = renderables.ToList();
+            var tower = renderablesToPass.OfType<Tower>().Single();
+            while (m_guardianSlots.Count < tower.Level)
+            {
+                var index = m_guardianSlots.Count;
+                m_guardianSlots.Add(new GuardianSlot(() => HandleGuardianSelect(index), () => HandleGuardianDeselect(index))
+                {
+                    Position = new Vector2(313, 600 - 110 * index),
+                    Size = new Vector2(100, 100)
+                });
+                RegisterClickable(m_guardianSlots[index]);
+            }
+            while (m_guardianSlots.Count > tower.Level)
+            {
+                var lastIndex = m_guardianSlots.Count - 1;
+                DeregisterClickable(m_guardianSlots[lastIndex]);
+                m_guardianSlots.RemoveAt(lastIndex);
+            }
+            UpdateGuardianSlots(renderablesToPass.OfType<Guardian>());
+            m_renderingView.Render(renderablesToPass.Where(r => r.GetType() != typeof(Guardian)).Concat(m_addedRenderables).Concat(m_guardianSlots));
         }
 
         public void RegisterClickable(IClickable clickable)
@@ -66,37 +90,37 @@ namespace TowerDefense.UI
             InitInventory();
             InitShop();
             ThisNeedsCleanUp();
-            InitSelectables();
+            //InitSelectables();
         }
 
-        private void InitSelectables()
-        {
-            for (var i = 0; i < 3; i++)
-            {
-                m_renderingView.RegisterClickable(new GuardianSlot(RedrawSidebar, RedrawSidebar)
-                {
-                    Position = new Vector2(313, 350 + 110 * (i + 1)),
-                    Size = new Vector2(100, 100),
-                    Index = i,
-                    Guardian = i % 2 == 0 ? new Guardian() : null
-                });
-            }
-        }
+        //private void InitSelectables()
+        //{
+        //    for (var i = 0; i < 3; i++)
+        //    {
+        //        m_renderingView.RegisterClickable(new GuardianSlot(RedrawSidebar, RedrawSidebar)
+        //        {
+        //            Position = new Vector2(313, 350 + 110 * (i + 1)),
+        //            Size = new Vector2(100, 100),
+        //            Index = i,
+        //            Guardian = i % 2 == 0 ? new Guardian() : null
+        //        });
+        //    }
+        //}
 
         private void RedrawSidebar()
         {
             m_sidebar.ClearButtons();
             var selected = m_renderingView.GetSelectedSelectable();
             if (!(selected is GuardianSlot slot) || slot.IsEmpty) return;
-            m_sidebar.AddButton("Charge Shot", () => GameHandler.GetHandler().GameControls.ActivateChargeAttack(slot.Index));
+            m_sidebar.AddButton("Charge Shot", () => GameHandler.GetHandler().GameControls.ActivateChargeAttack(slot.Guardian.Index));
             m_sidebar.AddButton(
                 new DependantButton<int>("Promote", Config.SideBarButtonSize, new ClickableStyler(), new InactiveStyler(), m_gameInfoObserver.Coins, t => t > 100)
                 {
-                    OnClickAction = _ => GameHandler.GetHandler().GameControls.PromoteGuardian(slot.Index)
+                    OnClickAction = _ => GameHandler.GetHandler().GameControls.PromoteGuardian(slot.Guardian.Index)
                 });
-            m_sidebar.AddButton("Upgrade", () => GameHandler.GetHandler().GameControls.UpgradeGuardian(slot.Index));
-            m_sidebar.AddButton("Move to Inv", () => GameHandler.GetHandler().GameControls.MoveGuardianToInventory(slot.Index));
-            m_sidebar.AddButton("Sell", () => GameHandler.GetHandler().GameControls.SellGuardian(slot.Index));
+            m_sidebar.AddButton("Upgrade", () => GameHandler.GetHandler().GameControls.UpgradeGuardian(slot.Guardian.Index));
+            m_sidebar.AddButton("Move to Inv", () => GameHandler.GetHandler().GameControls.MoveGuardianToInventory(slot.Guardian.Index));
+            m_sidebar.AddButton("Sell", () => GameHandler.GetHandler().GameControls.SellGuardian(slot.Guardian.Index));
         }
 
         private void InitSidebar()
@@ -108,9 +132,10 @@ namespace TowerDefense.UI
 
         private void InitInventory()
         {
-            var inv = new Inventory(new GuiBackStyler());
-            m_addedRenderables.Add(inv);
-            m_renderingView.RegisterClickable(inv);
+            m_inventory = new Inventory(new GuiBackStyler());
+            m_addedRenderables.Add(m_inventory);
+            m_renderingView.RegisterClickable(m_inventory);
+            OnInventoryChange();
         }
 
         private void InitShop()
@@ -118,6 +143,59 @@ namespace TowerDefense.UI
             var shop = new Shop(new GuiBackStyler());
             m_addedRenderables.Add(shop);
             m_renderingView.RegisterClickable(shop);
+        }
+
+        private void UpdateGuardianSlots(IEnumerable<Guardian> guardians)
+        {
+            bool needsRedraw = false;
+            var foundIndices = new List<int>();
+            foreach (var guardian in guardians)
+            {
+                foundIndices.Add(guardian.Index);
+                if (m_guardianSlots[guardian.Index].Guardian == null || m_guardianSlots[guardian.Index].Guardian.ReprestentedType != guardian.ReprestentedType)
+                {
+                    m_guardianSlots[guardian.Index].Guardian = guardian;
+                    needsRedraw = true;
+                }
+            }
+            foreach (var guardianSlot in m_guardianSlots)
+            {
+                if (guardianSlot.Guardian != null && !foundIndices.Contains(guardianSlot.Guardian.Index))
+                {
+                    guardianSlot.Guardian = null;
+                    needsRedraw = true;
+                }
+            }
+            if (needsRedraw || m_selectedGuardianIndex != null && !foundIndices.Contains(m_selectedGuardianIndex.Value))
+            {
+                RedrawSidebar();
+            }
+        }
+
+        private void HandleGuardianSelect(int i)
+        {
+            if (i != m_selectedGuardianIndex)
+            {
+                m_selectedGuardianIndex = i;
+                RedrawSidebar();
+            }
+        }
+
+        private void HandleGuardianDeselect(int i)
+        {
+            if (m_selectedGuardianIndex == i)
+            {
+                m_selectedGuardianIndex = null;
+                RedrawSidebar();
+            }
+        }
+
+        private void HandleInventoryClick(int i)
+        {
+            if (m_selectedGuardianIndex != null)
+            {
+                GameHandler.GetHandler().GameControls.SwapGuardians(m_selectedGuardianIndex.Value, i);
+            }
         }
 
         // TODO
@@ -162,6 +240,22 @@ namespace TowerDefense.UI
             g.DrawString("Shop", Config.DefaultFont, Config.TextBrush, new RectangleF(10, 0, 220, 50), format);
             g.Dispose();
             m_addedRenderables.Add(new BasicRenderable { Image = tempImage, Position = new Vector2(800 - 4, 726), Size = new Vector2(222, 54) });
+        }
+
+        public void OnInventoryChange()
+        {
+            var clickables = new List<IClickable>();
+            int i = 0;
+            foreach (var guardian in GameHandler.GetHandler().GameEnvironment.Inventory.Guardians.Except(GameHandler.GetHandler().GameEnvironment.Tower.GuardianSpace.TowerBlocks.Select(b => b.Guardian)))
+            {
+                var index = i;
+                clickables.Add(new BasicClickable(_ => { HandleInventoryClick(index); })
+                {
+                    Image = ImageRepository.GetInstance().GetImage(guardian.GetType())
+                });
+                i++;
+            }
+            m_inventory.ReplaceInventoryBlocks(clickables);
         }
     }
 }

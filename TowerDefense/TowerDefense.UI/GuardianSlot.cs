@@ -18,12 +18,11 @@ namespace TowerDefense.UI
             m_onDeselect = onDeselect;
         }
 
-        public int Index { get; set; }
         public Guardian Guardian { get; set; }
         public bool IsEmpty => Guardian == null;
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
-        public Image Image => Guardian?.Image;
+        public Image Image => Guardian?.Image ?? Config.EmptyImage;
         public void OnClick(Vector2 clickPosition)
         {
             m_onSelect?.Invoke();

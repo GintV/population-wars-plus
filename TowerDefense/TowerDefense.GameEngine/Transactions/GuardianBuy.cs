@@ -33,6 +33,7 @@ namespace TowerDefense.GameEngine.Transactions
                 return false;
             m_boughtGuardian = guardian.Value;
             environment.Inventory.Guardians.Add(guardian.Value);
+            environment.InventoryInfo.OnInventoryChanged();
             return true;
         }
 
@@ -54,6 +55,7 @@ namespace TowerDefense.GameEngine.Transactions
             }
             if (found)
                 environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
+            environment.InventoryInfo.OnInventoryChanged();
             return found;
         }
     }
