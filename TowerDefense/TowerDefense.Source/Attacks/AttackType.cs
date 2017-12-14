@@ -7,16 +7,9 @@ using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 
 namespace TowerDefense.Source.Attacks
 {
-    public interface IAttack
+    public abstract class AttackType
     {
-        void SetLocation(Vector2 location);
-        List<IProjectile> Shoot(Vector2 target, int targetSpeed);
-        void Upgrade();
-    }
-
-    public abstract class AttackType : IAttack
-    {
-        protected double AttackTimer { get; set; }
+        public double AttackTimer { get; set; }
         protected double AttackSpeed { get; set; }
         protected IProjectile Projectile { get; set; }
 
@@ -27,7 +20,7 @@ namespace TowerDefense.Source.Attacks
             Projectile = projectile;
         }
 
-        public abstract List<IProjectile> Shoot(Vector2 target, int targetSpeed);
+        public abstract List<Projectile> Shoot(Vector2 target, int targetSpeed);
         public abstract void Upgrade();
 
         public void SetLocation(Vector2 location) => Projectile.SetLocation(location);

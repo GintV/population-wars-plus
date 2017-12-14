@@ -8,7 +8,7 @@ namespace TowerDefense.GameEngine.Transactions
 {
     internal class GuardianPromote : CoinTransaction
     {
-        private IAttack m_previousAttackType;
+        private AttackType _mPreviousAttackTypeType;
         private int m_previousPromoteLevel;
         public Guardian PromotedGuardian { get; }
 
@@ -20,7 +20,7 @@ namespace TowerDefense.GameEngine.Transactions
         {
             CoinDifference = PromotedGuardian.PromoteCost;
             environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() - CoinDifference);
-            m_previousAttackType = PromotedGuardian.AttackType;
+            _mPreviousAttackTypeType = PromotedGuardian.AttackType;
             m_previousPromoteLevel = PromotedGuardian.PromoteLevel;
             PromotedGuardian.Promote();
             return true;
@@ -29,7 +29,7 @@ namespace TowerDefense.GameEngine.Transactions
         public override bool Undo(IGameEnvironment environment)
         {
             environment.Inventory.Coins.Set(environment.Inventory.Coins.Get() + CoinDifference);
-            PromotedGuardian.Demote(m_previousAttackType, m_previousPromoteLevel);
+            PromotedGuardian.Demote(_mPreviousAttackTypeType, m_previousPromoteLevel);
             return true;
         }
     }

@@ -56,7 +56,9 @@ namespace TowerDefense.GameEngine
                     CoinTransactionController.ExecutePendingTransactions();
                     foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                     {
-                        //towerBlock.Guardian?.Attack();
+                        var mob = GameEnvironment.Monsters.FirstOrDefault();
+                        if (mob != null)
+                            towerBlock.Guardian?.Attack(mob.Location, mob.Speed);
                     }
                     foreach (var monster in GameEnvironment.Monsters.ToList())
                     {
@@ -76,7 +78,7 @@ namespace TowerDefense.GameEngine
                         i = 0;
                     }
                     lastFrameTime = currentTime;
-                    Thread.Sleep(10);
+                    Thread.Sleep((int)(GameEngineSettings.GameCycleInSeconds * 1000));
                 }
             }, m_gameTaskCancellationTokenSource.Token);
         }

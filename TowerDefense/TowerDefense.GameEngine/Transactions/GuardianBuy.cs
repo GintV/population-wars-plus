@@ -9,7 +9,7 @@ namespace TowerDefense.GameEngine.Transactions
 {
     internal class GuardianBuy : CoinTransaction
     {
-        private IGuardian m_boughtGuardian;
+        private Guardian m_boughtGuardian;
 
         public Flags.GuardianClass GuardianClass { get; }
         public Flags.GuardianType GuardianType { get; }
@@ -40,7 +40,7 @@ namespace TowerDefense.GameEngine.Transactions
         public override bool Undo(IGameEnvironment environment)
         {
             var found = true;
-            if (!environment.Inventory.Guardians.Remove((Guardian)m_boughtGuardian))
+            if (!environment.Inventory.Guardians.Remove(m_boughtGuardian))
             {
                 found = false;
                 for (var i = 0; i < environment.Tower.GuardianSpace.Blocks; i++)

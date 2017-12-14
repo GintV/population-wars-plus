@@ -9,7 +9,7 @@ namespace TowerDefense.Source
         public static class GameEngineSettings
         {
             public static int GameCyclesPerSecond = 1;
-            public static readonly double GameCycleInSeconds = 1.0 / GameCyclesPerSecond;
+            public static double GameCycleInSeconds => 1.0 / GameCyclesPerSecond;
         }
 
         public static class ConfigurationSettings

@@ -11,21 +11,21 @@ namespace TowerDefense.Source.Attacks
 {
     internal class DoubleArrow : SingleArrow
     {
-        public DoubleArrow(double attackSpeed, IProjectile projectile) : base(attackSpeed, projectile)
+        public DoubleArrow(double attackSpeed, Projectile projectile) : base(attackSpeed, projectile)
         {
         }
 
-        public override List<IProjectile> Shoot(Vector2 target, int targetSpeed)
+        public override List<Projectile> Shoot(Vector2 target, int targetSpeed)
         {
             AttackTimer -= GameCycleInSeconds;
             if (AttackTimer > 0)
-                return new List<IProjectile>();
+                return new List<Projectile>();
             AttackTimer = 1.0 / AttackSpeed;
             (var projectileA, var projectileB) = ((Projectile) Projectile.Clone(), (Projectile) Projectile.Clone());
             projectileA.MoveType.Initialize(projectileA.Location, projectileA.Speed, target, targetSpeed);
             target.X += (float) (DistanceToTower / 100.0);
             projectileB.MoveType.Initialize(projectileB.Location, projectileB.Speed, target, targetSpeed);
-            return new List<IProjectile> { projectileA, projectileB };
+            return new List<Projectile> { projectileA, projectileB };
         }
         public override void Upgrade()
         {
