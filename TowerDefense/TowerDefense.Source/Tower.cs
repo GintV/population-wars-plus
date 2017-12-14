@@ -53,5 +53,20 @@ namespace TowerDefense.Source
             Level -= 1;
             UpgradeCost = upgradeCost;
         }
+
+        public void Reset()
+        {
+            while (GuardianSpace.Blocks != 0)
+            {
+                GuardianSpace.RemoveBlock();
+            }
+            GuardianSpace.AddBlock();
+            HealthPoints.Set(250);
+            HealthPointsRemaining.Set(250);
+            ManaPoints.Set(50);
+            ManaPointsRemaining.Set(50);
+            Level = 1;
+            UpgradeCost = 100;
+        }
     }
 }

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
-using System.Threading;
 using System.Windows.Forms;
 using TowerDefense.GameEngine;
-using TowerDefense.UI.MockEngine;
 
 namespace TowerDefense.UI
 {
@@ -96,7 +94,14 @@ namespace TowerDefense.UI
         public void Render(IEnumerable<IRenderable> renderables)
         {
             m_renderables = renderables;
-            Invoke((MethodInvoker)Refresh);
+            try
+            {
+                Invoke((MethodInvoker) Refresh);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                System.Console.WriteLine(ex.Message);
+            }
             //Invalidate();
         }
 

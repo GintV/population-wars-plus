@@ -20,6 +20,7 @@ namespace TowerDefense.UI
         private Image m_image;
         private Vector2 m_size;
         private bool m_isActive;
+        private bool m_needsEvaluation;
 
         public Action<Vector2> OnClickAction { get; set; }
 
@@ -27,6 +28,10 @@ namespace TowerDefense.UI
         {
             get
             {
+                if (m_needsEvaluation)
+                {
+                    ResolveStyler();
+                }
                 if (HasChanged)
                 {
                     Draw();
@@ -43,7 +48,7 @@ namespace TowerDefense.UI
             m_description = description;
             m_activeStyler = active;
             m_inactiveStlyer = inactive;
-            m_valueObserver = new Observer<T>(observedValue, ResolveStyler);
+            m_valueObserver = new Observer<T>(observedValue, () => { m_needsEvaluation = true; });
             m_isActiveCheck = isActiveCheck;
             m_isActive = true;
             Size = size;

@@ -39,6 +39,9 @@ namespace TowerDefense.UI.InfoBar
             m_gameInfo = gameInfo;
             m_gameInfo.Subscribe(this);
             m_boundingRectangle = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
+            OnCoinsChanged();
+            OnTowerHealthPointsChanged();
+            OnTowerManaPointsChanged();
             Draw();
         }
 

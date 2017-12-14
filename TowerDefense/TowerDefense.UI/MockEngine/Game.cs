@@ -14,7 +14,6 @@ namespace TowerDefense.UI.MockEngine
         private readonly Stack<IRenderable> m_objectsToDestroy;
         private IView m_gameView;
         private readonly Tower m_tower;
-        private readonly ICollection<IGameInfoSubscriber> m_subscribers;
         private int m_coins;
 
         public Vector2 Boundries { get; }
@@ -34,7 +33,6 @@ namespace TowerDefense.UI.MockEngine
                 Mana = 23,
                 MaxMana = 50
             };
-            m_subscribers = new List<IGameInfoSubscriber>();
             m_renderableObjects = new List<IRenderable> { m_tower };
             m_gameView = ViewFactory.CreateView(ViewType.NewGameView, this);
             m_objectsToDestroy = new Stack<IRenderable>();

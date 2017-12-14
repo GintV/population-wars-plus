@@ -33,7 +33,8 @@ namespace TowerDefense.UI
 
         private IEnumerable<IRenderable> ProcessGuardians(IEnumerable<TowerBlock> blocks)
         {
-            return blocks.Select(b => Tuple.Create(b.Guardian, b.BlockNumber)).Where(t => t.Item1 != null).Select(t => new Guardian(t.Item1.GetType())
+            return blocks.Select(b => Tuple.Create(b.Guardian, b.BlockNumber)).Where(t => t.Item1 != null).Select(
+                t => new Guardian(t.Item1.GetType(), t.Item1.UpgradeCost, t.Item1.PromoteCost, t.Item1.ChargeAttackCost, t.Item1.Level, t.Item1.PromoteLevel)
             {
                 Image = m_imageRepository.GetImage(t.Item1.GetType()),
                 //Position = new Vector2(350, 60 + 125 * t.Item2),

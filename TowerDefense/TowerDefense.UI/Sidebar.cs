@@ -37,8 +37,8 @@ namespace TowerDefense.UI
 
         public void ClearButtons()
         {
-            Clickables = new List<IClickable>(6);
-            Draw();
+            Clickables = new List<IClickable>(7);
+            m_hasChanged = true;
             // TODO move out
             /*
             Clickables.Add(new Button(new ClickableStyler(), _ => Debug.WriteLine("guardian view"), new Vector2(230, 175))
@@ -52,7 +52,7 @@ namespace TowerDefense.UI
         {
             Clickables.Add(new Button(new ClickableStyler(), _ => onClickAction(), Config.SideBarButtonSize)
             {
-                Position = new Vector2(Config.SideBarButtonMargins.X, 145 + Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count),
+                Position = new Vector2(Config.SideBarButtonMargins.X, Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count),
                 Description = description
             });
             m_hasChanged = true;
@@ -60,9 +60,15 @@ namespace TowerDefense.UI
 
         public void AddButton(IButton button)
         {
-            button.Position = new Vector2(Config.SideBarButtonMargins.X, 145 + Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count);
+            button.Position = new Vector2(Config.SideBarButtonMargins.X, Config.SideBarButtonMargins.Y * (Clickables.Count + 1) + Config.SideBarButtonSize.Y * Clickables.Count);
             button.Size = Config.SideBarButtonSize;
             Clickables.Add(button);
+            m_hasChanged = true;
+        }
+
+        public void AddClickable(IClickable clickable)
+        {
+            Clickables.Add(clickable);
             m_hasChanged = true;
         }
 

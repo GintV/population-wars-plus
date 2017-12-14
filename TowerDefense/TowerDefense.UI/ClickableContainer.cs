@@ -10,7 +10,11 @@ namespace TowerDefense.UI
     {
         protected ICollection<IClickable> Clickables;
 
-        public virtual void OnClick(Vector2 clickPosition) => Clickables.FirstOrDefault(po => IsClicked(po, clickPosition))?.OnClick(clickPosition);
+        public virtual void OnClick(Vector2 clickPosition)
+        {
+           var clicked = Clickables.FirstOrDefault(po => IsClicked(po, clickPosition));
+            clicked?.OnClick(new Vector2(clickPosition.X - clicked.Position.X, clickPosition.Y - clicked.Position.Y));
+        }
 
         protected bool IsClicked(IRenderable clickable, Vector2 click)
         {

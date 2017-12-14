@@ -20,7 +20,7 @@ namespace TowerDefense.GameEngine.Transactions
         {
             for (int i = 0; i < environment.Tower.GuardianSpace.Blocks; i++)
             {
-                if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_soldGuardian))
+                if (environment.Tower.GuardianSpace.TowerBlocks[i].Guardian != null && environment.Tower.GuardianSpace.TowerBlocks[i].Guardian.Equals(m_soldGuardian))
                 {
                     environment.Inventory.Guardians.Remove(environment.Tower.GuardianSpace.TowerBlocks[i].Guardian);
                     environment.Tower.GuardianSpace.TowerBlocks[i].Guardian = null;

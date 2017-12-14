@@ -19,8 +19,11 @@ namespace TowerDefense.UI
         private readonly GameInfoObserver m_gameInfoObserver;
         private Sidebar m_sidebar;
         private Inventory m_inventory;
+        private DropUp m_controls;
         private readonly List<GuardianSlot> m_guardianSlots;
         private int? m_selectedGuardianIndex;
+        private Observer<GameState> m_gameStateObserver;
+        private bool m_sidebarNeedsRedraw;
 
         public NewGameView(IView renderingView, GameInfo gameInfo)
         {
@@ -57,6 +60,10 @@ namespace TowerDefense.UI
                 m_guardianSlots.RemoveAt(lastIndex);
             }
             UpdateGuardianSlots(renderablesToPass.OfType<Guardian>());
+            if (m_sidebarNeedsRedraw)
+            {
+                RedrawSidebar();
+            }
             m_renderingView.Render(renderablesToPass.Where(r => r.GetType() != typeof(Guardian)).Concat(m_addedRenderables).Concat(m_guardianSlots));
         }
 
@@ -90,6 +97,8 @@ namespace TowerDefense.UI
             InitInventory();
             InitShop();
             ThisNeedsCleanUp();
+            m_gameStateObserver = new Observer<GameState>(GameHandler.GetHandler().State, OnGameStateChange);
+            OnGameStateChange();
             //InitSelectables();
         }
 
@@ -109,18 +118,46 @@ namespace TowerDefense.UI
 
         private void RedrawSidebar()
         {
+            m_sidebarNeedsRedraw = false;
             m_sidebar.ClearButtons();
             var selected = m_renderingView.GetSelectedSelectable();
-            if (!(selected is GuardianSlot slot) || slot.IsEmpty) return;
-            m_sidebar.AddButton("Charge Shot", () => GameHandler.GetHandler().GameControls.ActivateChargeAttack(slot.Guardian.Index));
-            m_sidebar.AddButton(
-                new DependantButton<int>("Promote", Config.SideBarButtonSize, new ClickableStyler(), new InactiveStyler(), m_gameInfoObserver.Coins, t => t > 100)
+            if (selected is GuardianSlot slot && !slot.IsEmpty)
+            {
+                var guardianSlot = selected as GuardianSlot;
+                if (m_gameStateObserver.Get() == GameState.Running)
                 {
-                    OnClickAction = _ => GameHandler.GetHandler().GameControls.PromoteGuardian(slot.Guardian.Index)
-                });
-            m_sidebar.AddButton("Upgrade", () => GameHandler.GetHandler().GameControls.UpgradeGuardian(slot.Guardian.Index));
-            m_sidebar.AddButton("Move to Inv", () => GameHandler.GetHandler().GameControls.MoveGuardianToInventory(slot.Guardian.Index));
-            m_sidebar.AddButton("Sell", () => GameHandler.GetHandler().GameControls.SellGuardian(slot.Guardian.Index));
+                    m_sidebar.AddButton(
+                        new DependantButton<int>("Charge Shot", Config.SideBarButtonSize, new ClickableStyler(),
+                            new InactiveStyler(), m_gameInfoObserver.Mana, c => c > guardianSlot.Guardian.ChargedShotCost)
+                        {
+                            OnClickAction = _ => GameHandler.GetHandler().GameControls.ActivateChargeAttack(slot.Guardian.Index)
+                        });
+                }
+                else
+                {
+                    m_sidebar.AddButton(
+                        new DependantButton<GameState>("Charge Shot", Config.SideBarButtonSize, new ClickableStyler(),
+                            new InactiveStyler(), m_gameStateObserver, s => s == GameState.Running)
+                        {
+                            OnClickAction = _ => GameHandler.GetHandler().GameControls.ActivateChargeAttack(slot.Guardian.Index)
+                        });
+                }
+                m_sidebar.AddButton(
+                    new DependantButton<int>("Promote", Config.SideBarButtonSize, new ClickableStyler(), new InactiveStyler(),
+                    m_gameInfoObserver.Coins, t => t > guardianSlot.Guardian.PromoteCost && guardianSlot.Guardian.Level >= guardianSlot.Guardian.PromoteLevel)
+                    {
+                        OnClickAction = _ => GameHandler.GetHandler().GameControls.PromoteGuardian(slot.Guardian.Index)
+                    });
+                m_sidebar.AddButton(
+                    new DependantButton<int>("Upgrade", Config.SideBarButtonSize, new ClickableStyler(), new InactiveStyler(),
+                    m_gameInfoObserver.Coins, t => t > guardianSlot.Guardian.UpgradeCost)
+                    {
+                        OnClickAction = _ => GameHandler.GetHandler().GameControls.UpgradeGuardian(slot.Guardian.Index)
+                    });
+                m_sidebar.AddButton("Move to Inv", () => GameHandler.GetHandler().GameControls.MoveGuardianToInventory(slot.Guardian.Index));
+                m_sidebar.AddButton("Sell", () => GameHandler.GetHandler().GameControls.SellGuardian(slot.Guardian.Index));
+            }
+            m_sidebar.AddClickable(m_controls);
         }
 
         private void InitSidebar()
@@ -152,7 +189,8 @@ namespace TowerDefense.UI
             foreach (var guardian in guardians)
             {
                 foundIndices.Add(guardian.Index);
-                if (m_guardianSlots[guardian.Index].Guardian == null || m_guardianSlots[guardian.Index].Guardian.ReprestentedType != guardian.ReprestentedType)
+                if (m_guardianSlots[guardian.Index].Guardian == null ||
+                    !m_guardianSlots[guardian.Index].Guardian.Equals(guardian))
                 {
                     m_guardianSlots[guardian.Index].Guardian = guardian;
                     needsRedraw = true;
@@ -195,6 +233,7 @@ namespace TowerDefense.UI
             if (m_selectedGuardianIndex != null)
             {
                 GameHandler.GetHandler().GameControls.SwapGuardians(m_selectedGuardianIndex.Value, i);
+                m_sidebarNeedsRedraw = true;
             }
         }
 
@@ -256,6 +295,46 @@ namespace TowerDefense.UI
                 i++;
             }
             m_inventory.ReplaceInventoryBlocks(clickables);
+        }
+
+        public void OnGameStateChange()
+        {
+            var clickables = new List<IClickable>();
+            switch (m_gameStateObserver.Get())
+            {
+                case GameState.NotStarted:
+                    clickables.Add(new Button(new ClickableStyler(), _ => GameHandler.GetHandler().RunGame(), Config.SideBarButtonSize)
+                    {
+                        Description = "Start",
+                        Position = Vector2.Zero
+                    });
+                    break;
+                case GameState.Paused:
+                    clickables.Add(new Button(new ClickableStyler(), _ => GameHandler.GetHandler().RunGame(), Config.SideBarButtonSize)
+                    {
+                        Description = "Resume",
+                        Position = Vector2.Zero
+                    });
+                    break;
+                case GameState.Running:
+                    clickables.Add(new Button(new ClickableStyler(), _ => GameHandler.GetHandler().PauseGame(), Config.SideBarButtonSize)
+                    {
+                        Description = "Pause",
+                        Position = Vector2.Zero
+                    });
+                    break;
+
+            }
+            clickables.Add(new Button(new ClickableStyler(), _ => GameHandler.GetHandler().RestartGame(), Config.SideBarButtonSize)
+            {
+                Description = "Restart",
+                Position = new Vector2(0, Config.SideBarButtonSize.Y + Config.SideBarButtonMargins.Y / 2)
+            });
+            m_controls = new DropUp(new ClickableStyler(), "Menu", clickables, m_controls?.IsOpen ?? false)
+            {
+                Position = new Vector2(Config.SideBarButtonMargins.X, m_sidebar.Size.Y - Config.SideBarButtonSize.Y * 3 - Config.SideBarButtonMargins.Y / 2 * 3)
+            };
+            RedrawSidebar();
         }
     }
 }

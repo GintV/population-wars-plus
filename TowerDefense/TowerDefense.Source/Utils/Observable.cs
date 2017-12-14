@@ -21,13 +21,13 @@ namespace TowerDefense.Source.Utils
 
         public void Set(TValue value)
         {
+            m_value = value;
             var currentObservers = m_dependantObservers.ToArray();
             m_dependantObservers.Clear();
             foreach (var observer in currentObservers)
             {
                 observer.Invalidate();
             }
-            m_value = value;
         }
     }
 }
