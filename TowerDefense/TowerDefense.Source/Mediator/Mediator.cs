@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using TowerDefense.Source.Attacks.Projectiles;
@@ -23,10 +24,10 @@ namespace TowerDefense.Source.Mediator
             switch (sender)
             {
                 case Projectile projectile:
-                    _monsters.ForEach(monster => monster.Receive(location, damage));
+                    _monsters.ToList().ForEach(monster => monster.Receive(location, damage));
                     return;
                 case Monster monster:
-                    _projectiles.ForEach(projectile => projectile.Receive(location, damage));
+                    _projectiles.ToList().ForEach(projectile => projectile.Receive(location, damage));
                     return;
             }
         }

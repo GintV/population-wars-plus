@@ -28,7 +28,12 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public abstract object Clone();
         public abstract void Upgrade();
 
-        public void Move(long dt) => Location = MoveType.Move(Location, dt);
+        public void Move(long dt)
+        {
+            Location = MoveType.Move(Location, dt);
+            Send(Location, CollisionDamage);
+        }
+
         public void SetLocation(Vector2 location) => Location = location;
 
         public override void Receive(Vector2 location, int damage)

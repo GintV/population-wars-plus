@@ -24,6 +24,7 @@ namespace TowerDefense.Source.Monsters
         public override void Move(long dt)
         {
             Location = new Vector2(Location.X - (int)(dt * Speed / 1000.0), (float) (m_baseLine + Math.Sin(Location.X / 20) * 15));
+            Send(Location, 0);
         }
     }
 }
