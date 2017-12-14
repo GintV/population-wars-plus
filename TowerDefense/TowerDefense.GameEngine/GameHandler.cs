@@ -58,7 +58,7 @@ namespace TowerDefense.GameEngine
                     {
                         var mob = GameEnvironment.Monsters.FirstOrDefault();
                         if (mob != null)
-                            towerBlock.Guardian?.Attack(mob.Location, mob.Speed);
+                            towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
                     }
                     foreach (var monster in GameEnvironment.Monsters.ToList())
                     {

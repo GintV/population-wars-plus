@@ -15,20 +15,18 @@ namespace TowerDefense.Source.Guardians.Wizards
         public sealed override int PromoteCost { get; protected set; }
         public sealed override int PromoteLevel { get; protected set; }
         public sealed override int UpgradeCost { get; protected set; }
-        public override State GuardianState { get; set; }
+        public sealed override State GuardianState { get; set; }
 
         public FireWizard()
         {
-            // TODO: implement MageBall and others
-            //AttackType = new SingleArrow(AttackSpeedBase.SingleMageBall, new MageBall(ProjectileDamageBase.MageBall, ProjectileSpeedBase.MageBall));
+            AttackType = new SingleMageBall(AttackSpeedBase.SingleMageBall, new MageBall());
             ChargeAttackCost = ChargeAttackCostBase.FireWizard;
             ChargeAttackEnabled = false;
             ChargeAttackTimer = ChargeAttackTimerBase.FireWizard;
             PromoteCost = GuardianPromoteCostBase.FireWizard;
             PromoteLevel = GuardianPromotionLevels.FireWizard.First();
             UpgradeCost = GuardianUpgradeCostBase.FireWizard;
-            AttackType = new NullAttack();
-
+            GuardianState = new LoadingState((int)(AttackType.AttackTimer * 1000));
             Upgrade();
         }
 
@@ -48,6 +46,7 @@ namespace TowerDefense.Source.Guardians.Wizards
             ++Level;
             UpgradeCost = (int)(UpgradeCost * GuardianUpgradeCostMultiplier.FireWizard);
             AttackType.Upgrade();
+            GuardianState.Upgrade((int)(AttackType.AttackTimer * 1000));
         }
         public override void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost) { }
     }

@@ -10,7 +10,7 @@ namespace TowerDefense.Source.Guardians.States
     {
         private readonly Guardian _guardian;
 
-        public ReadyState(int initialCounter, Guardian guardian) : base(initialCounter)
+        public ReadyState(long initialCounter, Guardian guardian) : base(initialCounter)
         {
             _guardian = guardian;
             Counter = 1;

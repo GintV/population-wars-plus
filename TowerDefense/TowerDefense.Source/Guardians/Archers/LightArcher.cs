@@ -19,14 +19,14 @@ namespace TowerDefense.Source.Guardians.Archers
 
         public LightArcher()
         {
-            AttackType = new SingleArrow(AttackSpeedBase.SingleArrow, new Arrow(ProjectileDamageBase.Arrow, ProjectileSpeedBase.Arrow));
+            AttackType = new SingleArrow(AttackSpeedBase.SingleArrow, new Arrow());
             ChargeAttackCost = ChargeAttackCostBase.LightArcher;
             ChargeAttackEnabled = false;
             ChargeAttackTimer = ChargeAttackTimerBase.LightArcher;
             PromoteCost = GuardianPromoteCostBase.LightArcher;
             PromoteLevel = GuardianPromotionLevels.LightArcher.First();
             UpgradeCost = GuardianUpgradeCostBase.LightArcher;
-            GuardianState = new LoadingState((int)(AttackType.AttackTimer * GameEngineSettings.GameCyclesPerSecond));
+            GuardianState = new LoadingState((int)(AttackType.AttackTimer * 1000));
             Upgrade();
         }
 
@@ -46,7 +46,7 @@ namespace TowerDefense.Source.Guardians.Archers
             ++Level;
             UpgradeCost = (int)(UpgradeCost * GuardianUpgradeCostMultiplier.LightArcher);
             AttackType.Upgrade();
-            GuardianState.Upgrade((int)(AttackType.AttackTimer * GameEngineSettings.GameCyclesPerSecond));
+            GuardianState.Upgrade((int)(AttackType.AttackTimer * 1000));
         }
         public override void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost) { }
     }

@@ -11,9 +11,9 @@ namespace TowerDefense.Source.Attacks
 
         public override List<Projectile> Shoot(Vector2 target, int targetSpeed)
         {
-            AttackTimer -= GameCycleInSeconds;
-            if (AttackTimer > 0)
-                return new List<Projectile>();
+            //AttackTimer -= GameCycleInSeconds;
+            //if (AttackTimer > 0)
+            //    return new List<Projectile>();
             AttackTimer = 1.0 / AttackSpeed;
             var projectile = (Projectile)Projectile.Clone();
             projectile.MoveType.Initialize(projectile.Location, projectile.Speed, target, targetSpeed);

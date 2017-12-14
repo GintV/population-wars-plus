@@ -3,7 +3,7 @@ using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    public class Arrow : Projectile // TODO: to internal
+    public class Arrow : Projectile
     {
         public sealed override IMove MoveType { get; set; }
 

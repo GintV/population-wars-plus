@@ -18,7 +18,7 @@ namespace TowerDefense.Source.Guardians.Archers
         public sealed override int PromoteCost { get; protected set; }
         public sealed override int PromoteLevel { get; protected set; }
         public sealed override int UpgradeCost { get; protected set; }
-        public override State GuardianState { get; set; }
+        public sealed override State GuardianState { get; set; }
 
         public DarkArcher()
         {
@@ -29,7 +29,7 @@ namespace TowerDefense.Source.Guardians.Archers
             PromoteCost = GuardianPromoteCostBase.DarkArcher;
             PromoteLevel = GuardianPromotionLevels.DarkArcher.First();
             UpgradeCost = GuardianUpgradeCostBase.DarkArcher;
-
+            GuardianState = new LoadingState((int)(AttackType.AttackTimer * 1000));
             Upgrade();
         }
 
@@ -49,6 +49,7 @@ namespace TowerDefense.Source.Guardians.Archers
             ++Level;
             UpgradeCost = (int)(UpgradeCost * GuardianUpgradeCostMultiplier.DarkArcher);
             AttackType.Upgrade();
+            GuardianState.Upgrade((int)(AttackType.AttackTimer * 1000));
         }
         public override void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost) { }
     }

@@ -55,12 +55,12 @@ namespace TowerDefense.Startup
             var interactiveGuardianA = new ArcherLogger("Dark Archer", guardianA, ConsoleLogger.GetLogger());
             var interactiveGuardianB = new WizardLogger("Fire Wizard", guardianB, ConsoleLogger.GetLogger());
 
-            interactiveGuardianA.Attack(Vector2.Zero, 0);
+            interactiveGuardianA.Attack(Vector2.Zero, 0, 0);
             interactiveGuardianA.ActivateChargeAttack();
 
             ConsoleLogger.GetLogger().Log(string.Empty);
 
-            interactiveGuardianB.Attack(Vector2.Zero, 0);
+            interactiveGuardianB.Attack(Vector2.Zero, 0, 0);
             interactiveGuardianB.ActivateChargeAttack();
         }
 

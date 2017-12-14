@@ -6,18 +6,19 @@ namespace TowerDefense.Source.Guardians.States
 {
     public abstract class State
     {
-        protected int InitialCounter { get; set; }
-        protected int Counter { get; set; }
+        protected long InitialCounter { get; set; }
+        protected long Counter { get; set; }
 
-        protected State(int initialCounter)
+        protected State(long initialCounter)
         {
             InitialCounter = initialCounter;
             Counter = initialCounter;
         }
 
-        public List<Projectile> Attack(Vector2 target, int targetSpeed, Guardian guardian)
+        public List<Projectile> Attack(Vector2 target, int targetSpeed, long dt, Guardian guardian)
         {
-            if(--Counter == 0)
+            Counter = Counter - dt;
+            if (Counter < 0)
                 ChangeState(guardian);
             return InitiateAttack(target, targetSpeed);
         }

@@ -33,7 +33,7 @@ namespace TowerDefense.Source.Guardians
         public abstract void Upgrade();
         public abstract void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost);
 
-        public List<Projectile> Attack(Vector2 target, int targetSpeed) => GuardianState.Attack(target, targetSpeed, this);
+        public List<Projectile> Attack(Vector2 target, int targetSpeed, long dt) => GuardianState.Attack(target, targetSpeed, dt, this);
         public void SetGuardianLocation(Vector2 location) => AttackType.SetLocation(location);
     }
 }

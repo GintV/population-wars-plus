@@ -20,10 +20,10 @@ namespace TowerDefense.Source.Loggers
             m_logger = logger;
         }
 
-        public new List<Projectile> Attack(Vector2 target, int targetSpeed)
+        public new List<Projectile> Attack(Vector2 target, int targetSpeed, long dt)
         {
             m_logger.Log($"My mighty arrows shall pierce your body! The best {m_displayName} is here!");
-            var valueToReturn = m_guardian.Attack(target, targetSpeed);
+            var valueToReturn = m_guardian.Attack(target, targetSpeed, dt);
             m_logger.Log("Sharp, sharp, sharp...");
             return valueToReturn;
         }
