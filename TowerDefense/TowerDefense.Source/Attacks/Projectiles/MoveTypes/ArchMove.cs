@@ -19,7 +19,7 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
         }
 
 
-        public override Vector2 Move(Vector2 location)
+        public override Vector2 Move(Vector2 location, long dt)
         {
             var fullTrajectory = Target - Source;
             var fullDistance = Math.Abs(fullTrajectory.Length());

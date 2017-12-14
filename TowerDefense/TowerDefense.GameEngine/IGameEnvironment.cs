@@ -11,8 +11,8 @@ namespace TowerDefense.GameEngine
         GameInfo GameInfo { get; }
         InventoryInfo InventoryInfo { get; }
         Inventory Inventory { get; }
-        List<IMonster> Monsters { get; }
-        List<IProjectile> Projectiles { get; }
+        List<Monster> Monsters { get; }
+        List<Projectile> Projectiles { get; }
         Tower Tower { get; }
     }
 
@@ -21,15 +21,15 @@ namespace TowerDefense.GameEngine
         public GameInfo GameInfo { get; }
         public InventoryInfo InventoryInfo { get; }
         public Inventory Inventory { get; }
-        public List<IMonster> Monsters { get; }
-        public List<IProjectile> Projectiles { get; }
+        public List<Monster> Monsters { get; }
+        public List<Projectile> Projectiles { get; }
         public Tower Tower { get; }
 
         public GameEnvironment()
         {
             Inventory = new Inventory();
-            Monsters = new List<IMonster>();
-            Projectiles = new List<IProjectile>();
+            Monsters = new List<Monster>();
+            Projectiles = new List<Projectile>();
             Tower = new Tower();
             GameInfo = new GameInfoProvider(Inventory.Coins, Tower.HealthPointsRemaining, Tower.HealthPoints, Tower.ManaPointsRemaining, Tower.ManaPoints);
             InventoryInfo = new InventoryInfoProvider(Inventory);

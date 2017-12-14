@@ -7,6 +7,7 @@ using TowerDefense.GameEngine.Transactions;
 using TowerDefense.Source;
 using TowerDefense.Source.Attacks.Projectiles;
 using TowerDefense.Source.Guardians.Archers;
+using TowerDefense.Source.Mediator;
 using TowerDefense.Source.Monsters;
 using TowerDefense.Source.Utils;
 using static TowerDefense.GameEngine.Constants;
@@ -24,8 +25,9 @@ namespace TowerDefense.GameEngine
         public IGameEnvironment GameEnvironment { get; private set; }
         public IGameControls GameControls { get; private set; }
         public IRenderer Renderer { get; set; }
-
         public Observable<GameState> State { get; }
+
+        public Mediator Mediator { get; set; }
 
         private GameHandler()
         {
@@ -45,6 +47,8 @@ namespace TowerDefense.GameEngine
             SetConfiguration(configuration);
 
             State.Set(GameState.NotStarted);
+
+            Mediator = new Mediator(GameEnvironment.Projectiles, GameEnvironment.Monsters);
         }
 
         public void InitGame()
@@ -73,7 +77,20 @@ namespace TowerDefense.GameEngine
                         {
                             var mob = GameEnvironment.Monsters.FirstOrDefault();
                             if (mob != null)
-                                towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
+                            {
+                                var projectiles = towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
+                                if (projectiles != null)
+                                {
+                                    projectiles.ForEach(projectile =>
+                                    {
+                                        projectile.SetMediator(Mediator);
+                                        projectile.Location = new Vector2(400, Configuration.TowerBaseHeight +
+                                            Configuration.TowerBlockHeight * towerBlock.BlockNumber +
+                                            Configuration.GuardianShootingHeightInBlock);
+                                    });
+                                    GameEnvironment.Projectiles.AddRange(projectiles);
+                                }
+                            }
                         }
                         foreach (var monster in GameEnvironment.Monsters.ToList())
                         {
@@ -83,9 +100,19 @@ namespace TowerDefense.GameEngine
                                 GameEnvironment.Monsters.Remove(monster);
                             }
                         }
+                        foreach (var projectile in GameEnvironment.Projectiles.ToList())
+                        {
+                            projectile.Move(delta);
+                            if (projectile.Location.Y < 200)
+                            {
+                                GameEnvironment.Projectiles.Remove(projectile);
+                            }
+                        }
                         if (++i == 50)
                         {
-                            GameEnvironment.Monsters.Add(new Bubble(1, new Vector2(1600, 550), 10));
+                            var monster = new Bubble(200, new Vector2(1600, 550), 10);
+                            monster.SetMediator(Mediator);
+                            GameEnvironment.Monsters.Add(monster);
                             GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 1);
                             GameEnvironment.Tower.HealthPointsRemaining.Set(GameEnvironment.Tower.HealthPointsRemaining.Get() + 1);
                             GameEnvironment.Tower.ManaPointsRemaining.Set(GameEnvironment.Tower.ManaPointsRemaining.Get() + 1);

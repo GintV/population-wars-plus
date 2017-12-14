@@ -105,23 +105,23 @@ namespace TowerDefense.Startup
 
             Console.WriteLine("#Moving arrow A:");
 
-            arrowA.Move();
-            arrowA.Move();
+            arrowA.Move(0);
+            arrowA.Move(0);
 
             Console.WriteLine();
 
             Console.WriteLine("#Moving arrow B:");
 
-            arrowB.Move();
-            arrowB.Move();
+            arrowB.Move(0);
+            arrowB.Move(0);
 
             Console.WriteLine();
 
             Console.WriteLine("#Moving arrow A:");
 
-            arrowA.Move();
-            arrowA.Move();
-            arrowA.Move();
+            arrowA.Move(0);
+            arrowA.Move(0);
+            arrowA.Move(0);
 
         }
 
@@ -139,14 +139,14 @@ namespace TowerDefense.Startup
             Console.WriteLine("#Moving arrow A in Arch:");
 
             for (int i = 0; i <= 10; i++)
-                arrowA.Move();
+                arrowA.Move(0);
 
             Console.WriteLine();
 
             Console.WriteLine("#Moving arrow B in Line:");
 
             for(int i = 0; i <= 10; i++)
-                arrowB.Move();
+                arrowB.Move(0);
         }
     }
 }

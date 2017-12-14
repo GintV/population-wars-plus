@@ -7,7 +7,7 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
 {
     public class LineMove : MoveType
     {                
-        public override Vector2 Move(Vector2 location)
+        public override Vector2 Move(Vector2 location, long dt)
         {
             var trajectory = Target - location;
             var distance = Math.Abs(trajectory.Length());

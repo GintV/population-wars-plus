@@ -7,7 +7,7 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
     {
         /// <summary>Moves object with defined fashion.</summary>
         /// <returns>Object location after move.</returns>
-        Vector2 Move(Vector2 location);
+        Vector2 Move(Vector2 location, long dt);
         void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed);
     }
 
@@ -19,7 +19,7 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
         public double TargetSpeed { get; set; }
 
         public object Clone() => MemberwiseClone();
-        public abstract Vector2 Move(Vector2 location);
+        public abstract Vector2 Move(Vector2 location, long dt);
 
         public virtual void Initialize(Vector2 source, double sourceSpeed, Vector2 target, double targetSpeed)
         {

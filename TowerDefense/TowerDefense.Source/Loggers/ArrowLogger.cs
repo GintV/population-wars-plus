@@ -24,10 +24,10 @@ namespace TowerDefense.Source.Loggers
 
         //public Vector2 Location { get => m_projectile.Location; set => m_projectile.Location = value; }
 
-        public void Move()
+        public void Move(long dt)
         {
             m_logger.Log($"{m_displayName} is moving from {m_projectile.Location.ToString()} to {((MoveType)m_projectile.MoveType).Target.ToString()}");
-            m_projectile.Move();
+            m_projectile.Move(dt);
         }
 
         public object Clone()

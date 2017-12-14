@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Numerics;
 using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
+using TowerDefense.Source.Mediator;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
     public interface IProjectile : ICloneable
     {
-        void Move();
+        void Move(long dt);
         void SetLocation(Vector2 location);
         void Upgrade();
     }
 
-    public abstract class Projectile : IProjectile
+    public abstract class Projectile : Notifier, IProjectile
     {
         public int CollisionDamage { get; protected set; }
         public Vector2 Location { get; set; } // TODO: to protected set
@@ -27,8 +28,17 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public abstract object Clone();
         public abstract void Upgrade();
 
-        public void Move() => Location = MoveType.Move(Location);
+        public void Move(long dt) => Location = MoveType.Move(Location, dt);
         public void SetLocation(Vector2 location) => Location = location;
 
+        public override void Receive(Vector2 location, int damage)
+        {
+            var dif = (Location - location).Length();
+            if (dif < 10)
+            {
+                Send(Location, CollisionDamage);
+                Destroy();
+            }
+        }
     }
 }

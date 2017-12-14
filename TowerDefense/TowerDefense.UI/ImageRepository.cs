@@ -50,6 +50,7 @@ namespace TowerDefense.UI
             m_typeToFileDictionary.Add(typeof(IceWizard), @"..\..\Images\enem.png");
             m_typeToFileDictionary.Add(typeof(DarkArcher), @"..\..\Images\enem.png");
             m_typeToFileDictionary.Add(typeof(LightArcher), @"..\..\Images\enem.png");
+            m_typeToFileDictionary.Add(typeof(MageBall), @"..\..\Images\enem.png");
         }
     }
 }

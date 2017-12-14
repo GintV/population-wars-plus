@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using TowerDefense.Source.Mediator;
 
 namespace TowerDefense.Source.Monsters
 {
@@ -15,11 +16,11 @@ namespace TowerDefense.Source.Monsters
         void Move(long dt);
     }
 
-    public abstract class Monster : IMonster
+    public abstract class Monster : Notifier, IMonster
     {
         public Guid Id { get; }
         public abstract int HealthPoints { get; }
-        public abstract int HealthPointsRemaining { get; }
+        public abstract int HealthPointsRemaining { get; set; }
         public Vector2 Location { get; set; }
         public abstract int Speed { get; }
         public abstract void Move(long dt);
@@ -27,6 +28,15 @@ namespace TowerDefense.Source.Monsters
         protected Monster()
         {
             Id = Guid.NewGuid();
+        }
+
+        public override void Receive(Vector2 location, int damage)
+        {
+            var dif = (Location - location).Length();
+            if (dif < 10)
+                HealthPointsRemaining -= damage;
+            if(HealthPointsRemaining < 0)
+                Destroy();
         }
     }
 }

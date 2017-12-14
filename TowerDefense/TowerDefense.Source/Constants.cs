@@ -138,11 +138,11 @@ namespace TowerDefense.Source
 
         public static class ProjectileSpeedBase
         {
-            public const double Arrow = 10;
-            public const double SuperArrow = 15;
-            public const double MageBall = 4;
-            public const double MegaMageBall = 6;
-            public const double UltimateMageBall = 8;
+            public const double Arrow = 200;
+            public const double SuperArrow = 300;
+            public const double MageBall = 80;
+            public const double MegaMageBall = 120;
+            public const double UltimateMageBall = 160;
         }
 
         public static class ProjectileSpeedMultiplier
