@@ -18,7 +18,6 @@ namespace TowerDefense.GameEngine
     {
         private static readonly Lazy<GameHandler> GameInstance = new Lazy<GameHandler>(() => new GameHandler());
         private readonly CancellationTokenSource m_gameTaskCancellationTokenSource = new CancellationTokenSource();
-        private Task m_task;
 
         protected ICoinTransactionController CoinTransactionController { get; set; }
         public IConfiguration Configuration { get; private set; }
@@ -57,7 +56,7 @@ namespace TowerDefense.GameEngine
 
         public void StartGame()
         {
-            m_task = Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(() =>
             {
                 var i = 0;
                 var lastFrameTime = DateTime.Now;
