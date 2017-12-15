@@ -25,6 +25,13 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public override void Upgrade()
         {
             CollisionDamage = (int)(CollisionDamage * ProjectileDamageMultiplier.MageBall);
+            Speed = Speed * ProjectileSpeedMultiplier.MageBall;
+        }
+
+        public override void Downgrade()
+        {
+            CollisionDamage = (int)(CollisionDamage / ProjectileDamageMultiplier.MageBall);
+            Speed = Speed / ProjectileSpeedMultiplier.MageBall;
         }
     }
 }

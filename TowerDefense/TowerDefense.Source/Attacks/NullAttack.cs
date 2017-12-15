@@ -14,5 +14,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public override List<Projectile> Shoot(Vector2 target, int targetSpeed) => new List<Projectile>();
 
         public override void Upgrade() { }
+
+        public override void Downgrade() { }
     }
 }

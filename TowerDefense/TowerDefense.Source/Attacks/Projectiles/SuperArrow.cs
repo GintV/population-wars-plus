@@ -26,6 +26,13 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public override void Upgrade()
         {
             CollisionDamage = (int)(CollisionDamage * Constants.ProjectileDamageMultiplier.SuperArrow);
+            Speed = Speed * Constants.ProjectileSpeedMultiplier.SuperArrow;
+        }
+
+        public override void Downgrade()
+        {
+            CollisionDamage = (int)(CollisionDamage / Constants.ProjectileDamageMultiplier.SuperArrow);
+            Speed = Speed / Constants.ProjectileSpeedMultiplier.SuperArrow;
         }
     }
 }

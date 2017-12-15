@@ -10,6 +10,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         void Move(long dt);
         void SetLocation(Vector2 location);
         void Upgrade();
+        void Downgrade();
     }
 
     public abstract class Projectile : Notifier, IProjectile
@@ -27,6 +28,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
 
         public abstract object Clone();
         public abstract void Upgrade();
+        public abstract void Downgrade();
 
         public void Move(long dt)
         {
