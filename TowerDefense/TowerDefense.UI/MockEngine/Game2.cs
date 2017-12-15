@@ -26,7 +26,7 @@ namespace TowerDefense.UI.MockEngine
             var randomInt = m_random.Next(2);
             if (randomInt == 1)
             {
-                createdMonster = new Skull
+                createdMonster = new Skull(1, new Vector2(0, 0), 1)
                 {
                     Location = new Vector2(m_random.Next(1300), m_random.Next(700))
                 };

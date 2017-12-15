@@ -48,23 +48,25 @@ namespace TowerDefense.GameEngine
 
             State.Set(GameState.NotStarted);
 
-            Mediator = new Mediator(GameEnvironment.Projectiles, GameEnvironment.Monsters);
+            Mediator = new Mediator(GameEnvironment.Projectiles, GameEnvironment.Monsters, OnMonsterDestroyed);
         }
 
         public void InitGame()
         {
             GameEnvironment.Inventory.Guardians.Clear();
             GameEnvironment.Inventory.Coins.Set(1000);
-            //GameEnvironment.Tower.Reset();
+            GameEnvironment.Tower.Reset();
         }
 
         public void StartGame()
         {
             Task.Factory.StartNew(() =>
             {
-                var i = 0;
+                var spawnTimer = 0;
+                var regenTimer = 0;
                 var lastFrameTime = DateTime.Now;
-                while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested)
+                var rng = new Random();
+                while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested && GameEnvironment.Tower.HealthPointsRemaining.Get() > 0)
                 {
                     var currentTime = DateTime.Now;
                     var delta = (currentTime - lastFrameTime).Milliseconds;
@@ -97,26 +99,34 @@ namespace TowerDefense.GameEngine
                             monster.Move(delta);
                             if (monster.Location.X < 400)
                             {
+                                GameEnvironment.Tower.HealthPointsRemaining.Set(GameEnvironment.Tower.HealthPointsRemaining.Get() - 15);
                                 GameEnvironment.Monsters.Remove(monster);
                             }
                         }
                         foreach (var projectile in GameEnvironment.Projectiles.ToList())
                         {
                             projectile.Move(delta);
-                            if (projectile.Location.Y < 200)
+                            if (projectile.Location.Y < 200 || projectile.Location.X > 1600)
                             {
                                 GameEnvironment.Projectiles.Remove(projectile);
                             }
                         }
-                        if (++i == 50)
+                        spawnTimer += delta;
+                        if (spawnTimer > 2000)
                         {
-                            var monster = new Bubble(200, new Vector2(1600, 550), 10);
+                            spawnTimer = spawnTimer % 2000;
+                            var monster = rng.Next(2) == 0 ? new Bubble(200, new Vector2(1600, 550), 30) : (Monster)new Skull(150, new Vector2(1600, 550), 50);
                             monster.SetMediator(Mediator);
                             GameEnvironment.Monsters.Add(monster);
-                            GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 1);
-                            GameEnvironment.Tower.HealthPointsRemaining.Set(GameEnvironment.Tower.HealthPointsRemaining.Get() + 1);
-                            GameEnvironment.Tower.ManaPointsRemaining.Set(GameEnvironment.Tower.ManaPointsRemaining.Get() + 1);
-                            i = 0;
+                            
+                        }
+                        regenTimer += delta;
+                        if (regenTimer > 500)
+                        {
+                            regenTimer = regenTimer % 500;
+                            if (GameEnvironment.Tower.ManaPointsRemaining.Get() < GameEnvironment.Tower.ManaPoints.Get())
+                                GameEnvironment.Tower.ManaPointsRemaining.Set(GameEnvironment.Tower.ManaPointsRemaining.Get() + 1);
+                            GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 5);
                         }
                     }
                     Renderer?.Render(GameEnvironment.Tower, GameEnvironment.Monsters, GameEnvironment.Projectiles.OfType<Projectile>());
@@ -157,6 +167,18 @@ namespace TowerDefense.GameEngine
             InitGame();
             GameEnvironment.InventoryInfo.OnInventoryChanged();
             State.Set(GameState.NotStarted);
+        }
+
+        public void OnMonsterDestroyed(Monster monster)
+        {
+            if (monster is Skull)
+            {
+                GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 50);
+            }
+            if (monster is Bubble)
+            {
+                GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 30);
+            }
         }
 
         private void SetConfiguration(IConfiguration configuration) // TODO: please later refactor this away :)))

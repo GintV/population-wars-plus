@@ -9,7 +9,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
 
         public Arrow(int collisionDamage = Constants.ProjectileDamageBase.Arrow, double speed = Constants.ProjectileSpeedBase.Arrow) : base(collisionDamage, speed)
         {
-            MoveType = new ArchMove();
+            MoveType = new LineMove();
         }
 
         public override object Clone()

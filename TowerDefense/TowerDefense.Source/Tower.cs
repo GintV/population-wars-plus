@@ -38,7 +38,7 @@ namespace TowerDefense.Source
             var upgradePrice = UpgradeCost * 1.5;
             UpgradeCost = (int)upgradePrice;
 
-            if (Level % 20 == 0)
+            if (Level % 5 == 0)
                 GuardianSpace.AddBlock();
         }
 
@@ -48,7 +48,7 @@ namespace TowerDefense.Source
             HealthPointsRemaining.Set(HealthPointsRemaining.Get() - 250);
             ManaPoints.Set(ManaPoints.Get() - 50);
             ManaPointsRemaining.Set(ManaPointsRemaining.Get() - 50);
-            if (Level % 20 == 0)
+            if (Level % 5 == 0)
                 GuardianSpace.RemoveBlock();
             Level -= 1;
             UpgradeCost = upgradeCost;
@@ -61,10 +61,11 @@ namespace TowerDefense.Source
                 GuardianSpace.RemoveBlock();
             }
             GuardianSpace.AddBlock();
+            GuardianSpace.AddBlock();
             HealthPoints.Set(250);
             HealthPointsRemaining.Set(250);
             ManaPoints.Set(50);
-            ManaPointsRemaining.Set(50);
+            ManaPointsRemaining.Set(25);
             Level = 1;
             UpgradeCost = 100;
         }

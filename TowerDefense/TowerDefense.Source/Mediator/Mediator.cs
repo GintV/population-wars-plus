@@ -12,11 +12,13 @@ namespace TowerDefense.Source.Mediator
     {
         private List<Projectile> _projectiles;
         private List<Monster> _monsters;
+        private Action<Monster> _monsterDestroyCallback;
 
-        public Mediator(List<Projectile> projectiles, List<Monster> monsters)
+        public Mediator(List<Projectile> projectiles, List<Monster> monsters, Action<Monster> monsterDestroyCallback)
         {
             _projectiles = projectiles;
             _monsters = monsters;
+            _monsterDestroyCallback = monsterDestroyCallback;
         }
 
         public void Broadcast(Notifier sender, Vector2 location, int damage)
@@ -41,6 +43,7 @@ namespace TowerDefense.Source.Mediator
                     return;
                 case Monster monster:
                     _monsters.Remove(monster);
+                    _monsterDestroyCallback(monster);
                     return;
             }
         }

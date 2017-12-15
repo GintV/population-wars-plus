@@ -20,7 +20,7 @@ namespace TowerDefense.UI
             var gameView = GameView.GetInstance();
             //var game = new Game2();
             //var game = new Game();
-            GameHandler.GetHandler().CreateGame(new Configuration(10, 100, 200, 200, 300, 50));
+            GameHandler.GetHandler().CreateGame(new Configuration(10, 100, 200, 125, 300, 50));
             GameHandler.GetHandler().Renderer = new RendererToViewAdapter(ViewFactory.CreateView(ViewType.NewGameView, GameHandler.GetHandler().GameEnvironment.GameInfo));
             GameHandler.GetHandler().InitGame();
             GameHandler.GetHandler().StartGame();
