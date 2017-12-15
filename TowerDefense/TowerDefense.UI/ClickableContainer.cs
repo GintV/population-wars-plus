@@ -6,13 +6,13 @@ using TowerDefense.UI.Stylers;
 
 namespace TowerDefense.UI
 {
-    public abstract class ClickableContainer: DrawnRenderable, IClickable
+    public abstract class ClickableContainer : DrawnRenderable, IClickable
     {
         protected ICollection<IClickable> Clickables;
 
         public virtual void OnClick(Vector2 clickPosition)
         {
-           var clicked = Clickables.FirstOrDefault(po => IsClicked(po, clickPosition));
+            var clicked = Clickables.FirstOrDefault(c => IsClicked(c, clickPosition));
             clicked?.OnClick(new Vector2(clickPosition.X - clicked.Position.X, clickPosition.Y - clicked.Position.Y));
         }
 

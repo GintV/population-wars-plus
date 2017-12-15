@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    class UltimateMageBall
+    public class UltimateMageBall
     {
     }
 }

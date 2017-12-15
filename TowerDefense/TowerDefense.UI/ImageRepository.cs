@@ -45,12 +45,15 @@ namespace TowerDefense.UI
         {
             m_typeToFileDictionary.Add(typeof(Bubble), @"..\..\Images\bubble.png");
             m_typeToFileDictionary.Add(typeof(Skull), @"..\..\Images\skull.png");
-            m_typeToFileDictionary.Add(typeof(Arrow), @"..\..\Images\proj.png");
-            m_typeToFileDictionary.Add(typeof(FireWizard), @"..\..\Images\enem.png");
-            m_typeToFileDictionary.Add(typeof(IceWizard), @"..\..\Images\enem.png");
-            m_typeToFileDictionary.Add(typeof(DarkArcher), @"..\..\Images\enem.png");
-            m_typeToFileDictionary.Add(typeof(LightArcher), @"..\..\Images\enem.png");
-            m_typeToFileDictionary.Add(typeof(MageBall), @"..\..\Images\enem.png");
+            m_typeToFileDictionary.Add(typeof(FireWizard), @"..\..\Images\fireW.png");
+            m_typeToFileDictionary.Add(typeof(IceWizard), @"..\..\Images\iceW.png");
+            m_typeToFileDictionary.Add(typeof(DarkArcher), @"..\..\Images\darkA.png");
+            m_typeToFileDictionary.Add(typeof(LightArcher), @"..\..\Images\lightA.png");
+            m_typeToFileDictionary.Add(typeof(Arrow), @"..\..\Images\arrow.png");
+            m_typeToFileDictionary.Add(typeof(SuperArrow), @"..\..\Images\superArrow.png");
+            m_typeToFileDictionary.Add(typeof(MageBall), @"..\..\Images\mageBall.png");
+            m_typeToFileDictionary.Add(typeof(MegaMageBall), @"..\..\Images\megaMageBall.png");
+            m_typeToFileDictionary.Add(typeof(UltimateMageBall), @"..\..\Images\ultimateMageBall.png");
         }
     }
 }

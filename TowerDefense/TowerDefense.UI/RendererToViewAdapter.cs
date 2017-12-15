@@ -74,7 +74,7 @@ namespace TowerDefense.UI
             {
                 Image = m_imageRepository.GetImage(p.GetType()),
                 Position = p.Location,
-                Size = new Vector2(25, 25)
+                Size = new Vector2(40, 40)
             });
     }
 }

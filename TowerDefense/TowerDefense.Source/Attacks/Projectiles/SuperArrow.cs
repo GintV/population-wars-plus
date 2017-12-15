@@ -7,18 +7,18 @@ using static TowerDefense.Source.Constants.GameEngineSettings;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
-    internal class SupperArrow : Projectile
+    public class SuperArrow : Projectile
     {
         public sealed override IMove MoveType { get; set; }
 
-        public SupperArrow(int collisionDamage, double speed) : base(collisionDamage, speed)
+        public SuperArrow(int collisionDamage, double speed) : base(collisionDamage, speed)
         {
             MoveType = new ArchMove();
         }
 
         public override object Clone()
         {
-            var superArrow = (SupperArrow)MemberwiseClone();
+            var superArrow = (SuperArrow)MemberwiseClone();
             superArrow.MoveType = (IMove)MoveType.Clone();
             return superArrow;
         }
