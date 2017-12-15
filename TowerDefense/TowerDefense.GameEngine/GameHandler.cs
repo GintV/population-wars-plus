@@ -54,7 +54,7 @@ namespace TowerDefense.GameEngine
         public void InitGame()
         {
             GameEnvironment.Inventory.Guardians.Clear();
-            GameEnvironment.Inventory.Coins.Set(1000);
+            GameEnvironment.Inventory.Coins.Set(1000000000);
             GameEnvironment.Tower.Reset();
         }
 
@@ -77,21 +77,18 @@ namespace TowerDefense.GameEngine
                     {
                         foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                         {
-                            var mob = GameEnvironment.Monsters.FirstOrDefault();
-                            if (mob != null)
+                            var mob = GameEnvironment.Monsters.DefaultIfEmpty(new NullMonster()).FirstOrDefault();
+                            var projectiles = towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
+                            if (projectiles != null)
                             {
-                                var projectiles = towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
-                                if (projectiles != null)
+                                projectiles.ForEach(projectile =>
                                 {
-                                    projectiles.ForEach(projectile =>
-                                    {
-                                        projectile.SetMediator(Mediator);
-                                        projectile.Location = new Vector2(400, 900 - (Configuration.TowerBaseHeight +
-                                            Configuration.TowerBlockHeight * (towerBlock.BlockNumber - 1) +
-                                            Configuration.GuardianShootingHeightInBlock));
-                                    });
-                                    GameEnvironment.Projectiles.AddRange(projectiles);
-                                }
+                                    projectile.SetMediator(Mediator);
+                                    projectile.Location = new Vector2(400, 900 - (Configuration.TowerBaseHeight +
+                                        Configuration.TowerBlockHeight * (towerBlock.BlockNumber - 1) +
+                                        Configuration.GuardianShootingHeightInBlock));
+                                });
+                                GameEnvironment.Projectiles.AddRange(projectiles);
                             }
                         }
                         foreach (var monster in GameEnvironment.Monsters.ToList())
