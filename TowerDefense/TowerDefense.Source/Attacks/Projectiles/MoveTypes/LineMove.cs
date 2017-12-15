@@ -18,7 +18,7 @@ namespace TowerDefense.Source.Attacks.Projectiles.MoveTypes
                 _trajectory = Vector2.Normalize(Target - location);
             }
 
-            location += _trajectory * (float)(SourceSpeed * dt / 100.0);
+            location += _trajectory * (float)(SourceSpeed * dt / 1000.0);
             return location;
         }
         
