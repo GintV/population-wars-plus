@@ -2,6 +2,7 @@
 using System.Numerics;
 using TowerDefense.Source.Attacks.Projectiles;
 using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
+using TowerDefense.Source.Monsters;
 
 namespace TowerDefense.Source.Loggers
 {
@@ -41,6 +42,16 @@ namespace TowerDefense.Source.Loggers
         }
 
         public void Upgrade()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Damage(Skull skull)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Damage(Bubble bubble)
         {
             throw new NotImplementedException();
         }

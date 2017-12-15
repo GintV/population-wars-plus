@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using TowerDefense.Source.Attacks.Projectiles;
 using TowerDefense.Source.Mediator;
 
 namespace TowerDefense.Source.Monsters
@@ -24,6 +25,7 @@ namespace TowerDefense.Source.Monsters
         public Vector2 Location { get; set; }
         public abstract int Speed { get; }
         public abstract void Move(long dt);
+        public abstract void TakeDamage(IProjectile projectile);
 
         protected Monster()
         {
@@ -35,7 +37,8 @@ namespace TowerDefense.Source.Monsters
             var dif = (Location - location).Length();
             if (dif < 40)
             {
-                HealthPointsRemaining -= damage;
+                TakeDamage(sender as IProjectile);
+                //HealthPointsRemaining -= damage;
                 sender.Destroy();
             }
             if(HealthPointsRemaining < 0)

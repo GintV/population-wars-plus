@@ -153,5 +153,11 @@ namespace TowerDefense.Source
             public const double MegaMageBall = 1.03;
             public const double UltimateMegaBall = 1.02;
         }
+
+        public static class TypeBasedMultiplier
+        {
+            public const double StrongAgainst = 1.25;
+            public const double WeakAgainst = 0.8;
+        }
     }
 }

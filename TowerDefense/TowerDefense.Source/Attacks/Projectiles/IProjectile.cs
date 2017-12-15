@@ -2,6 +2,7 @@
 using System.Numerics;
 using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
 using TowerDefense.Source.Mediator;
+using TowerDefense.Source.Monsters;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
@@ -10,6 +11,8 @@ namespace TowerDefense.Source.Attacks.Projectiles
         void Move(long dt);
         void SetLocation(Vector2 location);
         void Upgrade();
+        void Damage(Skull skull);
+        void Damage(Bubble bubble);
     }
 
     public abstract class Projectile : Notifier, IProjectile
@@ -27,6 +30,8 @@ namespace TowerDefense.Source.Attacks.Projectiles
 
         public abstract object Clone();
         public abstract void Upgrade();
+        public abstract void Damage(Skull skull);
+        public abstract void Damage(Bubble bubble);
 
         public void Move(long dt)
         {

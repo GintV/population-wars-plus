@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using TowerDefense.Source.Attacks.Projectiles;
 
 namespace TowerDefense.Source.Monsters
 {
@@ -23,6 +24,11 @@ namespace TowerDefense.Source.Monsters
         {
             Location = new Vector2(Location.X - (int)(dt * Speed / 1000.0), (float)(m_baseLine + Math.Cos(Location.X / 25 - Math.PI / 2) * 30));
             Send(Location, 0);
+        }
+
+        public override void TakeDamage(IProjectile projectile)
+        {
+            projectile.Damage(this);
         }
     }
 }

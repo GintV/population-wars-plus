@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using TowerDefense.Source.Attacks.Projectiles.MoveTypes;
+using TowerDefense.Source.Monsters;
 
 namespace TowerDefense.Source.Attacks.Projectiles
 {
@@ -22,6 +23,16 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public override void Upgrade()
         {
             CollisionDamage = (int)(CollisionDamage * Constants.ProjectileDamageMultiplier.Arrow);
+        }
+
+        public override void Damage(Skull skull)
+        {
+            skull.HealthPointsRemaining -= (int)(CollisionDamage * Constants.TypeBasedMultiplier.WeakAgainst);
+        }
+
+        public override void Damage(Bubble bubble)
+        {
+            bubble.HealthPointsRemaining -= (int)(CollisionDamage * Constants.TypeBasedMultiplier.StrongAgainst);
         }
     }
 }
