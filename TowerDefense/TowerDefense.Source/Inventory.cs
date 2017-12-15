@@ -6,7 +6,13 @@ using TowerDefense.Source.Utils;
 
 namespace TowerDefense.Source
 {
-    public class Inventory
+    public interface IInventory
+    {
+        Observable<int> Coins { get; }
+        List<Guardian> Guardians { get; set; }
+    }
+
+    public class Inventory : IInventory
     {
         public Observable<int> Coins { get; }
         public List<Guardian> Guardians { get; set; }

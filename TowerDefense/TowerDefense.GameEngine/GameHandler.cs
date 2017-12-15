@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -40,7 +41,13 @@ namespace TowerDefense.GameEngine
         public void CreateGame(IConfiguration configuration)
         {
             Configuration = configuration;
-            GameEnvironment = new GameEnvironment();
+
+            var inventory = new Inventory();;
+            var tower = new Tower();
+
+            GameEnvironment = new GameEnvironment(inventory, new List<Monster>(), new List<Projectile>(), tower,
+                new GameInfoProvider(inventory.Coins, tower.HealthPointsRemaining, tower.HealthPoints, tower.ManaPointsRemaining, tower.ManaPoints),
+                new InventoryInfoProvider(inventory));
             CoinTransactionController = new CoinTransactionController(GameEnvironment);
             GameControls = new GameControls(CoinTransactionController, configuration, GameEnvironment);
             GameEngineSettings.GameCyclesPerSecond = CyclesPerSecond;
@@ -88,7 +95,8 @@ namespace TowerDefense.GameEngine
                                         Configuration.TowerBlockHeight * (towerBlock.BlockNumber - 1) +
                                         Configuration.GuardianShootingHeightInBlock));
                                 });
-                                GameEnvironment.Projectiles.AddRange(projectiles);
+                                projectiles.ForEach(p => GameEnvironment.Projectiles.Add(p));
+                                //GameEnvironment.Projectiles.AddRange(projectiles);
                             }
                         }
                         foreach (var monster in GameEnvironment.Monsters.ToList())

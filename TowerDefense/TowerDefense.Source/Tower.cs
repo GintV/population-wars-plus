@@ -2,7 +2,22 @@
 
 namespace TowerDefense.Source
 {
-    public class Tower
+    public interface ITower
+    {
+        GuardianSpace GuardianSpace { get; }
+        Observable<int> HealthPoints { get; }
+        Observable<int> HealthPointsRemaining { get; }
+        int Level { get; }
+        Observable<int> ManaPoints { get; }
+        Observable<int> ManaPointsRemaining { get; }
+        int UpgradeCost { get; }
+
+        void Downgrade(int upgradeCost);
+        void Reset();
+        void Upgrade();
+    }
+
+    public class Tower : ITower
     {
         public GuardianSpace GuardianSpace { get; }
         public Observable<int> HealthPoints { get; }

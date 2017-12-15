@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using TowerDefense.Source.Attacks.Projectiles;
 
 namespace TowerDefense.Source.Monsters
 {
@@ -14,5 +15,6 @@ namespace TowerDefense.Source.Monsters
         public NullMonster() { }
 
         public override void Move(long dt) { }
+        public override void TakeDamage(IProjectile projectile) { }
     }
 }

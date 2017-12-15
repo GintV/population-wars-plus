@@ -22,7 +22,7 @@ namespace TowerDefense.UI
             RenderingView = renderingView;
         }
 
-        public void Render(Source.Tower tower, IEnumerable<IMonster> monsters, IEnumerable<Projectile> projectiles)
+        public void Render(Source.ITower tower, IEnumerable<IMonster> monsters, IEnumerable<Projectile> projectiles)
         {
             if (m_tower.Level != tower.GuardianSpace.Blocks)
                 m_tower.Level = tower.GuardianSpace.Blocks;

@@ -9,6 +9,6 @@ namespace TowerDefense.GameEngine
 {
     public interface IRenderer
     {
-        void Render(Tower tower, IEnumerable<IMonster> monsters, IEnumerable<Projectile> projectiles);
+        void Render(ITower tower, IEnumerable<IMonster> monsters, IEnumerable<Projectile> projectiles);
     }
 }

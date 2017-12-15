@@ -10,11 +10,11 @@ namespace TowerDefense.Source.Mediator
 {
     public class Mediator
     {
-        private List<Projectile> _projectiles;
-        private List<Monster> _monsters;
+        private ICollection<Projectile> _projectiles;
+        private ICollection<Monster> _monsters;
         private Action<Monster> _monsterDestroyCallback;
 
-        public Mediator(List<Projectile> projectiles, List<Monster> monsters, Action<Monster> monsterDestroyCallback)
+        public Mediator(ICollection<Projectile> projectiles, ICollection<Monster> monsters, Action<Monster> monsterDestroyCallback)
         {
             _projectiles = projectiles;
             _monsters = monsters;

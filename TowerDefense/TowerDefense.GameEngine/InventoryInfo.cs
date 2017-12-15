@@ -10,7 +10,7 @@ namespace TowerDefense.GameEngine
     {
         protected readonly List<IIventoryInfoSubscriber> m_subscribers;
 
-        public abstract Inventory Inventory { get; }
+        public abstract IInventory Inventory { get; }
 
         protected InventoryInfo()
         {
@@ -38,9 +38,9 @@ namespace TowerDefense.GameEngine
 
     public class InventoryInfoProvider : InventoryInfo
     {
-        public override Inventory Inventory { get; }
+        public override IInventory Inventory { get; }
 
-        public InventoryInfoProvider(Inventory inventory)
+        public InventoryInfoProvider(IInventory inventory)
         {
             Inventory = inventory;
         }

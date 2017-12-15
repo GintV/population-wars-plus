@@ -10,27 +10,28 @@ namespace TowerDefense.GameEngine
     {
         GameInfo GameInfo { get; }
         InventoryInfo InventoryInfo { get; }
-        Inventory Inventory { get; }
-        List<Monster> Monsters { get; }
-        List<Projectile> Projectiles { get; }
-        Tower Tower { get; }
+        IInventory Inventory { get; }
+        ICollection<Monster> Monsters { get; }
+        ICollection<Projectile> Projectiles { get; }
+        ITower Tower { get; }
     }
 
     internal class GameEnvironment : IGameEnvironment
     {
         public GameInfo GameInfo { get; }
         public InventoryInfo InventoryInfo { get; }
-        public Inventory Inventory { get; }
-        public List<Monster> Monsters { get; }
-        public List<Projectile> Projectiles { get; }
-        public Tower Tower { get; }
+        public IInventory Inventory { get; }
+        public ICollection<Monster> Monsters { get; }
+        public ICollection<Projectile> Projectiles { get; }
+        public ITower Tower { get; }
 
-        public GameEnvironment()
+        public GameEnvironment(IInventory inventory, ICollection<Monster> monsters, ICollection<Projectile> projectiles, ITower tower,
+            GameInfo gameInfo, InventoryInfo inventoryInfo)
         {
-            Inventory = new Inventory();
-            Monsters = new List<Monster>();
-            Projectiles = new List<Projectile>();
-            Tower = new Tower();
+            Inventory = inventory;
+            Monsters = monsters;
+            Projectiles = projectiles;
+            Tower = tower;
             GameInfo = new GameInfoProvider(Inventory.Coins, Tower.HealthPointsRemaining, Tower.HealthPoints, Tower.ManaPointsRemaining, Tower.ManaPoints);
             InventoryInfo = new InventoryInfoProvider(Inventory);
         }
