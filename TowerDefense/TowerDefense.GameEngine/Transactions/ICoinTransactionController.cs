@@ -14,7 +14,7 @@ namespace TowerDefense.GameEngine.Transactions
 
     public class CoinTransactionController : ICoinTransactionController
     {
-        private const int MaxUndoDepth = 3;
+        private const int MaxUndoDepth = 100;
 
         private readonly IGameEnvironment m_environment;
         private readonly ConcurrentQueue<Action> m_pendingTransactions;

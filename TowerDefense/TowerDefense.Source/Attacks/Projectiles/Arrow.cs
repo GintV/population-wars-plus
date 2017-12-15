@@ -23,6 +23,14 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public override void Upgrade()
         {
             CollisionDamage = (int)(CollisionDamage * Constants.ProjectileDamageMultiplier.Arrow);
+            Speed = Speed * Constants.ProjectileSpeedMultiplier.Arrow;
+        }
+
+
+        public override void Downgrade()
+        {
+            CollisionDamage = (int)(CollisionDamage / Constants.ProjectileDamageMultiplier.Arrow);
+            Speed = Speed / Constants.ProjectileSpeedMultiplier.Arrow;
         }
 
         public override void Damage(Skull skull)

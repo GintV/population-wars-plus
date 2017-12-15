@@ -55,5 +55,10 @@ namespace TowerDefense.Source.Loggers
         {
             throw new NotImplementedException();
         }
+
+        public void Downgrade()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

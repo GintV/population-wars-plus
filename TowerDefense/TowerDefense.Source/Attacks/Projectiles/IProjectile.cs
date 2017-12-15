@@ -13,6 +13,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         void Upgrade();
         void Damage(Skull skull);
         void Damage(Bubble bubble);
+        void Downgrade();
     }
 
     public abstract class Projectile : Notifier, IProjectile
@@ -32,6 +33,7 @@ namespace TowerDefense.Source.Attacks.Projectiles
         public abstract void Upgrade();
         public abstract void Damage(Skull skull);
         public abstract void Damage(Bubble bubble);
+        public abstract void Downgrade();
 
         public void Move(long dt)
         {

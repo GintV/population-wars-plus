@@ -22,6 +22,7 @@ namespace TowerDefense.Source.Attacks
 
         public abstract List<Projectile> Shoot(Vector2 target, int targetSpeed);
         public abstract void Upgrade();
+        public abstract void Downgrade();
 
         public void SetLocation(Vector2 location) => Projectile.SetLocation(location);
     }

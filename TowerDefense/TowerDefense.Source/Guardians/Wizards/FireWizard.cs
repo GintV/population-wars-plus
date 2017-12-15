@@ -48,6 +48,10 @@ namespace TowerDefense.Source.Guardians.Wizards
             AttackType.Upgrade();
             GuardianState.Upgrade((int)(AttackType.AttackTimer * 1000));
         }
-        public override void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost) { }
+        public override void Downgrade(AttackType oldAttackTypeType, int oldUpgradeCost) {
+            --Level;
+            UpgradeCost = (int)(UpgradeCost / GuardianUpgradeCostMultiplier.FireWizard);
+            AttackType.Downgrade();
+        }
     }
 }

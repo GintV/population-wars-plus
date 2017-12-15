@@ -22,5 +22,10 @@ namespace TowerDefense.Source.Attacks
             AttackSpeed = AttackSpeed * Constants.AttackSpeedMultiplier.SingleMageBall;
             Projectile.Upgrade();
         }
+        public override void Downgrade()
+        {
+            AttackSpeed = AttackSpeed / Constants.AttackSpeedMultiplier.SingleMageBall;
+            Projectile.Downgrade();
+        }
     }
 }
