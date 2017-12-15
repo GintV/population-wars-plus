@@ -36,10 +36,10 @@ namespace TowerDefense.Source.Attacks.Projectiles
 
         public void SetLocation(Vector2 location) => Location = location;
 
-        public override void Receive(Vector2 location, int damage)
+        public override void Receive(Vector2 location, int damage, Notifier sender)
         {
             var dif = (Location - location).Length();
-            if (dif < 10)
+            if (dif < 40)
             {
                 Send(Location, CollisionDamage);
                 Destroy();

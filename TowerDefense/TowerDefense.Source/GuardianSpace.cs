@@ -9,8 +9,8 @@ namespace TowerDefense.Source
 
         public GuardianSpace()
         {
-            TowerBlocks = new[] { new TowerBlock(1) };
-            Blocks = 1;
+            TowerBlocks = new[] { new TowerBlock(1), new TowerBlock(2) };
+            Blocks = 2;
         }
 
         public void AddBlock()

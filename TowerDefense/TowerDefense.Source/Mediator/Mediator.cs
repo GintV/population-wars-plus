@@ -24,10 +24,10 @@ namespace TowerDefense.Source.Mediator
             switch (sender)
             {
                 case Projectile projectile:
-                    _monsters.ToList().ForEach(monster => monster.Receive(location, damage));
+                    _monsters.ToList().ForEach(monster => monster.Receive(location, damage, sender));
                     return;
                 case Monster monster:
-                    _projectiles.ToList().ForEach(projectile => projectile.Receive(location, damage));
+                    _projectiles.ToList().ForEach(projectile => projectile.Receive(location, damage, sender));
                     return;
             }
         }
@@ -52,7 +52,7 @@ namespace TowerDefense.Source.Mediator
 
         public void SetMediator(Mediator mediator) => _mediator = mediator;
         public void Send(Vector2 location, int damage) => _mediator.Broadcast(this, location, damage);
-        public abstract void Receive(Vector2 location, int damage);
+        public abstract void Receive(Vector2 location, int damage, Notifier sender);
         public void Destroy() => _mediator.Remove(this);
     }
 }

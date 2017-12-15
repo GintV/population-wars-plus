@@ -19,7 +19,7 @@ namespace TowerDefense.Source.Attacks
         }
         public override void Upgrade()
         {
-            AttackSpeed = (int)(AttackSpeed * Constants.AttackSpeedMultiplier.SingleMageBall);
+            AttackSpeed = AttackSpeed * Constants.AttackSpeedMultiplier.SingleMageBall;
             Projectile.Upgrade();
         }
     }

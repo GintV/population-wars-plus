@@ -55,7 +55,7 @@ namespace TowerDefense.GameEngine
         {
             GameEnvironment.Inventory.Guardians.Clear();
             GameEnvironment.Inventory.Coins.Set(1000);
-            GameEnvironment.Tower.Reset();
+            //GameEnvironment.Tower.Reset();
         }
 
         public void StartGame()
@@ -84,9 +84,9 @@ namespace TowerDefense.GameEngine
                                     projectiles.ForEach(projectile =>
                                     {
                                         projectile.SetMediator(Mediator);
-                                        projectile.Location = new Vector2(400, Configuration.TowerBaseHeight +
-                                            Configuration.TowerBlockHeight * towerBlock.BlockNumber +
-                                            Configuration.GuardianShootingHeightInBlock);
+                                        projectile.Location = new Vector2(400, 900 - (Configuration.TowerBaseHeight +
+                                            Configuration.TowerBlockHeight * (towerBlock.BlockNumber - 1) +
+                                            Configuration.GuardianShootingHeightInBlock));
                                     });
                                     GameEnvironment.Projectiles.AddRange(projectiles);
                                 }

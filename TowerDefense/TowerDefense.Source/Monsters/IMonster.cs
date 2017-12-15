@@ -30,11 +30,14 @@ namespace TowerDefense.Source.Monsters
             Id = Guid.NewGuid();
         }
 
-        public override void Receive(Vector2 location, int damage)
+        public override void Receive(Vector2 location, int damage, Notifier sender)
         {
             var dif = (Location - location).Length();
-            if (dif < 10)
+            if (dif < 40)
+            {
                 HealthPointsRemaining -= damage;
+                sender.Destroy();
+            }
             if(HealthPointsRemaining < 0)
                 Destroy();
         }
