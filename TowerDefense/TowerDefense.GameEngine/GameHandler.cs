@@ -19,7 +19,7 @@ namespace TowerDefense.GameEngine
     public class GameHandler
     {
         private static readonly Lazy<GameHandler> GameInstance = new Lazy<GameHandler>(() => new GameHandler());
-        private readonly CancellationTokenSource m_gameTaskCancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource m_gameTaskCancellationTokenSource = new CancellationTokenSource();
 
         protected ICoinTransactionController CoinTransactionController { get; set; }
         public IConfiguration Configuration { get; private set; }
@@ -61,7 +61,7 @@ namespace TowerDefense.GameEngine
         public void InitGame()
         {
             GameEnvironment.Inventory.Guardians.Clear();
-            GameEnvironment.Inventory.Coins.Set(1000000000);
+            GameEnvironment.Inventory.Coins.Set(1000);
             GameEnvironment.Tower.Reset();
         }
 
@@ -72,6 +72,8 @@ namespace TowerDefense.GameEngine
                 var spawnTimer = 0;
                 var regenTimer = 0;
                 var lastFrameTime = DateTime.Now;
+                var speedIncreaseTimer = 0;
+                var spawnSpeed = 1999;
                 var rng = new Random();
                 while (!m_gameTaskCancellationTokenSource.Token.IsCancellationRequested && GameEnvironment.Tower.HealthPointsRemaining.Get() > 0)
                 {
@@ -84,7 +86,7 @@ namespace TowerDefense.GameEngine
                     {
                         foreach (var towerBlock in GameEnvironment.Tower.GuardianSpace.TowerBlocks)
                         {
-                            var mob = GameEnvironment.Monsters.DefaultIfEmpty(new NullMonster()).FirstOrDefault();
+                            var mob = GameEnvironment.Monsters.DefaultIfEmpty(new NullMonster() {Location = new Vector2(1600, 550)}).FirstOrDefault();
                             var projectiles = towerBlock.Guardian?.Attack(mob.Location, mob.Speed, delta);
                             if (projectiles != null)
                             {
@@ -117,10 +119,10 @@ namespace TowerDefense.GameEngine
                             }
                         }
                         spawnTimer += delta;
-                        if (spawnTimer > 2000)
+                        if (spawnTimer > spawnSpeed)
                         {
-                            spawnTimer = spawnTimer % 2000;
-                            var monster = rng.Next(2) == 0 ? new Bubble(200, new Vector2(1600, 550), 30) : (Monster)new Skull(150, new Vector2(1600, 550), 50);
+                            spawnTimer = spawnTimer % spawnSpeed;
+                            var monster = rng.Next(2) == 0 ? new Bubble(200, new Vector2(1600, 550), 30 + spawnSpeed / 100) : (Monster)new Skull(150, new Vector2(1600, 550), 50 + spawnSpeed / 100);
                             monster.SetMediator(Mediator);
                             GameEnvironment.Monsters.Add(monster);
                             
@@ -132,6 +134,12 @@ namespace TowerDefense.GameEngine
                             if (GameEnvironment.Tower.ManaPointsRemaining.Get() < GameEnvironment.Tower.ManaPoints.Get())
                                 GameEnvironment.Tower.ManaPointsRemaining.Set(GameEnvironment.Tower.ManaPointsRemaining.Get() + 1);
                             GameEnvironment.Inventory.Coins.Set(GameEnvironment.Inventory.Coins.Get() + 5);
+                        }
+                        speedIncreaseTimer += delta;
+                        if (speedIncreaseTimer > 4000)
+                        {
+                            speedIncreaseTimer = speedIncreaseTimer % 4000;
+                            spawnSpeed = spawnSpeed - spawnSpeed / 10 > 0 ? spawnSpeed - spawnSpeed / 10 : 1;
                         }
                     }
                     Renderer?.Render(GameEnvironment.Tower, GameEnvironment.Monsters, GameEnvironment.Projectiles.OfType<Projectile>());
@@ -172,6 +180,8 @@ namespace TowerDefense.GameEngine
             InitGame();
             GameEnvironment.InventoryInfo.OnInventoryChanged();
             State.Set(GameState.NotStarted);
+            m_gameTaskCancellationTokenSource = new CancellationTokenSource();
+            StartGame();
         }
 
         public void OnMonsterDestroyed(Monster monster)
